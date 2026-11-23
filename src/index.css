@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    border-color: #E5E4E0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    background-color: #FAF9F7;
+    color: #1C1C1B;
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* Strict Anti-AI-Slop compliance: Avoid #FFF and #000 */
+  input, select, textarea {
+    background-color: #FAF9F7;
+    color: #1C1C1B;
+  }
+
+  /* Custom scrollbars that match palette */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #FAF9F7;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #E5E4E0;
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #575654;
+  }
+}
+
+/* Tabular nums for clean financial & inventory display */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* High-Impact Streetwear Marquee Animation */
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 28s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}

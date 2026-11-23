@@ -1,0 +1,3572 @@
+{
+  "products": [
+    {
+      "id": "p1111111-1111-4111-8111-111111111111",
+      "name": "Falling Flames Heavyweight Boxy Tee",
+      "slug": "falling-flames-heavyweight-boxy-tee",
+      "category": "Tops",
+      "price": 75,
+      "description": "Constructed from 290 GSM dry-touch organic combed cotton with stone-wash patina. Features a relaxed drop-shoulder cut, reinforced twin-needle 32mm ribbed collar band, and clean side split hems for an architectural drape.",
+      "material": "100% GOTS-certified Organic Combed Cotton (290 GSM)",
+      "fit_note": "Oversized, relaxed drop-shoulder silhouette. True to size for boxy aesthetic.",
+      "care": "Machine wash cold inside-out at 30°C. Line dry in shade. Do not tumble dry.",
+      "images": [
+        "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=800&q=80"
+      ],
+      "variants": [
+        {
+          "id": "v101-1111-4111-8111-111111111111",
+          "color_name": "Washed Slate",
+          "color_hex": "#3E4348",
+          "size": "S",
+          "stock_count": 14
+        },
+        {
+          "id": "v102-1111-4111-8111-111111111111",
+          "color_name": "Washed Slate",
+          "color_hex": "#3E4348",
+          "size": "M",
+          "stock_count": 22
+        },
+        {
+          "id": "v103-1111-4111-8111-111111111111",
+          "color_name": "Washed Slate",
+          "color_hex": "#3E4348",
+          "size": "L",
+          "stock_count": 4
+        },
+        {
+          "id": "v104-1111-4111-8111-111111111111",
+          "color_name": "Washed Slate",
+          "color_hex": "#3E4348",
+          "size": "XL",
+          "stock_count": 0
+        },
+        {
+          "id": "v105-1111-4111-8111-111111111111",
+          "color_name": "Ash Chalk",
+          "color_hex": "#DDD9D1",
+          "size": "S",
+          "stock_count": 9
+        },
+        {
+          "id": "v106-1111-4111-8111-111111111111",
+          "color_name": "Ash Chalk",
+          "color_hex": "#DDD9D1",
+          "size": "M",
+          "stock_count": 16
+        },
+        {
+          "id": "v107-1111-4111-8111-111111111111",
+          "color_name": "Ash Chalk",
+          "color_hex": "#DDD9D1",
+          "size": "L",
+          "stock_count": 3
+        },
+        {
+          "id": "v108-1111-4111-8111-111111111111",
+          "color_name": "Ash Chalk",
+          "color_hex": "#DDD9D1",
+          "size": "XL",
+          "stock_count": 8
+        }
+      ]
+    },
+    {
+      "id": "p2222222-2222-4222-8222-222222222222",
+      "name": "Pleated Relaxed Studio Trouser",
+      "slug": "pleated-relaxed-studio-trouser",
+      "category": "Bottoms",
+      "price": 155,
+      "description": "Tailored single-pleat trousers cut from Japanese tropical wool blend. Features a comfortable high-rise waist with hidden side adjusters, gentle taper toward the ankle, and interior French seams.",
+      "material": "60% Virgin Tropical Wool, 38% Recycled Poly, 2% Elastane",
+      "fit_note": "High-rise waist with relaxed thigh tapering to 18cm leg opening.",
+      "care": "Dry clean only or delicate hand wash cold. Cool iron with pressing cloth.",
+      "images": [
+        "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1509551388413-e18d0ac5d495?auto=format&fit=crop&w=800&q=80"
+      ],
+      "variants": [
+        {
+          "id": "v201-2222-4222-8222-222222222222",
+          "color_name": "Charred Onyx",
+          "color_hex": "#232323",
+          "size": "S",
+          "stock_count": 8
+        },
+        {
+          "id": "v202-2222-4222-8222-222222222222",
+          "color_name": "Charred Onyx",
+          "color_hex": "#232323",
+          "size": "M",
+          "stock_count": 12
+        },
+        {
+          "id": "v203-2222-4222-8222-222222222222",
+          "color_name": "Charred Onyx",
+          "color_hex": "#232323",
+          "size": "L",
+          "stock_count": 2
+        },
+        {
+          "id": "v204-2222-4222-8222-222222222222",
+          "color_name": "Charred Onyx",
+          "color_hex": "#232323",
+          "size": "XL",
+          "stock_count": 7
+        },
+        {
+          "id": "v205-2222-4222-8222-222222222222",
+          "color_name": "Sandrift Pumice",
+          "color_hex": "#C6BEB3",
+          "size": "S",
+          "stock_count": 5
+        },
+        {
+          "id": "v206-2222-4222-8222-222222222222",
+          "color_name": "Sandrift Pumice",
+          "color_hex": "#C6BEB3",
+          "size": "M",
+          "stock_count": 11
+        },
+        {
+          "id": "v207-2222-4222-8222-222222222222",
+          "color_name": "Sandrift Pumice",
+          "color_hex": "#C6BEB3",
+          "size": "L",
+          "stock_count": 6
+        },
+        {
+          "id": "v208-2222-4222-8222-222222222222",
+          "color_name": "Sandrift Pumice",
+          "color_hex": "#C6BEB3",
+          "size": "XL",
+          "stock_count": 0
+        }
+      ]
+    },
+    {
+      "id": "p3333333-3333-4333-8333-333333333333",
+      "name": "Purgatory Brutalist Gabardine Trench",
+      "slug": "purgatory-brutalist-gabardine-trench",
+      "category": "Outerwear",
+      "price": 310,
+      "description": "An unlined minimalist outerwear statement engineered from water-resistant bonded cotton gabardine. Minimalist concealed horn button placket, deep raglan sleeves, storm welt pockets, and rear inverted pleat.",
+      "material": "100% Weather-Treated Bonded Cotton Gabardine",
+      "fit_note": "Generous mid-calf length. Sized to layer comfortably over heavyweight hoodies.",
+      "care": "Specialist clean only. Wipe clean with damp sponge for minor spots.",
+      "images": [
+        "https://images.unsplash.com/photo-1544923246-77307dd654cb?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1576995853123-5a10305d93c0?auto=format&fit=crop&w=800&q=80"
+      ],
+      "variants": [
+        {
+          "id": "v301-3333-4333-8333-333333333333",
+          "color_name": "Dark Olive",
+          "color_hex": "#383E36",
+          "size": "S",
+          "stock_count": 6
+        },
+        {
+          "id": "v302-3333-4333-8333-333333333333",
+          "color_name": "Dark Olive",
+          "color_hex": "#383E36",
+          "size": "M",
+          "stock_count": 4
+        },
+        {
+          "id": "v303-3333-4333-8333-333333333333",
+          "color_name": "Dark Olive",
+          "color_hex": "#383E36",
+          "size": "L",
+          "stock_count": 8
+        },
+        {
+          "id": "v304-3333-4333-8333-333333333333",
+          "color_name": "Dark Olive",
+          "color_hex": "#383E36",
+          "size": "XL",
+          "stock_count": 3
+        },
+        {
+          "id": "v305-3333-4333-8333-333333333333",
+          "color_name": "Graphite",
+          "color_hex": "#2B2D2F",
+          "size": "S",
+          "stock_count": 7
+        },
+        {
+          "id": "v306-3333-4333-8333-333333333333",
+          "color_name": "Graphite",
+          "color_hex": "#2B2D2F",
+          "size": "M",
+          "stock_count": 10
+        },
+        {
+          "id": "v307-3333-4333-8333-333333333333",
+          "color_name": "Graphite",
+          "color_hex": "#2B2D2F",
+          "size": "L",
+          "stock_count": 1
+        },
+        {
+          "id": "v308-3333-4333-8333-333333333333",
+          "color_name": "Graphite",
+          "color_hex": "#2B2D2F",
+          "size": "XL",
+          "stock_count": 5
+        }
+      ]
+    },
+    {
+      "id": "p4444444-4444-4444-8444-444444444444",
+      "name": "Vibram Commando Lug Minimalist Derby",
+      "slug": "vibram-commando-lug-minimalist-derby",
+      "category": "Footwear",
+      "price": 225,
+      "description": "Constructed on an Italian last using full-grain matte calfskin leather paired with an ultra-lightweight Vibram Morflex lug sole. Goodyear welted construction allows for multi-year resoling.",
+      "material": "Full-Grain Italian Calfskin Leather, Vibram Morflex Rubber Outsole",
+      "fit_note": "Fits true to EU/US standard. Half sizes recommended to size down.",
+      "care": "Condition with neutral beeswax leather balm. Store with cedar shoe trees.",
+      "images": [
+        "https://images.unsplash.com/photo-1533867617858-e7b97e060509?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=800&q=80"
+      ],
+      "variants": [
+        {
+          "id": "v401-4444-4444-8444-444444444444",
+          "color_name": "Matte Black",
+          "color_hex": "#1A1A1A",
+          "size": "S",
+          "stock_count": 5
+        },
+        {
+          "id": "v402-4444-4444-8444-444444444444",
+          "color_name": "Matte Black",
+          "color_hex": "#1A1A1A",
+          "size": "M",
+          "stock_count": 9
+        },
+        {
+          "id": "v403-4444-4444-8444-444444444444",
+          "color_name": "Matte Black",
+          "color_hex": "#1A1A1A",
+          "size": "L",
+          "stock_count": 3
+        },
+        {
+          "id": "v404-4444-4444-8444-444444444444",
+          "color_name": "Matte Black",
+          "color_hex": "#1A1A1A",
+          "size": "XL",
+          "stock_count": 4
+        },
+        {
+          "id": "v405-4444-4444-8444-444444444444",
+          "color_name": "Raw Umber",
+          "color_hex": "#4D3B32",
+          "size": "S",
+          "stock_count": 2
+        },
+        {
+          "id": "v406-4444-4444-8444-444444444444",
+          "color_name": "Raw Umber",
+          "color_hex": "#4D3B32",
+          "size": "M",
+          "stock_count": 6
+        },
+        {
+          "id": "v407-4444-4444-8444-444444444444",
+          "color_name": "Raw Umber",
+          "color_hex": "#4D3B32",
+          "size": "L",
+          "stock_count": 0
+        },
+        {
+          "id": "v408-4444-4444-8444-444444444444",
+          "color_name": "Raw Umber",
+          "color_hex": "#4D3B32",
+          "size": "XL",
+          "stock_count": 3
+        }
+      ]
+    },
+    {
+      "id": "p5555555-5555-4555-8555-555555555555",
+      "name": "Seamless Heavy Gauge Merino Mockneck",
+      "slug": "seamless-heavy-gauge-merino-mockneck",
+      "category": "Tops",
+      "price": 125,
+      "description": "Knit on Japanese whole-garment 3D knitting machines from 19.5 micron ultra-fine Australian merino wool. 100% seam-free torso provides fluid movement with zero friction points.",
+      "material": "100% Extra-Fine Australian Merino Wool (19.5 Micron)",
+      "fit_note": "Tailored fit that skims the torso. Size up for a looser drape.",
+      "care": "Hand wash in cool water with wool detergent. Dry flat on a clean towel.",
+      "images": [
+        "https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?auto=format&fit=crop&w=800&q=80"
+      ],
+      "variants": [
+        {
+          "id": "v501-5555-4555-8555-555555555555",
+          "color_name": "Charcoal Marl",
+          "color_hex": "#333333",
+          "size": "S",
+          "stock_count": 11
+        },
+        {
+          "id": "v502-5555-4555-8555-555555555555",
+          "color_name": "Charcoal Marl",
+          "color_hex": "#333333",
+          "size": "M",
+          "stock_count": 18
+        },
+        {
+          "id": "v503-5555-4555-8555-555555555555",
+          "color_name": "Charcoal Marl",
+          "color_hex": "#333333",
+          "size": "L",
+          "stock_count": 15
+        },
+        {
+          "id": "v504-5555-4555-8555-555555555555",
+          "color_name": "Charcoal Marl",
+          "color_hex": "#333333",
+          "size": "XL",
+          "stock_count": 5
+        },
+        {
+          "id": "v505-5555-4555-8555-555555555555",
+          "color_name": "Ecru Wool",
+          "color_hex": "#E8E4DA",
+          "size": "S",
+          "stock_count": 8
+        },
+        {
+          "id": "v506-5555-4555-8555-555555555555",
+          "color_name": "Ecru Wool",
+          "color_hex": "#E8E4DA",
+          "size": "M",
+          "stock_count": 12
+        },
+        {
+          "id": "v507-5555-4555-8555-555555555555",
+          "color_name": "Ecru Wool",
+          "color_hex": "#E8E4DA",
+          "size": "L",
+          "stock_count": 2
+        },
+        {
+          "id": "v508-5555-4555-8555-555555555555",
+          "color_name": "Ecru Wool",
+          "color_hex": "#E8E4DA",
+          "size": "XL",
+          "stock_count": 6
+        }
+      ]
+    },
+    {
+      "id": "p6666666-6666-4666-8666-666666666666",
+      "name": "Architectural Cargo Pant",
+      "slug": "architectural-cargo-pant",
+      "category": "Bottoms",
+      "price": 170,
+      "description": "An austere reinterpretation of tactical utility. Low-profile bellows cargo pockets engineered flush to the leg seams. Cut from high-density organic ripstop cotton with articulated knee darts.",
+      "material": "100% High-Density Cotton Ripstop (240 GSM)",
+      "fit_note": "Mid-rise, articulated knee taper. Elasticated toggle hem cinch.",
+      "care": "Machine wash cold with similar darks. Hang dry. Warm iron if necessary.",
+      "images": [
+        "https://images.unsplash.com/photo-1517445312882-bc9910d016b7?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=800&q=80"
+      ],
+      "variants": [
+        {
+          "id": "v601-6666-4666-8666-666666666666",
+          "color_name": "Pitch Black",
+          "color_hex": "#1E1E1E",
+          "size": "S",
+          "stock_count": 10
+        },
+        {
+          "id": "v602-6666-4666-8666-666666666666",
+          "color_name": "Pitch Black",
+          "color_hex": "#1E1E1E",
+          "size": "M",
+          "stock_count": 14
+        },
+        {
+          "id": "v603-6666-4666-8666-666666666666",
+          "color_name": "Pitch Black",
+          "color_hex": "#1E1E1E",
+          "size": "L",
+          "stock_count": 5
+        },
+        {
+          "id": "v604-6666-4666-8666-666666666666",
+          "color_name": "Pitch Black",
+          "color_hex": "#1E1E1E",
+          "size": "XL",
+          "stock_count": 3
+        },
+        {
+          "id": "v605-6666-4666-8666-666666666666",
+          "color_name": "Raw Pumice",
+          "color_hex": "#CBC7BD",
+          "size": "S",
+          "stock_count": 7
+        },
+        {
+          "id": "v606-6666-4666-8666-666666666666",
+          "color_name": "Raw Pumice",
+          "color_hex": "#CBC7BD",
+          "size": "M",
+          "stock_count": 9
+        },
+        {
+          "id": "v607-6666-4666-8666-666666666666",
+          "color_name": "Raw Pumice",
+          "color_hex": "#CBC7BD",
+          "size": "L",
+          "stock_count": 0
+        },
+        {
+          "id": "v608-6666-4666-8666-666666666666",
+          "color_name": "Raw Pumice",
+          "color_hex": "#CBC7BD",
+          "size": "XL",
+          "stock_count": 4
+        }
+      ]
+    },
+    {
+      "id": "p7777777-7777-4777-8777-777777777777",
+      "name": "Falling Flames Technical Overshirt",
+      "slug": "falling-flames-technical-overshirt",
+      "category": "Outerwear",
+      "price": 210,
+      "description": "Multi-season layering piece crafted from lightweight Taslan nylon with matte peach-skin finish. Matte snaps, twin hidden chest pockets, and laser-cut underarm eyelets for thermoregulation.",
+      "material": "100% Water-repellent Peach-Skin Taslan Nylon",
+      "fit_note": "Square, boxy overshirt cut designed to fit over a t-shirt or knit.",
+      "care": "Machine wash cold gentle. Do not bleach. Air dry only.",
+      "images": [
+        "https://images.unsplash.com/photo-1548883354-7622d03aca27?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?auto=format&fit=crop&w=800&q=80"
+      ],
+      "variants": [
+        {
+          "id": "v701-7777-4777-8777-777777777777",
+          "color_name": "Mineral Taupe",
+          "color_hex": "#8B847A",
+          "size": "S",
+          "stock_count": 6
+        },
+        {
+          "id": "v702-7777-4777-8777-777777777777",
+          "color_name": "Mineral Taupe",
+          "color_hex": "#8B847A",
+          "size": "M",
+          "stock_count": 15
+        },
+        {
+          "id": "v703-7777-4777-8777-777777777777",
+          "color_name": "Mineral Taupe",
+          "color_hex": "#8B847A",
+          "size": "L",
+          "stock_count": 4
+        },
+        {
+          "id": "v704-7777-4777-8777-777777777777",
+          "color_name": "Mineral Taupe",
+          "color_hex": "#8B847A",
+          "size": "XL",
+          "stock_count": 8
+        }
+      ]
+    },
+    {
+      "id": "p8888888-8888-4888-8888-888888888888",
+      "name": "Molded Bio-EVA Minimalist Mule",
+      "slug": "molded-bio-eva-minimalist-mule",
+      "category": "Footwear",
+      "price": 90,
+      "description": "Single-pour bio-based sugarcane EVA foam slip-on mule. Sculpted anatomical footbed, zero-drop heel posture, and non-marking hexagonal traction channels.",
+      "material": "100% Bio-EVA SugarFoam™",
+      "fit_note": "Roomy relaxed forefoot. Designed to be worn with or without socks.",
+      "care": "Rinse clean with water and neutral soap. Air dry away from direct heat.",
+      "images": [
+        "https://images.unsplash.com/photo-1608256246200-53e635b5b65f?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1560769629-975ec94e6a86?auto=format&fit=crop&w=800&q=80"
+      ],
+      "variants": [
+        {
+          "id": "v801-8888-4888-8888-888888888888",
+          "color_name": "Clay Cement",
+          "color_hex": "#9C978D",
+          "size": "S",
+          "stock_count": 12
+        },
+        {
+          "id": "v802-8888-4888-8888-888888888888",
+          "color_name": "Clay Cement",
+          "color_hex": "#9C978D",
+          "size": "M",
+          "stock_count": 19
+        },
+        {
+          "id": "v803-8888-4888-8888-888888888888",
+          "color_name": "Clay Cement",
+          "color_hex": "#9C978D",
+          "size": "L",
+          "stock_count": 5
+        },
+        {
+          "id": "v804-8888-4888-8888-888888888888",
+          "color_name": "Clay Cement",
+          "color_hex": "#9C978D",
+          "size": "XL",
+          "stock_count": 2
+        }
+      ]
+    }
+  ],
+  "orders": [
+    {
+      "id": "o0000001-0000-4000-8000-000000000001",
+      "user_id": null,
+      "customer_name": "Marcus Thorne",
+      "customer_email": "marcus.thorne@designsync.io",
+      "shipping_address": "104 Minimalist Avenue, Unit 401, BGC, Taguig City",
+      "payment_method": "gcash",
+      "payment_status": "paid",
+      "status": "delivered",
+      "total_amount": 460,
+      "created_at": "2026-10-27T09:36:31.304Z",
+      "items": [
+        {
+          "id": "oi000001-0000-4000-8000-000000000010",
+          "order_id": "o0000001-0000-4000-8000-000000000001",
+          "variant_id": "v108-1111-4111-8111-111111111111",
+          "product_id": "p1111111-1111-4111-8111-111111111111",
+          "product_name": "Falling Flames Heavyweight Boxy Tee",
+          "category": "Tops",
+          "color_name": "Ash Chalk",
+          "size": "XL",
+          "quantity": 2,
+          "unit_price": 75,
+          "created_at": "2026-10-27T09:36:31.304Z"
+        },
+        {
+          "id": "oi000001-0001-4000-8000-000000000011",
+          "order_id": "o0000001-0000-4000-8000-000000000001",
+          "variant_id": "v305-3333-4333-8333-333333333333",
+          "product_id": "p3333333-3333-4333-8333-333333333333",
+          "product_name": "Purgatory Brutalist Gabardine Trench",
+          "category": "Outerwear",
+          "color_name": "Graphite",
+          "size": "S",
+          "quantity": 1,
+          "unit_price": 310,
+          "created_at": "2026-10-27T09:36:31.304Z"
+        }
+      ]
+    },
+    {
+      "id": "o0000002-0000-4000-8000-000000000002",
+      "user_id": null,
+      "customer_name": "Kaito Tanaka",
+      "customer_email": "kaito.tanaka@tokyoworks.jp",
+      "shipping_address": "108 Minimalist Avenue, Unit 402, Cebu City, Cebu",
+      "payment_method": "cod",
+      "payment_status": "paid",
+      "status": "delivered",
+      "total_amount": 775,
+      "created_at": "2026-10-28T00:13:02.608Z",
+      "items": [
+        {
+          "id": "oi000002-0000-4000-8000-000000000020",
+          "order_id": "o0000002-0000-4000-8000-000000000002",
+          "variant_id": "v207-2222-4222-8222-222222222222",
+          "product_id": "p2222222-2222-4222-8222-222222222222",
+          "product_name": "Pleated Relaxed Studio Trouser",
+          "category": "Bottoms",
+          "color_name": "Sandrift Pumice",
+          "size": "L",
+          "quantity": 1,
+          "unit_price": 155,
+          "created_at": "2026-10-28T00:13:02.608Z"
+        },
+        {
+          "id": "oi000002-0001-4000-8000-000000000021",
+          "order_id": "o0000002-0000-4000-8000-000000000002",
+          "variant_id": "v404-4444-4444-8444-444444444444",
+          "product_id": "p4444444-4444-4444-8444-444444444444",
+          "product_name": "Vibram Commando Lug Minimalist Derby",
+          "category": "Footwear",
+          "color_name": "Matte Black",
+          "size": "XL",
+          "quantity": 2,
+          "unit_price": 225,
+          "created_at": "2026-10-28T00:13:02.608Z"
+        },
+        {
+          "id": "oi000002-0002-4000-8000-000000000022",
+          "order_id": "o0000002-0000-4000-8000-000000000002",
+          "variant_id": "v601-6666-4666-8666-666666666666",
+          "product_id": "p6666666-6666-4666-8666-666666666666",
+          "product_name": "Architectural Cargo Pant",
+          "category": "Bottoms",
+          "color_name": "Pitch Black",
+          "size": "S",
+          "quantity": 1,
+          "unit_price": 170,
+          "created_at": "2026-10-28T00:13:02.608Z"
+        }
+      ]
+    },
+    {
+      "id": "o0000003-0000-4000-8000-000000000003",
+      "user_id": null,
+      "customer_name": "Soren Lindqvist",
+      "customer_email": "soren@arkitekter.se",
+      "shipping_address": "112 Minimalist Avenue, Unit 403, Quezon City, Metro Manila",
+      "payment_method": "card",
+      "payment_status": "paid",
+      "status": "shipped",
+      "total_amount": 620,
+      "created_at": "2026-10-28T14:49:33.913Z",
+      "items": [
+        {
+          "id": "oi000003-0000-4000-8000-000000000030",
+          "order_id": "o0000003-0000-4000-8000-000000000003",
+          "variant_id": "v306-3333-4333-8333-333333333333",
+          "product_id": "p3333333-3333-4333-8333-333333333333",
+          "product_name": "Purgatory Brutalist Gabardine Trench",
+          "category": "Outerwear",
+          "color_name": "Graphite",
+          "size": "M",
+          "quantity": 2,
+          "unit_price": 310,
+          "created_at": "2026-10-28T14:49:33.913Z"
+        }
+      ]
+    },
+    {
+      "id": "o0000004-0000-4000-8000-000000000004",
+      "user_id": null,
+      "customer_name": "Amara Vance",
+      "customer_email": "amara.vance@studio-vance.co",
+      "shipping_address": "116 Minimalist Avenue, Unit 404, Pasig City, Metro Manila",
+      "payment_method": "gcash",
+      "payment_status": "paid",
+      "status": "delivered",
+      "total_amount": 565,
+      "created_at": "2026-10-29T05:26:05.217Z",
+      "items": [
+        {
+          "id": "oi000004-0000-4000-8000-000000000040",
+          "order_id": "o0000004-0000-4000-8000-000000000004",
+          "variant_id": "v405-4444-4444-8444-444444444444",
+          "product_id": "p4444444-4444-4444-8444-444444444444",
+          "product_name": "Vibram Commando Lug Minimalist Derby",
+          "category": "Footwear",
+          "color_name": "Raw Umber",
+          "size": "S",
+          "quantity": 1,
+          "unit_price": 225,
+          "created_at": "2026-10-29T05:26:05.217Z"
+        },
+        {
+          "id": "oi000004-0001-4000-8000-000000000041",
+          "order_id": "o0000004-0000-4000-8000-000000000004",
+          "variant_id": "v602-6666-4666-8666-666666666666",
+          "product_id": "p6666666-6666-4666-8666-666666666666",
+          "product_name": "Architectural Cargo Pant",
+          "category": "Bottoms",
+          "color_name": "Pitch Black",
+          "size": "M",
+          "quantity": 2,
+          "unit_price": 170,
+          "created_at": "2026-10-29T05:26:05.217Z"
+        }
+      ]
+    },
+    {
+      "id": "o0000005-0000-4000-8000-000000000005",
+      "user_id": null,
+      "customer_name": "Julian Rossi",
+      "customer_email": "j.rossi@milano-craft.it",
+      "shipping_address": "120 Minimalist Avenue, Unit 405, Mandaluyong City, Metro Manila",
+      "payment_method": "cod",
+      "payment_status": "refunded",
+      "status": "refunded",
+      "total_amount": 610,
+      "created_at": "2026-10-29T20:02:36.521Z",
+      "items": [
+        {
+          "id": "oi000005-0000-4000-8000-000000000050",
+          "order_id": "o0000005-0000-4000-8000-000000000005",
+          "variant_id": "v504-5555-4555-8555-555555555555",
+          "product_id": "p5555555-5555-4555-8555-555555555555",
+          "product_name": "Seamless Heavy Gauge Merino Mockneck",
+          "category": "Tops",
+          "color_name": "Charcoal Marl",
+          "size": "XL",
+          "quantity": 2,
+          "unit_price": 125,
+          "created_at": "2026-10-29T20:02:36.521Z"
+        },
+        {
+          "id": "oi000005-0001-4000-8000-000000000051",
+          "order_id": "o0000005-0000-4000-8000-000000000005",
+          "variant_id": "v701-7777-4777-8777-777777777777",
+          "product_id": "p7777777-7777-4777-8777-777777777777",
+          "product_name": "Falling Flames Technical Overshirt",
+          "category": "Outerwear",
+          "color_name": "Mineral Taupe",
+          "size": "S",
+          "quantity": 1,
+          "unit_price": 210,
+          "created_at": "2026-10-29T20:02:36.521Z"
+        },
+        {
+          "id": "oi000005-0002-4000-8000-000000000052",
+          "order_id": "o0000005-0000-4000-8000-000000000005",
+          "variant_id": "v106-1111-4111-8111-111111111111",
+          "product_id": "p1111111-1111-4111-8111-111111111111",
+          "product_name": "Falling Flames Heavyweight Boxy Tee",
+          "category": "Tops",
+          "color_name": "Ash Chalk",
+          "size": "M",
+          "quantity": 2,
+          "unit_price": 75,
+          "created_at": "2026-10-29T20:02:36.521Z"
+        }
+      ]
+    },
+    {
+      "id": "o0000006-0000-4000-8000-000000000006",
+      "user_id": null,
+      "customer_name": "Hannah Chen",
+      "customer_email": "hannah.chen@archetype.design",
+      "shipping_address": "124 Minimalist Avenue, Unit 406, Davao City, Davao del Sur",
+      "payment_method": "card",
+      "payment_status": "paid",
+      "status": "delivered",
+      "total_amount": 170,
+      "created_at": "2026-10-30T10:39:07.826Z",
+      "items": [
+        {
+          "id": "oi000006-0000-4000-8000-000000000060",
+          "order_id": "o0000006-0000-4000-8000-000000000006",
+          "variant_id": "v603-6666-4666-8666-666666666666",
+          "product_id": "p6666666-6666-4666-8666-666666666666",
+          "product_name": "Architectural Cargo Pant",
+          "category": "Bottoms",
+          "color_name": "Pitch Black",
+          "size": "L",
+          "quantity": 1,
+          "unit_price": 170,
+          "created_at": "2026-10-30T10:39:07.826Z"
+        }
+      ]
+    },
+    {
+      "id": "o0000007-0000-4000-8000-000000000007",
+      "user_id": null,
+      "customer_name": "Gabriel Silva",
+      "customer_email": "gabriel.silva@lisboastudio.pt",
+      "shipping_address": "128 Minimalist Avenue, Unit 407, San Juan, Metro Manila",
+      "payment_method": "gcash",
+      "payment_status": "paid",
+      "status": "delivered",
+      "total_amount": 495,
+      "created_at": "2026-10-31T01:15:39.130Z",
+      "items": [
+        {
+          "id": "oi000007-0000-4000-8000-000000000070",
+          "order_id": "o0000007-0000-4000-8000-000000000007",
+          "variant_id": "v702-7777-4777-8777-777777777777",
+          "product_id": "p7777777-7777-4777-8777-777777777777",
+          "product_name": "Falling Flames Technical Overshirt",
+          "category": "Outerwear",
+          "color_name": "Mineral Taupe",
+          "size": "M",
+          "quantity": 2,
+          "unit_price": 210,
+          "created_at": "2026-10-31T01:15:39.130Z"
+        },
+        {
+          "id": "oi000007-0001-4000-8000-000000000071",
+          "order_id": "o0000007-0000-4000-8000-000000000007",
+          "variant_id": "v107-1111-4111-8111-111111111111",
+          "product_id": "p1111111-1111-4111-8111-111111111111",
+          "product_name": "Falling Flames Heavyweight Boxy Tee",
+          "category": "Tops",
+          "color_name": "Ash Chalk",
+          "size": "L",
+          "quantity": 1,
+          "unit_price": 75,
+          "created_at": "2026-10-31T01:15:39.130Z"
+        }
+      ]
+    },
+    {
+      "id": "o0000008-0000-4000-8000-000000000008",
+      "user_id": null,
+      "customer_name": "Nadia Al-Mansoor",
+      "customer_email": "nadia.mansoor@qatar-foundry.com",
+      "shipping_address": "132 Minimalist Avenue, Unit 408, Alabang, Muntinlupa City",
+      "payment_method": "cod",
+      "payment_status": "paid",
+      "status": "delivered",
+      "total_amount": 610,
+      "created_at": "2026-10-31T15:52:10.434Z",
+      "items": [
+        {
+          "id": "oi000008-0000-4000-8000-000000000080",
+          "order_id": "o0000008-0000-4000-8000-000000000008",
+          "variant_id": "v101-1111-4111-8111-111111111111",
+          "product_id": "p1111111-1111-4111-8111-111111111111",
+          "product_name": "Falling Flames Heavyweight Boxy Tee",
+          "category": "Tops",
+          "color_name": "Washed Slate",
+          "size": "S",
+          "quantity": 1,
+          "unit_price": 75,
+          "created_at": "2026-10-31T15:52:10.434Z"
+        },
+        {
+          "id": "oi000008-0001-4000-8000-000000000081",
+          "order_id": "o0000008-0000-4000-8000-000000000008",
+          "variant_id": "v206-2222-4222-8222-222222222222",
+          "product_id": "p2222222-2222-4222-8222-222222222222",
+          "product_name": "Pleated Relaxed Studio Trouser",
+          "category": "Bottoms",
+          "color_name": "Sandrift Pumice",
+          "size": "M",
+          "quantity": 2,
+          "unit_price": 155,
+          "created_at": "2026-10-31T15:52:10.434Z"
+        },
+        {
+          "id": "oi000008-0002-4000-8000-000000000082",
+          "order_id": "o0000008-0000-4000-8000-000000000008",
+          "variant_id": "v403-4444-4444-8444-444444444444",
+          "product_id": "p4444444-4444-4444-8444-444444444444",
+          "product_name": "Vibram Commando Lug Minimalist Derby",
+          "category": "Footwear",
+          "color_name": "Matte Black",
+          "size": "L",
+          "quantity": 1,
+          "unit_price": 225,
+          "created_at": "2026-10-31T15:52:10.434Z"
+        }
+      ]
+    },
+    {
+      "id": "o0000009-0000-4000-8000-000000000009",
+      "user_id": null,
+      "customer_name": "Liam O'Connor",
+      "customer_email": "liam.oc@dublindesign.ie",
+      "shipping_address": "136 Minimalist Avenue, Unit 409, Iloilo City, Iloilo",
+      "payment_method": "card",
+      "payment_status": "paid",
+      "status": "shipped",
+      "total_amount": 150,
+      "created_at": "2026-11-01T06:28:41.739Z",
+      "items": [
+        {
+          "id": "oi000009-0000-4000-8000-000000000090",
+          "order_id": "o0000009-0000-4000-8000-000000000009",
+          "variant_id": "v108-1111-4111-8111-111111111111",
+          "product_id": "p1111111-1111-4111-8111-111111111111",
+          "product_name": "Falling Flames Heavyweight Boxy Tee",
+          "category": "Tops",
+          "color_name": "Ash Chalk",
+          "size": "XL",
+          "quantity": 2,
+          "unit_price": 75,
+          "created_at": "2026-11-01T06:28:41.739Z"
+        }
+      ]
+    },
+    {
+      "id": "o0000010-0000-4000-8000-000000000010",
+      "user_id": null,
+      "customer_name": "Elena Rostova",
+      "customer_email": "elena.rostova@atelier-nord.com",
+      "shipping_address": "140 Minimalist Avenue, Unit 410, Makati City, Metro Manila",
+      "payment_method": "gcash",
+      "payment_status": "paid",
+      "status": "delivered",
+      "total_amount": 605,
+      "created_at": "2026-11-01T21:05:13.043Z",
+      "items": [
+        {
+          "id": "oi000010-0000-4000-8000-000000000100",
+          "order_id": "o0000010-0000-4000-8000-000000000010",
+          "variant_id": "v207-2222-4222-8222-222222222222",
+          "product_id": "p2222222-2222-4222-8222-222222222222",
+          "product_name": "Pleated Relaxed Studio Trouser",
+          "category": "Bottoms",
+          "color_name": "Sandrift Pumice",
+          "size": "L",
+          "quantity": 1,
+          "unit_price": 155,
+          "created_at": "2026-11-01T21:05:13.043Z"
+        },
+        {
+          "id": "oi000010-0001-4000-8000-000000000101",
+          "order_id": "o0000010-0000-4000-8000-000000000010",
+          "variant_id": "v404-4444-4444-8444-444444444444",
+          "product_id": "p4444444-4444-4444-8444-444444444444",
+          "product_name": "Vibram Commando Lug Minimalist Derby",
+          "category": "Footwear",
+          "color_name": "Matte Black",
+          "size": "XL",
+          "quantity": 2,
+          "unit_price": 225,
+          "created_at": "2026-11-01T21:05:13.043Z"
+        }
+      ]
+    },
+    {
+      "id": "o0000011-0000-4000-8000-000000000011",
+      "user_id": null,
+      "customer_name": "Marcus Thorne",
+      "customer_email": "marcus.thorne@designsync.io",
+      "shipping_address": "144 Minimalist Avenue, Unit 411, BGC, Taguig City",
+      "payment_method": "cod",
+      "payment_status": "refunded",
+      "status": "refunded",
+      "total_amount": 1085,
+      "created_at": "2026-11-02T11:41:44.347Z",
+      "items": [
+        {
+          "id": "oi000011-0000-4000-8000-000000000110",
+          "order_id": "o0000011-0000-4000-8000-000000000011",
+          "variant_id": "v306-3333-4333-8333-333333333333",
+          "product_id": "p3333333-3333-4333-8333-333333333333",
+          "product_name": "Purgatory Brutalist Gabardine Trench",
+          "category": "Outerwear",
+          "color_name": "Graphite",
+          "size": "M",
+          "quantity": 2,
+          "unit_price": 310,
+          "created_at": "2026-11-02T11:41:44.347Z"
+        },
+        {
+          "id": "oi000011-0001-4000-8000-000000000111",
+          "order_id": "o0000011-0000-4000-8000-000000000011",
+          "variant_id": "v503-5555-4555-8555-555555555555",
+          "product_id": "p5555555-5555-4555-8555-555555555555",
+          "product_name": "Seamless Heavy Gauge Merino Mockneck",
+          "category": "Tops",
+          "color_name": "Charcoal Marl",
+          "size": "L",
+          "quantity": 1,
+          "unit_price": 125,
+          "created_at": "2026-11-02T11:41:44.347Z"
+        },
+        {
+          "id": "oi000011-0002-4000-8000-000000000112",
+          "order_id": "o0000011-0000-4000-8000-000000000011",
+          "variant_id": "v608-6666-4666-8666-666666666666",
+          "product_id": "p6666666-6666-4666-8666-666666666666",
+          "product_name": "Architectural Cargo Pant",
+          "category": "Bottoms",
+          "color_name": "Raw Pumice",
+          "size": "XL",
+          "quantity": 2,
+          "unit_price": 170,
+          "created_at": "2026-11-02T11:41:44.347Z"
+        }
+      ]
+    },
+    {
+      "id": "o0000012-0000-4000-8000-000000000012",
+      "user_id": null,
+      "customer_name": "Kaito Tanaka",
+      "customer_email": "kaito.tanaka@tokyoworks.jp",
+      "shipping_address": "148 Minimalist Avenue, Unit 412, Cebu City, Cebu",
+      "payment_method": "card",
+      "payment_status": "paid",
+      "status": "delivered",
+      "total_amount": 225,
+      "created_at": "2026-11-03T02:18:15.652Z",
+      "items": [
+        {
+          "id": "oi000012-0000-4000-8000-000000000120",
+          "order_id": "o0000012-0000-4000-8000-000000000012",
+          "variant_id": "v405-4444-4444-8444-444444444444",
+          "product_id": "p4444444-4444-4444-8444-444444444444",
+          "product_name": "Vibram Commando Lug Minimalist Derby",
+          "category": "Footwear",
+          "color_name": "Raw Umber",
+          "size": "S",
+          "quantity": 1,
+          "unit_price": 225,
+          "created_at": "2026-11-03T02:18:15.652Z"
+        }
+      ]
+    },
+    {
+      "id": "o0000013-0000-4000-8000-000000000013",
+      "user_id": null,
+      "customer_name": "Soren Lindqvist",
+      "customer_email": "soren@arkitekter.se",
+      "shipping_address": "152 Minimalist Avenue, Unit 413, Quezon City, Metro Manila",
+      "payment_method": "gcash",
+      "payment_status": "paid",
+      "status": "delivered",
+      "total_amount": 460,
+      "created_at": "2026-11-03T16:54:46.956Z",
+      "items": [
+        {
+          "id": "oi000013-0000-4000-8000-000000000130",
+          "order_id": "o0000013-0000-4000-8000-000000000013",
+          "variant_id": "v504-5555-4555-8555-555555555555",
+          "product_id": "p5555555-5555-4555-8555-555555555555",
+          "product_name": "Seamless Heavy Gauge Merino Mockneck",
+          "category": "Tops",
+          "color_name": "Charcoal Marl",
+          "size": "XL",
+          "quantity": 2,
+          "unit_price": 125,
+          "created_at": "2026-11-03T16:54:46.956Z"
+        },
+        {
+          "id": "oi000013-0001-4000-8000-000000000131",
+          "order_id": "o0000013-0000-4000-8000-000000000013",
+          "variant_id": "v701-7777-4777-8777-777777777777",
+          "product_id": "p7777777-7777-4777-8777-777777777777",
+          "product_name": "Falling Flames Technical Overshirt",
+          "category": "Outerwear",
+          "color_name": "Mineral Taupe",
+          "size": "S",
+          "quantity": 1,
+          "unit_price": 210,
+          "created_at": "2026-11-03T16:54:46.956Z"
+        }
+      ]
+    },
+    {
+      "id": "o0000014-0000-4000-8000-000000000014",
+      "user_id": null,
+      "customer_name": "Amara Vance",
+      "customer_email": "amara.vance@studio-vance.co",
+      "shipping_address": "156 Minimalist Avenue, Unit 414, Pasig City, Metro Manila",
+      "payment_method": "cod",
+      "payment_status": "paid",
+      "status": "delivered",
+      "total_amount": 505,
+      "created_at": "2026-11-04T07:31:18.260Z",
+      "items": [
+        {
+          "id": "oi000014-0000-4000-8000-000000000140",
+          "order_id": "o0000014-0000-4000-8000-000000000014",
+          "variant_id": "v603-6666-4666-8666-666666666666",
+          "product_id": "p6666666-6666-4666-8666-666666666666",
+          "product_name": "Architectural Cargo Pant",
+          "category": "Bottoms",
+          "color_name": "Pitch Black",
+          "size": "L",
+          "quantity": 1,
+          "unit_price": 170,
+          "created_at": "2026-11-04T07:31:18.260Z"
+        },
+        {
+          "id": "oi000014-0001-4000-8000-000000000141",
+          "order_id": "o0000014-0000-4000-8000-000000000014",
+          "variant_id": "v804-8888-4888-8888-888888888888",
+          "product_id": "p8888888-8888-4888-8888-888888888888",
+          "product_name": "Molded Bio-EVA Minimalist Mule",
+          "category": "Footwear",
+          "color_name": "Clay Cement",
+          "size": "XL",
+          "quantity": 2,
+          "unit_price": 90,
+          "created_at": "2026-11-04T07:31:18.260Z"
+        },
+        {
+          "id": "oi000014-0002-4000-8000-000000000142",
+          "order_id": "o0000014-0000-4000-8000-000000000014",
+          "variant_id": "v205-2222-4222-8222-222222222222",
+          "product_id": "p2222222-2222-4222-8222-222222222222",
+          "product_name": "Pleated Relaxed Studio Trouser",
+          "category": "Bottoms",
+          "color_name": "Sandrift Pumice",
+          "size": "S",
+          "quantity": 1,
+          "unit_price": 155,
+          "created_at": "2026-11-04T07:31:18.260Z"
+        }
+      ]
+    },
+    {
+      "id": "o0000015-0000-4000-8000-000000000015",
+      "user_id": null,
+      "customer_name": "Julian Rossi",
+      "customer_email": "j.rossi@milano-craft.it",
+      "shipping_address": "160 Minimalist Avenue, Unit 415, Mandaluyong City, Metro Manila",
+      "payment_method": "card",
+      "payment_status": "paid",
+      "status": "shipped",
+      "total_amount": 420,
+      "created_at": "2026-11-04T22:07:49.565Z",
+      "items": [
+        {
+          "id": "oi000015-0000-4000-8000-000000000150",
+          "order_id": "o0000015-0000-4000-8000-000000000015",
+          "variant_id": "v702-7777-4777-8777-777777777777",
+          "product_id": "p7777777-7777-4777-8777-777777777777",
+          "product_name": "Falling Flames Technical Overshirt",
+          "category": "Outerwear",
+          "color_name": "Mineral Taupe",
+          "size": "M",
+          "quantity": 2,
+          "unit_price": 210,
+          "created_at": "2026-11-04T22:07:49.565Z"
+        }
+      ]
+    },
+    {
+      "id": "o0000016-0000-4000-8000-000000000016",
+      "user_id": null,
+      "customer_name": "Hannah Chen",
+      "customer_email": "hannah.chen@archetype.design",
+      "shipping_address": "164 Minimalist Avenue, Unit 416, Davao City, Davao del Sur",
+      "payment_method": "gcash",
+      "payment_status": "paid",
+      "status": "delivered",
+      "total_amount": 385,
+      "created_at": "2026-11-05T12:44:20.869Z",
+      "items": [
+        {
+          "id": "oi000016-0000-4000-8000-000000000160",
+          "order_id": "o0000016-0000-4000-8000-000000000016",
+          "variant_id": "v101-1111-4111-8111-111111111111",
+          "product_id": "p1111111-1111-4111-8111-111111111111",
+          "product_name": "Falling Flames Heavyweight Boxy Tee",
+          "category": "Tops",
+          "color_name": "Washed Slate",
+          "size": "S",
+          "quantity": 1,
+          "unit_price": 75,
+          "created_at": "2026-11-05T12:44:20.869Z"
+        },
+        {
+          "id": "oi000016-0001-4000-8000-000000000161",
+          "order_id": "o0000016-0000-4000-8000-000000000016",
+          "variant_id": "v206-2222-4222-8222-222222222222",
+          "product_id": "p2222222-2222-4222-8222-222222222222",
+          "product_name": "Pleated Relaxed Studio Trouser",
+          "category": "Bottoms",
+          "color_name": "Sandrift Pumice",
+          "size": "M",
+          "quantity": 2,
+          "unit_price": 155,
+          "created_at": "2026-11-05T12:44:20.869Z"
+        }
+      ]
+    },
+    {
+      "id": "o0000017-0000-4000-8000-000000000017",
+      "user_id": null,
+      "customer_name": "Gabriel Silva",
+      "customer_email": "gabriel.silva@lisboastudio.pt",
+      "shipping_address": "168 Minimalist Avenue, Unit 417, San Juan, Metro Manila",
+      "payment_method": "cod",
+      "payment_status": "refunded",
+      "status": "refunded",
+      "total_amount": 710,
+      "created_at": "2026-11-06T03:20:52.173Z",
+      "items": [
+        {
+          "id": "oi000017-0000-4000-8000-000000000170",
+          "order_id": "o0000017-0000-4000-8000-000000000017",
+          "variant_id": "v108-1111-4111-8111-111111111111",
+          "product_id": "p1111111-1111-4111-8111-111111111111",
+          "product_name": "Falling Flames Heavyweight Boxy Tee",
+          "category": "Tops",
+          "color_name": "Ash Chalk",
+          "size": "XL",
+          "quantity": 2,
+          "unit_price": 75,
+          "created_at": "2026-11-06T03:20:52.173Z"
+        },
+        {
+          "id": "oi000017-0001-4000-8000-000000000171",
+          "order_id": "o0000017-0000-4000-8000-000000000017",
+          "variant_id": "v305-3333-4333-8333-333333333333",
+          "product_id": "p3333333-3333-4333-8333-333333333333",
+          "product_name": "Purgatory Brutalist Gabardine Trench",
+          "category": "Outerwear",
+          "color_name": "Graphite",
+          "size": "S",
+          "quantity": 1,
+          "unit_price": 310,
+          "created_at": "2026-11-06T03:20:52.173Z"
+        },
+        {
+          "id": "oi000017-0002-4000-8000-000000000172",
+          "order_id": "o0000017-0000-4000-8000-000000000017",
+          "variant_id": "v502-5555-4555-8555-555555555555",
+          "product_id": "p5555555-5555-4555-8555-555555555555",
+          "product_name": "Seamless Heavy Gauge Merino Mockneck",
+          "category": "Tops",
+          "color_name": "Charcoal Marl",
+          "size": "M",
+          "quantity": 2,
+          "unit_price": 125,
+          "created_at": "2026-11-06T03:20:52.173Z"
+        }
+      ]
+    },
+    {
+      "id": "o0000018-0000-4000-8000-000000000018",
+      "user_id": null,
+      "customer_name": "Nadia Al-Mansoor",
+      "customer_email": "nadia.mansoor@qatar-foundry.com",
+      "shipping_address": "172 Minimalist Avenue, Unit 418, Alabang, Muntinlupa City",
+      "payment_method": "card",
+      "payment_status": "paid",
+      "status": "delivered",
+      "total_amount": 155,
+      "created_at": "2026-11-06T17:57:23.478Z",
+      "items": [
+        {
+          "id": "oi000018-0000-4000-8000-000000000180",
+          "order_id": "o0000018-0000-4000-8000-000000000018",
+          "variant_id": "v207-2222-4222-8222-222222222222",
+          "product_id": "p2222222-2222-4222-8222-222222222222",
+          "product_name": "Pleated Relaxed Studio Trouser",
+          "category": "Bottoms",
+          "color_name": "Sandrift Pumice",
+          "size": "L",
+          "quantity": 1,
+          "unit_price": 155,
+          "created_at": "2026-11-06T17:57:23.478Z"
+        }
+      ]
+    },
+    {
+      "id": "o0000019-0000-4000-8000-000000000019",
+      "user_id": null,
+      "customer_name": "Liam O'Connor",
+      "customer_email": "liam.oc@dublindesign.ie",
+      "shipping_address": "176 Minimalist Avenue, Unit 419, Iloilo City, Iloilo",
+      "payment_method": "gcash",
+      "payment_status": "paid",
+      "status": "delivered",
+      "total_amount": 745,
+      "created_at": "2026-11-07T08:33:54.782Z",
+      "items": [
+        {
+          "id": "oi000019-0000-4000-8000-000000000190",
+          "order_id": "o0000019-0000-4000-8000-000000000019",
+          "variant_id": "v306-3333-4333-8333-333333333333",
+          "product_id": "p3333333-3333-4333-8333-333333333333",
+          "product_name": "Purgatory Brutalist Gabardine Trench",
+          "category": "Outerwear",
+          "color_name": "Graphite",
+          "size": "M",
+          "quantity": 2,
+          "unit_price": 310,
+          "created_at": "2026-11-07T08:33:54.782Z"
+        },
+        {
+          "id": "oi000019-0001-4000-8000-000000000191",
+          "order_id": "o0000019-0000-4000-8000-000000000019",
+          "variant_id": "v503-5555-4555-8555-555555555555",
+          "product_id": "p5555555-5555-4555-8555-555555555555",
+          "product_name": "Seamless Heavy Gauge Merino Mockneck",
+          "category": "Tops",
+          "color_name": "Charcoal Marl",
+          "size": "L",
+          "quantity": 1,
+          "unit_price": 125,
+          "created_at": "2026-11-07T08:33:54.782Z"
+        }
+      ]
+    },
+    {
+      "id": "o0000020-0000-4000-8000-000000000020",
+      "user_id": null,
+      "customer_name": "Elena Rostova",
+      "customer_email": "elena.rostova@atelier-nord.com",
+      "shipping_address": "180 Minimalist Avenue, Unit 420, Makati City, Metro Manila",
+      "payment_method": "cod",
+      "payment_status": "paid",
+      "status": "delivered",
+      "total_amount": 655,
+      "created_at": "2026-11-07T23:10:26.086Z",
+      "items": [
+        {
+          "id": "oi000020-0000-4000-8000-000000000200",
+          "order_id": "o0000020-0000-4000-8000-000000000020",
+          "variant_id": "v405-4444-4444-8444-444444444444",
+          "product_id": "p4444444-4444-4444-8444-444444444444",
+          "product_name": "Vibram Commando Lug Minimalist Derby",
+          "category": "Footwear",
+          "color_name": "Raw Umber",
+          "size": "S",
+          "quantity": 1,
+          "unit_price": 225,
+          "created_at": "2026-11-07T23:10:26.086Z"
+        },
+        {
+          "id": "oi000020-0001-4000-8000-000000000201",
+          "order_id": "o0000020-0000-4000-8000-000000000020",
+          "variant_id": "v602-6666-4666-8666-666666666666",
+          "product_id": "p6666666-6666-4666-8666-666666666666",
+          "product_name": "Architectural Cargo Pant",
+          "category": "Bottoms",
+          "color_name": "Pitch Black",
+          "size": "M",
+          "quantity": 2,
+          "unit_price": 170,
+          "created_at": "2026-11-07T23:10:26.086Z"
+        },
+        {
+          "id": "oi000020-0002-4000-8000-000000000202",
+          "order_id": "o0000020-0000-4000-8000-000000000020",
+          "variant_id": "v803-8888-4888-8888-888888888888",
+          "product_id": "p8888888-8888-4888-8888-888888888888",
+          "product_name": "Molded Bio-EVA Minimalist Mule",
+          "category": "Footwear",
+          "color_name": "Clay Cement",
+          "size": "L",
+          "quantity": 1,
+          "unit_price": 90,
+          "created_at": "2026-11-07T23:10:26.086Z"
+        }
+      ]
+    },
+    {
+      "id": "o0000021-0000-4000-8000-000000000021",
+      "user_id": null,
+      "customer_name": "Marcus Thorne",
+      "customer_email": "marcus.thorne@designsync.io",
+      "shipping_address": "184 Minimalist Avenue, Unit 421, BGC, Taguig City",
+      "payment_method": "card",
+      "payment_status": "paid",
+      "status": "shipped",
+      "total_amount": 250,
+      "created_at": "2026-11-08T13:46:57.391Z",
+      "items": [
+        {
+          "id": "oi000021-0000-4000-8000-000000000210",
+          "order_id": "o0000021-0000-4000-8000-000000000021",
+          "variant_id": "v504-5555-4555-8555-555555555555",
+          "product_id": "p5555555-5555-4555-8555-555555555555",
+          "product_name": "Seamless Heavy Gauge Merino Mockneck",
+          "category": "Tops",
+          "color_name": "Charcoal Marl",
+          "size": "XL",
+          "quantity": 2,
+          "unit_price": 125,
+          "created_at": "2026-11-08T13:46:57.391Z"
+        }
+      ]
+    },
+    {
+      "id": "o0000022-0000-4000-8000-000000000022",
+      "user_id": null,
+      "customer_name": "Kaito Tanaka",
+      "customer_email": "kaito.tanaka@tokyoworks.jp",
+      "shipping_address": "188 Minimalist Avenue, Unit 422, Cebu City, Cebu",
+      "payment_method": "gcash",
+      "payment_status": "paid",
+      "status": "delivered",
+      "total_amount": 350,
+      "created_at": "2026-11-09T04:23:28.695Z",
+      "items": [
+        {
+          "id": "oi000022-0000-4000-8000-000000000220",
+          "order_id": "o0000022-0000-4000-8000-000000000022",
+          "variant_id": "v603-6666-4666-8666-666666666666",
+          "product_id": "p6666666-6666-4666-8666-666666666666",
+          "product_name": "Architectural Cargo Pant",
+          "category": "Bottoms",
+          "color_name": "Pitch Black",
+          "size": "L",
+          "quantity": 1,
+          "unit_price": 170,
+          "created_at": "2026-11-09T04:23:28.695Z"
+        },
+        {
+          "id": "oi000022-0001-4000-8000-000000000221",
+          "order_id": "o0000022-0000-4000-8000-000000000022",
+          "variant_id": "v804-8888-4888-8888-888888888888",
+          "product_id": "p8888888-8888-4888-8888-888888888888",
+          "product_name": "Molded Bio-EVA Minimalist Mule",
+          "category": "Footwear",
+          "color_name": "Clay Cement",
+          "size": "XL",
+          "quantity": 2,
+          "unit_price": 90,
+          "created_at": "2026-11-09T04:23:28.695Z"
+        }
+      ]
+    },
+    {
+      "id": "o0000023-0000-4000-8000-000000000023",
+      "user_id": null,
+      "customer_name": "Soren Lindqvist",
+      "customer_email": "soren@arkitekter.se",
+      "shipping_address": "192 Minimalist Avenue, Unit 423, Quezon City, Metro Manila",
+      "payment_method": "cod",
+      "payment_status": "refunded",
+      "status": "refunded",
+      "total_amount": 1115,
+      "created_at": "2026-11-09T19:00:00.000Z",
+      "items": [
+        {
+          "id": "oi000023-0000-4000-8000-000000000230",
+          "order_id": "o0000023-0000-4000-8000-000000000023",
+          "variant_id": "v702-7777-4777-8777-777777777777",
+          "product_id": "p7777777-7777-4777-8777-777777777777",
+          "product_name": "Falling Flames Technical Overshirt",
+          "category": "Outerwear",
+          "color_name": "Mineral Taupe",
+          "size": "M",
+          "quantity": 2,
+          "unit_price": 210,
+          "created_at": "2026-11-09T19:00:00.000Z"
+        },
+        {
+          "id": "oi000023-0001-4000-8000-000000000231",
+          "order_id": "o0000023-0000-4000-8000-000000000023",
+          "variant_id": "v107-1111-4111-8111-111111111111",
+          "product_id": "p1111111-1111-4111-8111-111111111111",
+          "product_name": "Falling Flames Heavyweight Boxy Tee",
+          "category": "Tops",
+          "color_name": "Ash Chalk",
+          "size": "L",
+          "quantity": 1,
+          "unit_price": 75,
+          "created_at": "2026-11-09T19:00:00.000Z"
+        },
+        {
+          "id": "oi000023-0002-4000-8000-000000000232",
+          "order_id": "o0000023-0000-4000-8000-000000000023",
+          "variant_id": "v304-3333-4333-8333-333333333333",
+          "product_id": "p3333333-3333-4333-8333-333333333333",
+          "product_name": "Purgatory Brutalist Gabardine Trench",
+          "category": "Outerwear",
+          "color_name": "Dark Olive",
+          "size": "XL",
+          "quantity": 2,
+          "unit_price": 310,
+          "created_at": "2026-11-09T19:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "id": "o0000024-0000-4000-8000-000000000024",
+      "user_id": null,
+      "customer_name": "Amara Vance",
+      "customer_email": "amara.vance@studio-vance.co",
+      "shipping_address": "196 Minimalist Avenue, Unit 424, Pasig City, Metro Manila",
+      "payment_method": "card",
+      "payment_status": "paid",
+      "status": "delivered",
+      "total_amount": 75,
+      "created_at": "2026-11-10T09:36:31.304Z",
+      "items": [
+        {
+          "id": "oi000024-0000-4000-8000-000000000240",
+          "order_id": "o0000024-0000-4000-8000-000000000024",
+          "variant_id": "v101-1111-4111-8111-111111111111",
+          "product_id": "p1111111-1111-4111-8111-111111111111",
+          "product_name": "Falling Flames Heavyweight Boxy Tee",
+          "category": "Tops",
+          "color_name": "Washed Slate",
+          "size": "S",
+          "quantity": 1,
+          "unit_price": 75,
+          "created_at": "2026-11-10T09:36:31.304Z"
+        }
+      ]
+    },
+    {
+      "id": "o0000025-0000-4000-8000-000000000025",
+      "user_id": null,
+      "customer_name": "Julian Rossi",
+      "customer_email": "j.rossi@milano-craft.it",
+      "shipping_address": "200 Minimalist Avenue, Unit 425, Mandaluyong City, Metro Manila",
+      "payment_method": "gcash",
+      "payment_status": "paid",
+      "status": "delivered",
+      "total_amount": 460,
+      "created_at": "2026-11-11T00:13:02.608Z",
+      "items": [
+        {
+          "id": "oi000025-0000-4000-8000-000000000250",
+          "order_id": "o0000025-0000-4000-8000-000000000025",
+          "variant_id": "v108-1111-4111-8111-111111111111",
+          "product_id": "p1111111-1111-4111-8111-111111111111",
+          "product_name": "Falling Flames Heavyweight Boxy Tee",
+          "category": "Tops",
+          "color_name": "Ash Chalk",
+          "size": "XL",
+          "quantity": 2,
+          "unit_price": 75,
+          "created_at": "2026-11-11T00:13:02.608Z"
+        },
+        {
+          "id": "oi000025-0001-4000-8000-000000000251",
+          "order_id": "o0000025-0000-4000-8000-000000000025",
+          "variant_id": "v305-3333-4333-8333-333333333333",
+          "product_id": "p3333333-3333-4333-8333-333333333333",
+          "product_name": "Purgatory Brutalist Gabardine Trench",
+          "category": "Outerwear",
+          "color_name": "Graphite",
+          "size": "S",
+          "quantity": 1,
+          "unit_price": 310,
+          "created_at": "2026-11-11T00:13:02.608Z"
+        }
+      ]
+    },
+    {
+      "id": "o0000026-0000-4000-8000-000000000026",
+      "user_id": null,
+      "customer_name": "Hannah Chen",
+      "customer_email": "hannah.chen@archetype.design",
+      "shipping_address": "204 Minimalist Avenue, Unit 426, Davao City, Davao del Sur",
+      "payment_method": "cod",
+      "payment_status": "paid",
+      "status": "delivered",
+      "total_amount": 775,
+      "created_at": "2026-11-11T14:49:33.913Z",
+      "items": [
+        {
+          "id": "oi000026-0000-4000-8000-000000000260",
+          "order_id": "o0000026-0000-4000-8000-000000000026",
+          "variant_id": "v207-2222-4222-8222-222222222222",
+          "product_id": "p2222222-2222-4222-8222-222222222222",
+          "product_name": "Pleated Relaxed Studio Trouser",
+          "category": "Bottoms",
+          "color_name": "Sandrift Pumice",
+          "size": "L",
+          "quantity": 1,
+          "unit_price": 155,
+          "created_at": "2026-11-11T14:49:33.913Z"
+        },
+        {
+          "id": "oi000026-0001-4000-8000-000000000261",
+          "order_id": "o0000026-0000-4000-8000-000000000026",
+          "variant_id": "v404-4444-4444-8444-444444444444",
+          "product_id": "p4444444-4444-4444-8444-444444444444",
+          "product_name": "Vibram Commando Lug Minimalist Derby",
+          "category": "Footwear",
+          "color_name": "Matte Black",
+          "size": "XL",
+          "quantity": 2,
+          "unit_price": 225,
+          "created_at": "2026-11-11T14:49:33.913Z"
+        },
+        {
+          "id": "oi000026-0002-4000-8000-000000000262",
+          "order_id": "o0000026-0000-4000-8000-000000000026",
+          "variant_id": "v601-6666-4666-8666-666666666666",
+          "product_id": "p6666666-6666-4666-8666-666666666666",
+          "product_name": "Architectural Cargo Pant",
+          "category": "Bottoms",
+          "color_name": "Pitch Black",
+          "size": "S",
+          "quantity": 1,
+          "unit_price": 170,
+          "created_at": "2026-11-11T14:49:33.913Z"
+        }
+      ]
+    },
+    {
+      "id": "o0000027-0000-4000-8000-000000000027",
+      "user_id": null,
+      "customer_name": "Gabriel Silva",
+      "customer_email": "gabriel.silva@lisboastudio.pt",
+      "shipping_address": "208 Minimalist Avenue, Unit 427, San Juan, Metro Manila",
+      "payment_method": "card",
+      "payment_status": "paid",
+      "status": "shipped",
+      "total_amount": 620,
+      "created_at": "2026-11-12T05:26:05.217Z",
+      "items": [
+        {
+          "id": "oi000027-0000-4000-8000-000000000270",
+          "order_id": "o0000027-0000-4000-8000-000000000027",
+          "variant_id": "v306-3333-4333-8333-333333333333",
+          "product_id": "p3333333-3333-4333-8333-333333333333",
+          "product_name": "Purgatory Brutalist Gabardine Trench",
+          "category": "Outerwear",
+          "color_name": "Graphite",
+          "size": "M",
+          "quantity": 2,
+          "unit_price": 310,
+          "created_at": "2026-11-12T05:26:05.217Z"
+        }
+      ]
+    },
+    {
+      "id": "o0000028-0000-4000-8000-000000000028",
+      "user_id": null,
+      "customer_name": "Nadia Al-Mansoor",
+      "customer_email": "nadia.mansoor@qatar-foundry.com",
+      "shipping_address": "212 Minimalist Avenue, Unit 428, Alabang, Muntinlupa City",
+      "payment_method": "gcash",
+      "payment_status": "paid",
+      "status": "delivered",
+      "total_amount": 565,
+      "created_at": "2026-11-12T20:02:36.521Z",
+      "items": [
+        {
+          "id": "oi000028-0000-4000-8000-000000000280",
+          "order_id": "o0000028-0000-4000-8000-000000000028",
+          "variant_id": "v405-4444-4444-8444-444444444444",
+          "product_id": "p4444444-4444-4444-8444-444444444444",
+          "product_name": "Vibram Commando Lug Minimalist Derby",
+          "category": "Footwear",
+          "color_name": "Raw Umber",
+          "size": "S",
+          "quantity": 1,
+          "unit_price": 225,
+          "created_at": "2026-11-12T20:02:36.521Z"
+        },
+        {
+          "id": "oi000028-0001-4000-8000-000000000281",
+          "order_id": "o0000028-0000-4000-8000-000000000028",
+          "variant_id": "v602-6666-4666-8666-666666666666",
+          "product_id": "p6666666-6666-4666-8666-666666666666",
+          "product_name": "Architectural Cargo Pant",
+          "category": "Bottoms",
+          "color_name": "Pitch Black",
+          "size": "M",
+          "quantity": 2,
+          "unit_price": 170,
+          "created_at": "2026-11-12T20:02:36.521Z"
+        }
+      ]
+    },
+    {
+      "id": "o0000029-0000-4000-8000-000000000029",
+      "user_id": null,
+      "customer_name": "Liam O'Connor",
+      "customer_email": "liam.oc@dublindesign.ie",
+      "shipping_address": "216 Minimalist Avenue, Unit 429, Iloilo City, Iloilo",
+      "payment_method": "cod",
+      "payment_status": "refunded",
+      "status": "refunded",
+      "total_amount": 610,
+      "created_at": "2026-11-13T10:39:07.826Z",
+      "items": [
+        {
+          "id": "oi000029-0000-4000-8000-000000000290",
+          "order_id": "o0000029-0000-4000-8000-000000000029",
+          "variant_id": "v504-5555-4555-8555-555555555555",
+          "product_id": "p5555555-5555-4555-8555-555555555555",
+          "product_name": "Seamless Heavy Gauge Merino Mockneck",
+          "category": "Tops",
+          "color_name": "Charcoal Marl",
+          "size": "XL",
+          "quantity": 2,
+          "unit_price": 125,
+          "created_at": "2026-11-13T10:39:07.826Z"
+        },
+        {
+          "id": "oi000029-0001-4000-8000-000000000291",
+          "order_id": "o0000029-0000-4000-8000-000000000029",
+          "variant_id": "v701-7777-4777-8777-777777777777",
+          "product_id": "p7777777-7777-4777-8777-777777777777",
+          "product_name": "Falling Flames Technical Overshirt",
+          "category": "Outerwear",
+          "color_name": "Mineral Taupe",
+          "size": "S",
+          "quantity": 1,
+          "unit_price": 210,
+          "created_at": "2026-11-13T10:39:07.826Z"
+        },
+        {
+          "id": "oi000029-0002-4000-8000-000000000292",
+          "order_id": "o0000029-0000-4000-8000-000000000029",
+          "variant_id": "v106-1111-4111-8111-111111111111",
+          "product_id": "p1111111-1111-4111-8111-111111111111",
+          "product_name": "Falling Flames Heavyweight Boxy Tee",
+          "category": "Tops",
+          "color_name": "Ash Chalk",
+          "size": "M",
+          "quantity": 2,
+          "unit_price": 75,
+          "created_at": "2026-11-13T10:39:07.826Z"
+        }
+      ]
+    },
+    {
+      "id": "o0000030-0000-4000-8000-000000000030",
+      "user_id": null,
+      "customer_name": "Elena Rostova",
+      "customer_email": "elena.rostova@atelier-nord.com",
+      "shipping_address": "220 Minimalist Avenue, Unit 430, Makati City, Metro Manila",
+      "payment_method": "card",
+      "payment_status": "paid",
+      "status": "delivered",
+      "total_amount": 170,
+      "created_at": "2026-11-14T01:15:39.130Z",
+      "items": [
+        {
+          "id": "oi000030-0000-4000-8000-000000000300",
+          "order_id": "o0000030-0000-4000-8000-000000000030",
+          "variant_id": "v603-6666-4666-8666-666666666666",
+          "product_id": "p6666666-6666-4666-8666-666666666666",
+          "product_name": "Architectural Cargo Pant",
+          "category": "Bottoms",
+          "color_name": "Pitch Black",
+          "size": "L",
+          "quantity": 1,
+          "unit_price": 170,
+          "created_at": "2026-11-14T01:15:39.130Z"
+        }
+      ]
+    },
+    {
+      "id": "o0000031-0000-4000-8000-000000000031",
+      "user_id": null,
+      "customer_name": "Marcus Thorne",
+      "customer_email": "marcus.thorne@designsync.io",
+      "shipping_address": "224 Minimalist Avenue, Unit 431, BGC, Taguig City",
+      "payment_method": "gcash",
+      "payment_status": "paid",
+      "status": "delivered",
+      "total_amount": 495,
+      "created_at": "2026-11-14T15:52:10.434Z",
+      "items": [
+        {
+          "id": "oi000031-0000-4000-8000-000000000310",
+          "order_id": "o0000031-0000-4000-8000-000000000031",
+          "variant_id": "v702-7777-4777-8777-777777777777",
+          "product_id": "p7777777-7777-4777-8777-777777777777",
+          "product_name": "Falling Flames Technical Overshirt",
+          "category": "Outerwear",
+          "color_name": "Mineral Taupe",
+          "size": "M",
+          "quantity": 2,
+          "unit_price": 210,
+          "created_at": "2026-11-14T15:52:10.434Z"
+        },
+        {
+          "id": "oi000031-0001-4000-8000-000000000311",
+          "order_id": "o0000031-0000-4000-8000-000000000031",
+          "variant_id": "v107-1111-4111-8111-111111111111",
+          "product_id": "p1111111-1111-4111-8111-111111111111",
+          "product_name": "Falling Flames Heavyweight Boxy Tee",
+          "category": "Tops",
+          "color_name": "Ash Chalk",
+          "size": "L",
+          "quantity": 1,
+          "unit_price": 75,
+          "created_at": "2026-11-14T15:52:10.434Z"
+        }
+      ]
+    },
+    {
+      "id": "o0000032-0000-4000-8000-000000000032",
+      "user_id": null,
+      "customer_name": "Kaito Tanaka",
+      "customer_email": "kaito.tanaka@tokyoworks.jp",
+      "shipping_address": "228 Minimalist Avenue, Unit 432, Cebu City, Cebu",
+      "payment_method": "cod",
+      "payment_status": "paid",
+      "status": "delivered",
+      "total_amount": 610,
+      "created_at": "2026-11-15T06:28:41.739Z",
+      "items": [
+        {
+          "id": "oi000032-0000-4000-8000-000000000320",
+          "order_id": "o0000032-0000-4000-8000-000000000032",
+          "variant_id": "v101-1111-4111-8111-111111111111",
+          "product_id": "p1111111-1111-4111-8111-111111111111",
+          "product_name": "Falling Flames Heavyweight Boxy Tee",
+          "category": "Tops",
+          "color_name": "Washed Slate",
+          "size": "S",
+          "quantity": 1,
+          "unit_price": 75,
+          "created_at": "2026-11-15T06:28:41.739Z"
+        },
+        {
+          "id": "oi000032-0001-4000-8000-000000000321",
+          "order_id": "o0000032-0000-4000-8000-000000000032",
+          "variant_id": "v206-2222-4222-8222-222222222222",
+          "product_id": "p2222222-2222-4222-8222-222222222222",
+          "product_name": "Pleated Relaxed Studio Trouser",
+          "category": "Bottoms",
+          "color_name": "Sandrift Pumice",
+          "size": "M",
+          "quantity": 2,
+          "unit_price": 155,
+          "created_at": "2026-11-15T06:28:41.739Z"
+        },
+        {
+          "id": "oi000032-0002-4000-8000-000000000322",
+          "order_id": "o0000032-0000-4000-8000-000000000032",
+          "variant_id": "v403-4444-4444-8444-444444444444",
+          "product_id": "p4444444-4444-4444-8444-444444444444",
+          "product_name": "Vibram Commando Lug Minimalist Derby",
+          "category": "Footwear",
+          "color_name": "Matte Black",
+          "size": "L",
+          "quantity": 1,
+          "unit_price": 225,
+          "created_at": "2026-11-15T06:28:41.739Z"
+        }
+      ]
+    },
+    {
+      "id": "o0000033-0000-4000-8000-000000000033",
+      "user_id": null,
+      "customer_name": "Soren Lindqvist",
+      "customer_email": "soren@arkitekter.se",
+      "shipping_address": "232 Minimalist Avenue, Unit 433, Quezon City, Metro Manila",
+      "payment_method": "card",
+      "payment_status": "paid",
+      "status": "shipped",
+      "total_amount": 150,
+      "created_at": "2026-11-15T21:05:13.043Z",
+      "items": [
+        {
+          "id": "oi000033-0000-4000-8000-000000000330",
+          "order_id": "o0000033-0000-4000-8000-000000000033",
+          "variant_id": "v108-1111-4111-8111-111111111111",
+          "product_id": "p1111111-1111-4111-8111-111111111111",
+          "product_name": "Falling Flames Heavyweight Boxy Tee",
+          "category": "Tops",
+          "color_name": "Ash Chalk",
+          "size": "XL",
+          "quantity": 2,
+          "unit_price": 75,
+          "created_at": "2026-11-15T21:05:13.043Z"
+        }
+      ]
+    },
+    {
+      "id": "o0000034-0000-4000-8000-000000000034",
+      "user_id": null,
+      "customer_name": "Amara Vance",
+      "customer_email": "amara.vance@studio-vance.co",
+      "shipping_address": "236 Minimalist Avenue, Unit 434, Pasig City, Metro Manila",
+      "payment_method": "gcash",
+      "payment_status": "paid",
+      "status": "pending",
+      "total_amount": 605,
+      "created_at": "2026-11-16T11:41:44.347Z",
+      "items": [
+        {
+          "id": "oi000034-0000-4000-8000-000000000340",
+          "order_id": "o0000034-0000-4000-8000-000000000034",
+          "variant_id": "v207-2222-4222-8222-222222222222",
+          "product_id": "p2222222-2222-4222-8222-222222222222",
+          "product_name": "Pleated Relaxed Studio Trouser",
+          "category": "Bottoms",
+          "color_name": "Sandrift Pumice",
+          "size": "L",
+          "quantity": 1,
+          "unit_price": 155,
+          "created_at": "2026-11-16T11:41:44.347Z"
+        },
+        {
+          "id": "oi000034-0001-4000-8000-000000000341",
+          "order_id": "o0000034-0000-4000-8000-000000000034",
+          "variant_id": "v404-4444-4444-8444-444444444444",
+          "product_id": "p4444444-4444-4444-8444-444444444444",
+          "product_name": "Vibram Commando Lug Minimalist Derby",
+          "category": "Footwear",
+          "color_name": "Matte Black",
+          "size": "XL",
+          "quantity": 2,
+          "unit_price": 225,
+          "created_at": "2026-11-16T11:41:44.347Z"
+        }
+      ]
+    },
+    {
+      "id": "o0000035-0000-4000-8000-000000000035",
+      "user_id": null,
+      "customer_name": "Julian Rossi",
+      "customer_email": "j.rossi@milano-craft.it",
+      "shipping_address": "240 Minimalist Avenue, Unit 435, Mandaluyong City, Metro Manila",
+      "payment_method": "cod",
+      "payment_status": "refunded",
+      "status": "refunded",
+      "total_amount": 1085,
+      "created_at": "2026-11-17T02:18:15.652Z",
+      "items": [
+        {
+          "id": "oi000035-0000-4000-8000-000000000350",
+          "order_id": "o0000035-0000-4000-8000-000000000035",
+          "variant_id": "v306-3333-4333-8333-333333333333",
+          "product_id": "p3333333-3333-4333-8333-333333333333",
+          "product_name": "Purgatory Brutalist Gabardine Trench",
+          "category": "Outerwear",
+          "color_name": "Graphite",
+          "size": "M",
+          "quantity": 2,
+          "unit_price": 310,
+          "created_at": "2026-11-17T02:18:15.652Z"
+        },
+        {
+          "id": "oi000035-0001-4000-8000-000000000351",
+          "order_id": "o0000035-0000-4000-8000-000000000035",
+          "variant_id": "v503-5555-4555-8555-555555555555",
+          "product_id": "p5555555-5555-4555-8555-555555555555",
+          "product_name": "Seamless Heavy Gauge Merino Mockneck",
+          "category": "Tops",
+          "color_name": "Charcoal Marl",
+          "size": "L",
+          "quantity": 1,
+          "unit_price": 125,
+          "created_at": "2026-11-17T02:18:15.652Z"
+        },
+        {
+          "id": "oi000035-0002-4000-8000-000000000352",
+          "order_id": "o0000035-0000-4000-8000-000000000035",
+          "variant_id": "v608-6666-4666-8666-666666666666",
+          "product_id": "p6666666-6666-4666-8666-666666666666",
+          "product_name": "Architectural Cargo Pant",
+          "category": "Bottoms",
+          "color_name": "Raw Pumice",
+          "size": "XL",
+          "quantity": 2,
+          "unit_price": 170,
+          "created_at": "2026-11-17T02:18:15.652Z"
+        }
+      ]
+    },
+    {
+      "id": "o0000036-0000-4000-8000-000000000036",
+      "user_id": null,
+      "customer_name": "Hannah Chen",
+      "customer_email": "hannah.chen@archetype.design",
+      "shipping_address": "244 Minimalist Avenue, Unit 436, Davao City, Davao del Sur",
+      "payment_method": "card",
+      "payment_status": "paid",
+      "status": "delivered",
+      "total_amount": 225,
+      "created_at": "2026-11-17T16:54:46.956Z",
+      "items": [
+        {
+          "id": "oi000036-0000-4000-8000-000000000360",
+          "order_id": "o0000036-0000-4000-8000-000000000036",
+          "variant_id": "v405-4444-4444-8444-444444444444",
+          "product_id": "p4444444-4444-4444-8444-444444444444",
+          "product_name": "Vibram Commando Lug Minimalist Derby",
+          "category": "Footwear",
+          "color_name": "Raw Umber",
+          "size": "S",
+          "quantity": 1,
+          "unit_price": 225,
+          "created_at": "2026-11-17T16:54:46.956Z"
+        }
+      ]
+    },
+    {
+      "id": "o0000037-0000-4000-8000-000000000037",
+      "user_id": null,
+      "customer_name": "Gabriel Silva",
+      "customer_email": "gabriel.silva@lisboastudio.pt",
+      "shipping_address": "248 Minimalist Avenue, Unit 437, San Juan, Metro Manila",
+      "payment_method": "gcash",
+      "payment_status": "paid",
+      "status": "delivered",
+      "total_amount": 460,
+      "created_at": "2026-11-18T07:31:18.260Z",
+      "items": [
+        {
+          "id": "oi000037-0000-4000-8000-000000000370",
+          "order_id": "o0000037-0000-4000-8000-000000000037",
+          "variant_id": "v504-5555-4555-8555-555555555555",
+          "product_id": "p5555555-5555-4555-8555-555555555555",
+          "product_name": "Seamless Heavy Gauge Merino Mockneck",
+          "category": "Tops",
+          "color_name": "Charcoal Marl",
+          "size": "XL",
+          "quantity": 2,
+          "unit_price": 125,
+          "created_at": "2026-11-18T07:31:18.260Z"
+        },
+        {
+          "id": "oi000037-0001-4000-8000-000000000371",
+          "order_id": "o0000037-0000-4000-8000-000000000037",
+          "variant_id": "v701-7777-4777-8777-777777777777",
+          "product_id": "p7777777-7777-4777-8777-777777777777",
+          "product_name": "Falling Flames Technical Overshirt",
+          "category": "Outerwear",
+          "color_name": "Mineral Taupe",
+          "size": "S",
+          "quantity": 1,
+          "unit_price": 210,
+          "created_at": "2026-11-18T07:31:18.260Z"
+        }
+      ]
+    },
+    {
+      "id": "o0000038-0000-4000-8000-000000000038",
+      "user_id": null,
+      "customer_name": "Nadia Al-Mansoor",
+      "customer_email": "nadia.mansoor@qatar-foundry.com",
+      "shipping_address": "252 Minimalist Avenue, Unit 438, Alabang, Muntinlupa City",
+      "payment_method": "cod",
+      "payment_status": "paid",
+      "status": "delivered",
+      "total_amount": 505,
+      "created_at": "2026-11-18T22:07:49.565Z",
+      "items": [
+        {
+          "id": "oi000038-0000-4000-8000-000000000380",
+          "order_id": "o0000038-0000-4000-8000-000000000038",
+          "variant_id": "v603-6666-4666-8666-666666666666",
+          "product_id": "p6666666-6666-4666-8666-666666666666",
+          "product_name": "Architectural Cargo Pant",
+          "category": "Bottoms",
+          "color_name": "Pitch Black",
+          "size": "L",
+          "quantity": 1,
+          "unit_price": 170,
+          "created_at": "2026-11-18T22:07:49.565Z"
+        },
+        {
+          "id": "oi000038-0001-4000-8000-000000000381",
+          "order_id": "o0000038-0000-4000-8000-000000000038",
+          "variant_id": "v804-8888-4888-8888-888888888888",
+          "product_id": "p8888888-8888-4888-8888-888888888888",
+          "product_name": "Molded Bio-EVA Minimalist Mule",
+          "category": "Footwear",
+          "color_name": "Clay Cement",
+          "size": "XL",
+          "quantity": 2,
+          "unit_price": 90,
+          "created_at": "2026-11-18T22:07:49.565Z"
+        },
+        {
+          "id": "oi000038-0002-4000-8000-000000000382",
+          "order_id": "o0000038-0000-4000-8000-000000000038",
+          "variant_id": "v205-2222-4222-8222-222222222222",
+          "product_id": "p2222222-2222-4222-8222-222222222222",
+          "product_name": "Pleated Relaxed Studio Trouser",
+          "category": "Bottoms",
+          "color_name": "Sandrift Pumice",
+          "size": "S",
+          "quantity": 1,
+          "unit_price": 155,
+          "created_at": "2026-11-18T22:07:49.565Z"
+        }
+      ]
+    },
+    {
+      "id": "o0000039-0000-4000-8000-000000000039",
+      "user_id": null,
+      "customer_name": "Liam O'Connor",
+      "customer_email": "liam.oc@dublindesign.ie",
+      "shipping_address": "256 Minimalist Avenue, Unit 439, Iloilo City, Iloilo",
+      "payment_method": "card",
+      "payment_status": "paid",
+      "status": "shipped",
+      "total_amount": 420,
+      "created_at": "2026-11-19T12:44:20.869Z",
+      "items": [
+        {
+          "id": "oi000039-0000-4000-8000-000000000390",
+          "order_id": "o0000039-0000-4000-8000-000000000039",
+          "variant_id": "v702-7777-4777-8777-777777777777",
+          "product_id": "p7777777-7777-4777-8777-777777777777",
+          "product_name": "Falling Flames Technical Overshirt",
+          "category": "Outerwear",
+          "color_name": "Mineral Taupe",
+          "size": "M",
+          "quantity": 2,
+          "unit_price": 210,
+          "created_at": "2026-11-19T12:44:20.869Z"
+        }
+      ]
+    },
+    {
+      "id": "o0000040-0000-4000-8000-000000000040",
+      "user_id": null,
+      "customer_name": "Elena Rostova",
+      "customer_email": "elena.rostova@atelier-nord.com",
+      "shipping_address": "260 Minimalist Avenue, Unit 440, Makati City, Metro Manila",
+      "payment_method": "gcash",
+      "payment_status": "paid",
+      "status": "pending",
+      "total_amount": 385,
+      "created_at": "2026-11-20T03:20:52.173Z",
+      "items": [
+        {
+          "id": "oi000040-0000-4000-8000-000000000400",
+          "order_id": "o0000040-0000-4000-8000-000000000040",
+          "variant_id": "v101-1111-4111-8111-111111111111",
+          "product_id": "p1111111-1111-4111-8111-111111111111",
+          "product_name": "Falling Flames Heavyweight Boxy Tee",
+          "category": "Tops",
+          "color_name": "Washed Slate",
+          "size": "S",
+          "quantity": 1,
+          "unit_price": 75,
+          "created_at": "2026-11-20T03:20:52.173Z"
+        },
+        {
+          "id": "oi000040-0001-4000-8000-000000000401",
+          "order_id": "o0000040-0000-4000-8000-000000000040",
+          "variant_id": "v206-2222-4222-8222-222222222222",
+          "product_id": "p2222222-2222-4222-8222-222222222222",
+          "product_name": "Pleated Relaxed Studio Trouser",
+          "category": "Bottoms",
+          "color_name": "Sandrift Pumice",
+          "size": "M",
+          "quantity": 2,
+          "unit_price": 155,
+          "created_at": "2026-11-20T03:20:52.173Z"
+        }
+      ]
+    },
+    {
+      "id": "o0000041-0000-4000-8000-000000000041",
+      "user_id": null,
+      "customer_name": "Marcus Thorne",
+      "customer_email": "marcus.thorne@designsync.io",
+      "shipping_address": "264 Minimalist Avenue, Unit 441, BGC, Taguig City",
+      "payment_method": "cod",
+      "payment_status": "refunded",
+      "status": "refunded",
+      "total_amount": 710,
+      "created_at": "2026-11-20T17:57:23.478Z",
+      "items": [
+        {
+          "id": "oi000041-0000-4000-8000-000000000410",
+          "order_id": "o0000041-0000-4000-8000-000000000041",
+          "variant_id": "v108-1111-4111-8111-111111111111",
+          "product_id": "p1111111-1111-4111-8111-111111111111",
+          "product_name": "Falling Flames Heavyweight Boxy Tee",
+          "category": "Tops",
+          "color_name": "Ash Chalk",
+          "size": "XL",
+          "quantity": 2,
+          "unit_price": 75,
+          "created_at": "2026-11-20T17:57:23.478Z"
+        },
+        {
+          "id": "oi000041-0001-4000-8000-000000000411",
+          "order_id": "o0000041-0000-4000-8000-000000000041",
+          "variant_id": "v305-3333-4333-8333-333333333333",
+          "product_id": "p3333333-3333-4333-8333-333333333333",
+          "product_name": "Purgatory Brutalist Gabardine Trench",
+          "category": "Outerwear",
+          "color_name": "Graphite",
+          "size": "S",
+          "quantity": 1,
+          "unit_price": 310,
+          "created_at": "2026-11-20T17:57:23.478Z"
+        },
+        {
+          "id": "oi000041-0002-4000-8000-000000000412",
+          "order_id": "o0000041-0000-4000-8000-000000000041",
+          "variant_id": "v502-5555-4555-8555-555555555555",
+          "product_id": "p5555555-5555-4555-8555-555555555555",
+          "product_name": "Seamless Heavy Gauge Merino Mockneck",
+          "category": "Tops",
+          "color_name": "Charcoal Marl",
+          "size": "M",
+          "quantity": 2,
+          "unit_price": 125,
+          "created_at": "2026-11-20T17:57:23.478Z"
+        }
+      ]
+    },
+    {
+      "id": "o0000042-0000-4000-8000-000000000042",
+      "user_id": null,
+      "customer_name": "Kaito Tanaka",
+      "customer_email": "kaito.tanaka@tokyoworks.jp",
+      "shipping_address": "268 Minimalist Avenue, Unit 442, Cebu City, Cebu",
+      "payment_method": "card",
+      "payment_status": "paid",
+      "status": "delivered",
+      "total_amount": 155,
+      "created_at": "2026-11-21T08:33:54.782Z",
+      "items": [
+        {
+          "id": "oi000042-0000-4000-8000-000000000420",
+          "order_id": "o0000042-0000-4000-8000-000000000042",
+          "variant_id": "v207-2222-4222-8222-222222222222",
+          "product_id": "p2222222-2222-4222-8222-222222222222",
+          "product_name": "Pleated Relaxed Studio Trouser",
+          "category": "Bottoms",
+          "color_name": "Sandrift Pumice",
+          "size": "L",
+          "quantity": 1,
+          "unit_price": 155,
+          "created_at": "2026-11-21T08:33:54.782Z"
+        }
+      ]
+    },
+    {
+      "id": "o0000043-0000-4000-8000-000000000043",
+      "user_id": null,
+      "customer_name": "Soren Lindqvist",
+      "customer_email": "soren@arkitekter.se",
+      "shipping_address": "272 Minimalist Avenue, Unit 443, Quezon City, Metro Manila",
+      "payment_method": "gcash",
+      "payment_status": "paid",
+      "status": "delivered",
+      "total_amount": 745,
+      "created_at": "2026-11-21T23:10:26.086Z",
+      "items": [
+        {
+          "id": "oi000043-0000-4000-8000-000000000430",
+          "order_id": "o0000043-0000-4000-8000-000000000043",
+          "variant_id": "v306-3333-4333-8333-333333333333",
+          "product_id": "p3333333-3333-4333-8333-333333333333",
+          "product_name": "Purgatory Brutalist Gabardine Trench",
+          "category": "Outerwear",
+          "color_name": "Graphite",
+          "size": "M",
+          "quantity": 2,
+          "unit_price": 310,
+          "created_at": "2026-11-21T23:10:26.086Z"
+        },
+        {
+          "id": "oi000043-0001-4000-8000-000000000431",
+          "order_id": "o0000043-0000-4000-8000-000000000043",
+          "variant_id": "v503-5555-4555-8555-555555555555",
+          "product_id": "p5555555-5555-4555-8555-555555555555",
+          "product_name": "Seamless Heavy Gauge Merino Mockneck",
+          "category": "Tops",
+          "color_name": "Charcoal Marl",
+          "size": "L",
+          "quantity": 1,
+          "unit_price": 125,
+          "created_at": "2026-11-21T23:10:26.086Z"
+        }
+      ]
+    },
+    {
+      "id": "o0000044-0000-4000-8000-000000000044",
+      "user_id": null,
+      "customer_name": "Amara Vance",
+      "customer_email": "amara.vance@studio-vance.co",
+      "shipping_address": "276 Minimalist Avenue, Unit 444, Pasig City, Metro Manila",
+      "payment_method": "cod",
+      "payment_status": "paid",
+      "status": "delivered",
+      "total_amount": 655,
+      "created_at": "2026-11-22T13:46:57.391Z",
+      "items": [
+        {
+          "id": "oi000044-0000-4000-8000-000000000440",
+          "order_id": "o0000044-0000-4000-8000-000000000044",
+          "variant_id": "v405-4444-4444-8444-444444444444",
+          "product_id": "p4444444-4444-4444-8444-444444444444",
+          "product_name": "Vibram Commando Lug Minimalist Derby",
+          "category": "Footwear",
+          "color_name": "Raw Umber",
+          "size": "S",
+          "quantity": 1,
+          "unit_price": 225,
+          "created_at": "2026-11-22T13:46:57.391Z"
+        },
+        {
+          "id": "oi000044-0001-4000-8000-000000000441",
+          "order_id": "o0000044-0000-4000-8000-000000000044",
+          "variant_id": "v602-6666-4666-8666-666666666666",
+          "product_id": "p6666666-6666-4666-8666-666666666666",
+          "product_name": "Architectural Cargo Pant",
+          "category": "Bottoms",
+          "color_name": "Pitch Black",
+          "size": "M",
+          "quantity": 2,
+          "unit_price": 170,
+          "created_at": "2026-11-22T13:46:57.391Z"
+        },
+        {
+          "id": "oi000044-0002-4000-8000-000000000442",
+          "order_id": "o0000044-0000-4000-8000-000000000044",
+          "variant_id": "v803-8888-4888-8888-888888888888",
+          "product_id": "p8888888-8888-4888-8888-888888888888",
+          "product_name": "Molded Bio-EVA Minimalist Mule",
+          "category": "Footwear",
+          "color_name": "Clay Cement",
+          "size": "L",
+          "quantity": 1,
+          "unit_price": 90,
+          "created_at": "2026-11-22T13:46:57.391Z"
+        }
+      ]
+    },
+    {
+      "id": "o0000045-0000-4000-8000-000000000045",
+      "user_id": null,
+      "customer_name": "Julian Rossi",
+      "customer_email": "j.rossi@milano-craft.it",
+      "shipping_address": "280 Minimalist Avenue, Unit 445, Mandaluyong City, Metro Manila",
+      "payment_method": "card",
+      "payment_status": "paid",
+      "status": "shipped",
+      "total_amount": 250,
+      "created_at": "2026-11-23T04:23:28.695Z",
+      "items": [
+        {
+          "id": "oi000045-0000-4000-8000-000000000450",
+          "order_id": "o0000045-0000-4000-8000-000000000045",
+          "variant_id": "v504-5555-4555-8555-555555555555",
+          "product_id": "p5555555-5555-4555-8555-555555555555",
+          "product_name": "Seamless Heavy Gauge Merino Mockneck",
+          "category": "Tops",
+          "color_name": "Charcoal Marl",
+          "size": "XL",
+          "quantity": 2,
+          "unit_price": 125,
+          "created_at": "2026-11-23T04:23:28.695Z"
+        }
+      ]
+    },
+    {
+      "id": "o0000046-0000-4000-8000-000000000046",
+      "user_id": null,
+      "customer_name": "Hannah Chen",
+      "customer_email": "hannah.chen@archetype.design",
+      "shipping_address": "284 Minimalist Avenue, Unit 446, Davao City, Davao del Sur",
+      "payment_method": "gcash",
+      "payment_status": "paid",
+      "status": "pending",
+      "total_amount": 350,
+      "created_at": "2026-11-23T19:00:00.000Z",
+      "items": [
+        {
+          "id": "oi000046-0000-4000-8000-000000000460",
+          "order_id": "o0000046-0000-4000-8000-000000000046",
+          "variant_id": "v603-6666-4666-8666-666666666666",
+          "product_id": "p6666666-6666-4666-8666-666666666666",
+          "product_name": "Architectural Cargo Pant",
+          "category": "Bottoms",
+          "color_name": "Pitch Black",
+          "size": "L",
+          "quantity": 1,
+          "unit_price": 170,
+          "created_at": "2026-11-23T19:00:00.000Z"
+        },
+        {
+          "id": "oi000046-0001-4000-8000-000000000461",
+          "order_id": "o0000046-0000-4000-8000-000000000046",
+          "variant_id": "v804-8888-4888-8888-888888888888",
+          "product_id": "p8888888-8888-4888-8888-888888888888",
+          "product_name": "Molded Bio-EVA Minimalist Mule",
+          "category": "Footwear",
+          "color_name": "Clay Cement",
+          "size": "XL",
+          "quantity": 2,
+          "unit_price": 90,
+          "created_at": "2026-11-23T19:00:00.000Z"
+        }
+      ]
+    }
+  ],
+  "orderItems": [
+    {
+      "id": "oi000001-0000-4000-8000-000000000010",
+      "order_id": "o0000001-0000-4000-8000-000000000001",
+      "variant_id": "v108-1111-4111-8111-111111111111",
+      "product_id": "p1111111-1111-4111-8111-111111111111",
+      "product_name": "Falling Flames Heavyweight Boxy Tee",
+      "category": "Tops",
+      "color_name": "Ash Chalk",
+      "size": "XL",
+      "quantity": 2,
+      "unit_price": 75,
+      "created_at": "2026-10-27T09:36:31.304Z"
+    },
+    {
+      "id": "oi000001-0001-4000-8000-000000000011",
+      "order_id": "o0000001-0000-4000-8000-000000000001",
+      "variant_id": "v305-3333-4333-8333-333333333333",
+      "product_id": "p3333333-3333-4333-8333-333333333333",
+      "product_name": "Purgatory Brutalist Gabardine Trench",
+      "category": "Outerwear",
+      "color_name": "Graphite",
+      "size": "S",
+      "quantity": 1,
+      "unit_price": 310,
+      "created_at": "2026-10-27T09:36:31.304Z"
+    },
+    {
+      "id": "oi000002-0000-4000-8000-000000000020",
+      "order_id": "o0000002-0000-4000-8000-000000000002",
+      "variant_id": "v207-2222-4222-8222-222222222222",
+      "product_id": "p2222222-2222-4222-8222-222222222222",
+      "product_name": "Pleated Relaxed Studio Trouser",
+      "category": "Bottoms",
+      "color_name": "Sandrift Pumice",
+      "size": "L",
+      "quantity": 1,
+      "unit_price": 155,
+      "created_at": "2026-10-28T00:13:02.608Z"
+    },
+    {
+      "id": "oi000002-0001-4000-8000-000000000021",
+      "order_id": "o0000002-0000-4000-8000-000000000002",
+      "variant_id": "v404-4444-4444-8444-444444444444",
+      "product_id": "p4444444-4444-4444-8444-444444444444",
+      "product_name": "Vibram Commando Lug Minimalist Derby",
+      "category": "Footwear",
+      "color_name": "Matte Black",
+      "size": "XL",
+      "quantity": 2,
+      "unit_price": 225,
+      "created_at": "2026-10-28T00:13:02.608Z"
+    },
+    {
+      "id": "oi000002-0002-4000-8000-000000000022",
+      "order_id": "o0000002-0000-4000-8000-000000000002",
+      "variant_id": "v601-6666-4666-8666-666666666666",
+      "product_id": "p6666666-6666-4666-8666-666666666666",
+      "product_name": "Architectural Cargo Pant",
+      "category": "Bottoms",
+      "color_name": "Pitch Black",
+      "size": "S",
+      "quantity": 1,
+      "unit_price": 170,
+      "created_at": "2026-10-28T00:13:02.608Z"
+    },
+    {
+      "id": "oi000003-0000-4000-8000-000000000030",
+      "order_id": "o0000003-0000-4000-8000-000000000003",
+      "variant_id": "v306-3333-4333-8333-333333333333",
+      "product_id": "p3333333-3333-4333-8333-333333333333",
+      "product_name": "Purgatory Brutalist Gabardine Trench",
+      "category": "Outerwear",
+      "color_name": "Graphite",
+      "size": "M",
+      "quantity": 2,
+      "unit_price": 310,
+      "created_at": "2026-10-28T14:49:33.913Z"
+    },
+    {
+      "id": "oi000004-0000-4000-8000-000000000040",
+      "order_id": "o0000004-0000-4000-8000-000000000004",
+      "variant_id": "v405-4444-4444-8444-444444444444",
+      "product_id": "p4444444-4444-4444-8444-444444444444",
+      "product_name": "Vibram Commando Lug Minimalist Derby",
+      "category": "Footwear",
+      "color_name": "Raw Umber",
+      "size": "S",
+      "quantity": 1,
+      "unit_price": 225,
+      "created_at": "2026-10-29T05:26:05.217Z"
+    },
+    {
+      "id": "oi000004-0001-4000-8000-000000000041",
+      "order_id": "o0000004-0000-4000-8000-000000000004",
+      "variant_id": "v602-6666-4666-8666-666666666666",
+      "product_id": "p6666666-6666-4666-8666-666666666666",
+      "product_name": "Architectural Cargo Pant",
+      "category": "Bottoms",
+      "color_name": "Pitch Black",
+      "size": "M",
+      "quantity": 2,
+      "unit_price": 170,
+      "created_at": "2026-10-29T05:26:05.217Z"
+    },
+    {
+      "id": "oi000005-0000-4000-8000-000000000050",
+      "order_id": "o0000005-0000-4000-8000-000000000005",
+      "variant_id": "v504-5555-4555-8555-555555555555",
+      "product_id": "p5555555-5555-4555-8555-555555555555",
+      "product_name": "Seamless Heavy Gauge Merino Mockneck",
+      "category": "Tops",
+      "color_name": "Charcoal Marl",
+      "size": "XL",
+      "quantity": 2,
+      "unit_price": 125,
+      "created_at": "2026-10-29T20:02:36.521Z"
+    },
+    {
+      "id": "oi000005-0001-4000-8000-000000000051",
+      "order_id": "o0000005-0000-4000-8000-000000000005",
+      "variant_id": "v701-7777-4777-8777-777777777777",
+      "product_id": "p7777777-7777-4777-8777-777777777777",
+      "product_name": "Falling Flames Technical Overshirt",
+      "category": "Outerwear",
+      "color_name": "Mineral Taupe",
+      "size": "S",
+      "quantity": 1,
+      "unit_price": 210,
+      "created_at": "2026-10-29T20:02:36.521Z"
+    },
+    {
+      "id": "oi000005-0002-4000-8000-000000000052",
+      "order_id": "o0000005-0000-4000-8000-000000000005",
+      "variant_id": "v106-1111-4111-8111-111111111111",
+      "product_id": "p1111111-1111-4111-8111-111111111111",
+      "product_name": "Falling Flames Heavyweight Boxy Tee",
+      "category": "Tops",
+      "color_name": "Ash Chalk",
+      "size": "M",
+      "quantity": 2,
+      "unit_price": 75,
+      "created_at": "2026-10-29T20:02:36.521Z"
+    },
+    {
+      "id": "oi000006-0000-4000-8000-000000000060",
+      "order_id": "o0000006-0000-4000-8000-000000000006",
+      "variant_id": "v603-6666-4666-8666-666666666666",
+      "product_id": "p6666666-6666-4666-8666-666666666666",
+      "product_name": "Architectural Cargo Pant",
+      "category": "Bottoms",
+      "color_name": "Pitch Black",
+      "size": "L",
+      "quantity": 1,
+      "unit_price": 170,
+      "created_at": "2026-10-30T10:39:07.826Z"
+    },
+    {
+      "id": "oi000007-0000-4000-8000-000000000070",
+      "order_id": "o0000007-0000-4000-8000-000000000007",
+      "variant_id": "v702-7777-4777-8777-777777777777",
+      "product_id": "p7777777-7777-4777-8777-777777777777",
+      "product_name": "Falling Flames Technical Overshirt",
+      "category": "Outerwear",
+      "color_name": "Mineral Taupe",
+      "size": "M",
+      "quantity": 2,
+      "unit_price": 210,
+      "created_at": "2026-10-31T01:15:39.130Z"
+    },
+    {
+      "id": "oi000007-0001-4000-8000-000000000071",
+      "order_id": "o0000007-0000-4000-8000-000000000007",
+      "variant_id": "v107-1111-4111-8111-111111111111",
+      "product_id": "p1111111-1111-4111-8111-111111111111",
+      "product_name": "Falling Flames Heavyweight Boxy Tee",
+      "category": "Tops",
+      "color_name": "Ash Chalk",
+      "size": "L",
+      "quantity": 1,
+      "unit_price": 75,
+      "created_at": "2026-10-31T01:15:39.130Z"
+    },
+    {
+      "id": "oi000008-0000-4000-8000-000000000080",
+      "order_id": "o0000008-0000-4000-8000-000000000008",
+      "variant_id": "v101-1111-4111-8111-111111111111",
+      "product_id": "p1111111-1111-4111-8111-111111111111",
+      "product_name": "Falling Flames Heavyweight Boxy Tee",
+      "category": "Tops",
+      "color_name": "Washed Slate",
+      "size": "S",
+      "quantity": 1,
+      "unit_price": 75,
+      "created_at": "2026-10-31T15:52:10.434Z"
+    },
+    {
+      "id": "oi000008-0001-4000-8000-000000000081",
+      "order_id": "o0000008-0000-4000-8000-000000000008",
+      "variant_id": "v206-2222-4222-8222-222222222222",
+      "product_id": "p2222222-2222-4222-8222-222222222222",
+      "product_name": "Pleated Relaxed Studio Trouser",
+      "category": "Bottoms",
+      "color_name": "Sandrift Pumice",
+      "size": "M",
+      "quantity": 2,
+      "unit_price": 155,
+      "created_at": "2026-10-31T15:52:10.434Z"
+    },
+    {
+      "id": "oi000008-0002-4000-8000-000000000082",
+      "order_id": "o0000008-0000-4000-8000-000000000008",
+      "variant_id": "v403-4444-4444-8444-444444444444",
+      "product_id": "p4444444-4444-4444-8444-444444444444",
+      "product_name": "Vibram Commando Lug Minimalist Derby",
+      "category": "Footwear",
+      "color_name": "Matte Black",
+      "size": "L",
+      "quantity": 1,
+      "unit_price": 225,
+      "created_at": "2026-10-31T15:52:10.434Z"
+    },
+    {
+      "id": "oi000009-0000-4000-8000-000000000090",
+      "order_id": "o0000009-0000-4000-8000-000000000009",
+      "variant_id": "v108-1111-4111-8111-111111111111",
+      "product_id": "p1111111-1111-4111-8111-111111111111",
+      "product_name": "Falling Flames Heavyweight Boxy Tee",
+      "category": "Tops",
+      "color_name": "Ash Chalk",
+      "size": "XL",
+      "quantity": 2,
+      "unit_price": 75,
+      "created_at": "2026-11-01T06:28:41.739Z"
+    },
+    {
+      "id": "oi000010-0000-4000-8000-000000000100",
+      "order_id": "o0000010-0000-4000-8000-000000000010",
+      "variant_id": "v207-2222-4222-8222-222222222222",
+      "product_id": "p2222222-2222-4222-8222-222222222222",
+      "product_name": "Pleated Relaxed Studio Trouser",
+      "category": "Bottoms",
+      "color_name": "Sandrift Pumice",
+      "size": "L",
+      "quantity": 1,
+      "unit_price": 155,
+      "created_at": "2026-11-01T21:05:13.043Z"
+    },
+    {
+      "id": "oi000010-0001-4000-8000-000000000101",
+      "order_id": "o0000010-0000-4000-8000-000000000010",
+      "variant_id": "v404-4444-4444-8444-444444444444",
+      "product_id": "p4444444-4444-4444-8444-444444444444",
+      "product_name": "Vibram Commando Lug Minimalist Derby",
+      "category": "Footwear",
+      "color_name": "Matte Black",
+      "size": "XL",
+      "quantity": 2,
+      "unit_price": 225,
+      "created_at": "2026-11-01T21:05:13.043Z"
+    },
+    {
+      "id": "oi000011-0000-4000-8000-000000000110",
+      "order_id": "o0000011-0000-4000-8000-000000000011",
+      "variant_id": "v306-3333-4333-8333-333333333333",
+      "product_id": "p3333333-3333-4333-8333-333333333333",
+      "product_name": "Purgatory Brutalist Gabardine Trench",
+      "category": "Outerwear",
+      "color_name": "Graphite",
+      "size": "M",
+      "quantity": 2,
+      "unit_price": 310,
+      "created_at": "2026-11-02T11:41:44.347Z"
+    },
+    {
+      "id": "oi000011-0001-4000-8000-000000000111",
+      "order_id": "o0000011-0000-4000-8000-000000000011",
+      "variant_id": "v503-5555-4555-8555-555555555555",
+      "product_id": "p5555555-5555-4555-8555-555555555555",
+      "product_name": "Seamless Heavy Gauge Merino Mockneck",
+      "category": "Tops",
+      "color_name": "Charcoal Marl",
+      "size": "L",
+      "quantity": 1,
+      "unit_price": 125,
+      "created_at": "2026-11-02T11:41:44.347Z"
+    },
+    {
+      "id": "oi000011-0002-4000-8000-000000000112",
+      "order_id": "o0000011-0000-4000-8000-000000000011",
+      "variant_id": "v608-6666-4666-8666-666666666666",
+      "product_id": "p6666666-6666-4666-8666-666666666666",
+      "product_name": "Architectural Cargo Pant",
+      "category": "Bottoms",
+      "color_name": "Raw Pumice",
+      "size": "XL",
+      "quantity": 2,
+      "unit_price": 170,
+      "created_at": "2026-11-02T11:41:44.347Z"
+    },
+    {
+      "id": "oi000012-0000-4000-8000-000000000120",
+      "order_id": "o0000012-0000-4000-8000-000000000012",
+      "variant_id": "v405-4444-4444-8444-444444444444",
+      "product_id": "p4444444-4444-4444-8444-444444444444",
+      "product_name": "Vibram Commando Lug Minimalist Derby",
+      "category": "Footwear",
+      "color_name": "Raw Umber",
+      "size": "S",
+      "quantity": 1,
+      "unit_price": 225,
+      "created_at": "2026-11-03T02:18:15.652Z"
+    },
+    {
+      "id": "oi000013-0000-4000-8000-000000000130",
+      "order_id": "o0000013-0000-4000-8000-000000000013",
+      "variant_id": "v504-5555-4555-8555-555555555555",
+      "product_id": "p5555555-5555-4555-8555-555555555555",
+      "product_name": "Seamless Heavy Gauge Merino Mockneck",
+      "category": "Tops",
+      "color_name": "Charcoal Marl",
+      "size": "XL",
+      "quantity": 2,
+      "unit_price": 125,
+      "created_at": "2026-11-03T16:54:46.956Z"
+    },
+    {
+      "id": "oi000013-0001-4000-8000-000000000131",
+      "order_id": "o0000013-0000-4000-8000-000000000013",
+      "variant_id": "v701-7777-4777-8777-777777777777",
+      "product_id": "p7777777-7777-4777-8777-777777777777",
+      "product_name": "Falling Flames Technical Overshirt",
+      "category": "Outerwear",
+      "color_name": "Mineral Taupe",
+      "size": "S",
+      "quantity": 1,
+      "unit_price": 210,
+      "created_at": "2026-11-03T16:54:46.956Z"
+    },
+    {
+      "id": "oi000014-0000-4000-8000-000000000140",
+      "order_id": "o0000014-0000-4000-8000-000000000014",
+      "variant_id": "v603-6666-4666-8666-666666666666",
+      "product_id": "p6666666-6666-4666-8666-666666666666",
+      "product_name": "Architectural Cargo Pant",
+      "category": "Bottoms",
+      "color_name": "Pitch Black",
+      "size": "L",
+      "quantity": 1,
+      "unit_price": 170,
+      "created_at": "2026-11-04T07:31:18.260Z"
+    },
+    {
+      "id": "oi000014-0001-4000-8000-000000000141",
+      "order_id": "o0000014-0000-4000-8000-000000000014",
+      "variant_id": "v804-8888-4888-8888-888888888888",
+      "product_id": "p8888888-8888-4888-8888-888888888888",
+      "product_name": "Molded Bio-EVA Minimalist Mule",
+      "category": "Footwear",
+      "color_name": "Clay Cement",
+      "size": "XL",
+      "quantity": 2,
+      "unit_price": 90,
+      "created_at": "2026-11-04T07:31:18.260Z"
+    },
+    {
+      "id": "oi000014-0002-4000-8000-000000000142",
+      "order_id": "o0000014-0000-4000-8000-000000000014",
+      "variant_id": "v205-2222-4222-8222-222222222222",
+      "product_id": "p2222222-2222-4222-8222-222222222222",
+      "product_name": "Pleated Relaxed Studio Trouser",
+      "category": "Bottoms",
+      "color_name": "Sandrift Pumice",
+      "size": "S",
+      "quantity": 1,
+      "unit_price": 155,
+      "created_at": "2026-11-04T07:31:18.260Z"
+    },
+    {
+      "id": "oi000015-0000-4000-8000-000000000150",
+      "order_id": "o0000015-0000-4000-8000-000000000015",
+      "variant_id": "v702-7777-4777-8777-777777777777",
+      "product_id": "p7777777-7777-4777-8777-777777777777",
+      "product_name": "Falling Flames Technical Overshirt",
+      "category": "Outerwear",
+      "color_name": "Mineral Taupe",
+      "size": "M",
+      "quantity": 2,
+      "unit_price": 210,
+      "created_at": "2026-11-04T22:07:49.565Z"
+    },
+    {
+      "id": "oi000016-0000-4000-8000-000000000160",
+      "order_id": "o0000016-0000-4000-8000-000000000016",
+      "variant_id": "v101-1111-4111-8111-111111111111",
+      "product_id": "p1111111-1111-4111-8111-111111111111",
+      "product_name": "Falling Flames Heavyweight Boxy Tee",
+      "category": "Tops",
+      "color_name": "Washed Slate",
+      "size": "S",
+      "quantity": 1,
+      "unit_price": 75,
+      "created_at": "2026-11-05T12:44:20.869Z"
+    },
+    {
+      "id": "oi000016-0001-4000-8000-000000000161",
+      "order_id": "o0000016-0000-4000-8000-000000000016",
+      "variant_id": "v206-2222-4222-8222-222222222222",
+      "product_id": "p2222222-2222-4222-8222-222222222222",
+      "product_name": "Pleated Relaxed Studio Trouser",
+      "category": "Bottoms",
+      "color_name": "Sandrift Pumice",
+      "size": "M",
+      "quantity": 2,
+      "unit_price": 155,
+      "created_at": "2026-11-05T12:44:20.869Z"
+    },
+    {
+      "id": "oi000017-0000-4000-8000-000000000170",
+      "order_id": "o0000017-0000-4000-8000-000000000017",
+      "variant_id": "v108-1111-4111-8111-111111111111",
+      "product_id": "p1111111-1111-4111-8111-111111111111",
+      "product_name": "Falling Flames Heavyweight Boxy Tee",
+      "category": "Tops",
+      "color_name": "Ash Chalk",
+      "size": "XL",
+      "quantity": 2,
+      "unit_price": 75,
+      "created_at": "2026-11-06T03:20:52.173Z"
+    },
+    {
+      "id": "oi000017-0001-4000-8000-000000000171",
+      "order_id": "o0000017-0000-4000-8000-000000000017",
+      "variant_id": "v305-3333-4333-8333-333333333333",
+      "product_id": "p3333333-3333-4333-8333-333333333333",
+      "product_name": "Purgatory Brutalist Gabardine Trench",
+      "category": "Outerwear",
+      "color_name": "Graphite",
+      "size": "S",
+      "quantity": 1,
+      "unit_price": 310,
+      "created_at": "2026-11-06T03:20:52.173Z"
+    },
+    {
+      "id": "oi000017-0002-4000-8000-000000000172",
+      "order_id": "o0000017-0000-4000-8000-000000000017",
+      "variant_id": "v502-5555-4555-8555-555555555555",
+      "product_id": "p5555555-5555-4555-8555-555555555555",
+      "product_name": "Seamless Heavy Gauge Merino Mockneck",
+      "category": "Tops",
+      "color_name": "Charcoal Marl",
+      "size": "M",
+      "quantity": 2,
+      "unit_price": 125,
+      "created_at": "2026-11-06T03:20:52.173Z"
+    },
+    {
+      "id": "oi000018-0000-4000-8000-000000000180",
+      "order_id": "o0000018-0000-4000-8000-000000000018",
+      "variant_id": "v207-2222-4222-8222-222222222222",
+      "product_id": "p2222222-2222-4222-8222-222222222222",
+      "product_name": "Pleated Relaxed Studio Trouser",
+      "category": "Bottoms",
+      "color_name": "Sandrift Pumice",
+      "size": "L",
+      "quantity": 1,
+      "unit_price": 155,
+      "created_at": "2026-11-06T17:57:23.478Z"
+    },
+    {
+      "id": "oi000019-0000-4000-8000-000000000190",
+      "order_id": "o0000019-0000-4000-8000-000000000019",
+      "variant_id": "v306-3333-4333-8333-333333333333",
+      "product_id": "p3333333-3333-4333-8333-333333333333",
+      "product_name": "Purgatory Brutalist Gabardine Trench",
+      "category": "Outerwear",
+      "color_name": "Graphite",
+      "size": "M",
+      "quantity": 2,
+      "unit_price": 310,
+      "created_at": "2026-11-07T08:33:54.782Z"
+    },
+    {
+      "id": "oi000019-0001-4000-8000-000000000191",
+      "order_id": "o0000019-0000-4000-8000-000000000019",
+      "variant_id": "v503-5555-4555-8555-555555555555",
+      "product_id": "p5555555-5555-4555-8555-555555555555",
+      "product_name": "Seamless Heavy Gauge Merino Mockneck",
+      "category": "Tops",
+      "color_name": "Charcoal Marl",
+      "size": "L",
+      "quantity": 1,
+      "unit_price": 125,
+      "created_at": "2026-11-07T08:33:54.782Z"
+    },
+    {
+      "id": "oi000020-0000-4000-8000-000000000200",
+      "order_id": "o0000020-0000-4000-8000-000000000020",
+      "variant_id": "v405-4444-4444-8444-444444444444",
+      "product_id": "p4444444-4444-4444-8444-444444444444",
+      "product_name": "Vibram Commando Lug Minimalist Derby",
+      "category": "Footwear",
+      "color_name": "Raw Umber",
+      "size": "S",
+      "quantity": 1,
+      "unit_price": 225,
+      "created_at": "2026-11-07T23:10:26.086Z"
+    },
+    {
+      "id": "oi000020-0001-4000-8000-000000000201",
+      "order_id": "o0000020-0000-4000-8000-000000000020",
+      "variant_id": "v602-6666-4666-8666-666666666666",
+      "product_id": "p6666666-6666-4666-8666-666666666666",
+      "product_name": "Architectural Cargo Pant",
+      "category": "Bottoms",
+      "color_name": "Pitch Black",
+      "size": "M",
+      "quantity": 2,
+      "unit_price": 170,
+      "created_at": "2026-11-07T23:10:26.086Z"
+    },
+    {
+      "id": "oi000020-0002-4000-8000-000000000202",
+      "order_id": "o0000020-0000-4000-8000-000000000020",
+      "variant_id": "v803-8888-4888-8888-888888888888",
+      "product_id": "p8888888-8888-4888-8888-888888888888",
+      "product_name": "Molded Bio-EVA Minimalist Mule",
+      "category": "Footwear",
+      "color_name": "Clay Cement",
+      "size": "L",
+      "quantity": 1,
+      "unit_price": 90,
+      "created_at": "2026-11-07T23:10:26.086Z"
+    },
+    {
+      "id": "oi000021-0000-4000-8000-000000000210",
+      "order_id": "o0000021-0000-4000-8000-000000000021",
+      "variant_id": "v504-5555-4555-8555-555555555555",
+      "product_id": "p5555555-5555-4555-8555-555555555555",
+      "product_name": "Seamless Heavy Gauge Merino Mockneck",
+      "category": "Tops",
+      "color_name": "Charcoal Marl",
+      "size": "XL",
+      "quantity": 2,
+      "unit_price": 125,
+      "created_at": "2026-11-08T13:46:57.391Z"
+    },
+    {
+      "id": "oi000022-0000-4000-8000-000000000220",
+      "order_id": "o0000022-0000-4000-8000-000000000022",
+      "variant_id": "v603-6666-4666-8666-666666666666",
+      "product_id": "p6666666-6666-4666-8666-666666666666",
+      "product_name": "Architectural Cargo Pant",
+      "category": "Bottoms",
+      "color_name": "Pitch Black",
+      "size": "L",
+      "quantity": 1,
+      "unit_price": 170,
+      "created_at": "2026-11-09T04:23:28.695Z"
+    },
+    {
+      "id": "oi000022-0001-4000-8000-000000000221",
+      "order_id": "o0000022-0000-4000-8000-000000000022",
+      "variant_id": "v804-8888-4888-8888-888888888888",
+      "product_id": "p8888888-8888-4888-8888-888888888888",
+      "product_name": "Molded Bio-EVA Minimalist Mule",
+      "category": "Footwear",
+      "color_name": "Clay Cement",
+      "size": "XL",
+      "quantity": 2,
+      "unit_price": 90,
+      "created_at": "2026-11-09T04:23:28.695Z"
+    },
+    {
+      "id": "oi000023-0000-4000-8000-000000000230",
+      "order_id": "o0000023-0000-4000-8000-000000000023",
+      "variant_id": "v702-7777-4777-8777-777777777777",
+      "product_id": "p7777777-7777-4777-8777-777777777777",
+      "product_name": "Falling Flames Technical Overshirt",
+      "category": "Outerwear",
+      "color_name": "Mineral Taupe",
+      "size": "M",
+      "quantity": 2,
+      "unit_price": 210,
+      "created_at": "2026-11-09T19:00:00.000Z"
+    },
+    {
+      "id": "oi000023-0001-4000-8000-000000000231",
+      "order_id": "o0000023-0000-4000-8000-000000000023",
+      "variant_id": "v107-1111-4111-8111-111111111111",
+      "product_id": "p1111111-1111-4111-8111-111111111111",
+      "product_name": "Falling Flames Heavyweight Boxy Tee",
+      "category": "Tops",
+      "color_name": "Ash Chalk",
+      "size": "L",
+      "quantity": 1,
+      "unit_price": 75,
+      "created_at": "2026-11-09T19:00:00.000Z"
+    },
+    {
+      "id": "oi000023-0002-4000-8000-000000000232",
+      "order_id": "o0000023-0000-4000-8000-000000000023",
+      "variant_id": "v304-3333-4333-8333-333333333333",
+      "product_id": "p3333333-3333-4333-8333-333333333333",
+      "product_name": "Purgatory Brutalist Gabardine Trench",
+      "category": "Outerwear",
+      "color_name": "Dark Olive",
+      "size": "XL",
+      "quantity": 2,
+      "unit_price": 310,
+      "created_at": "2026-11-09T19:00:00.000Z"
+    },
+    {
+      "id": "oi000024-0000-4000-8000-000000000240",
+      "order_id": "o0000024-0000-4000-8000-000000000024",
+      "variant_id": "v101-1111-4111-8111-111111111111",
+      "product_id": "p1111111-1111-4111-8111-111111111111",
+      "product_name": "Falling Flames Heavyweight Boxy Tee",
+      "category": "Tops",
+      "color_name": "Washed Slate",
+      "size": "S",
+      "quantity": 1,
+      "unit_price": 75,
+      "created_at": "2026-11-10T09:36:31.304Z"
+    },
+    {
+      "id": "oi000025-0000-4000-8000-000000000250",
+      "order_id": "o0000025-0000-4000-8000-000000000025",
+      "variant_id": "v108-1111-4111-8111-111111111111",
+      "product_id": "p1111111-1111-4111-8111-111111111111",
+      "product_name": "Falling Flames Heavyweight Boxy Tee",
+      "category": "Tops",
+      "color_name": "Ash Chalk",
+      "size": "XL",
+      "quantity": 2,
+      "unit_price": 75,
+      "created_at": "2026-11-11T00:13:02.608Z"
+    },
+    {
+      "id": "oi000025-0001-4000-8000-000000000251",
+      "order_id": "o0000025-0000-4000-8000-000000000025",
+      "variant_id": "v305-3333-4333-8333-333333333333",
+      "product_id": "p3333333-3333-4333-8333-333333333333",
+      "product_name": "Purgatory Brutalist Gabardine Trench",
+      "category": "Outerwear",
+      "color_name": "Graphite",
+      "size": "S",
+      "quantity": 1,
+      "unit_price": 310,
+      "created_at": "2026-11-11T00:13:02.608Z"
+    },
+    {
+      "id": "oi000026-0000-4000-8000-000000000260",
+      "order_id": "o0000026-0000-4000-8000-000000000026",
+      "variant_id": "v207-2222-4222-8222-222222222222",
+      "product_id": "p2222222-2222-4222-8222-222222222222",
+      "product_name": "Pleated Relaxed Studio Trouser",
+      "category": "Bottoms",
+      "color_name": "Sandrift Pumice",
+      "size": "L",
+      "quantity": 1,
+      "unit_price": 155,
+      "created_at": "2026-11-11T14:49:33.913Z"
+    },
+    {
+      "id": "oi000026-0001-4000-8000-000000000261",
+      "order_id": "o0000026-0000-4000-8000-000000000026",
+      "variant_id": "v404-4444-4444-8444-444444444444",
+      "product_id": "p4444444-4444-4444-8444-444444444444",
+      "product_name": "Vibram Commando Lug Minimalist Derby",
+      "category": "Footwear",
+      "color_name": "Matte Black",
+      "size": "XL",
+      "quantity": 2,
+      "unit_price": 225,
+      "created_at": "2026-11-11T14:49:33.913Z"
+    },
+    {
+      "id": "oi000026-0002-4000-8000-000000000262",
+      "order_id": "o0000026-0000-4000-8000-000000000026",
+      "variant_id": "v601-6666-4666-8666-666666666666",
+      "product_id": "p6666666-6666-4666-8666-666666666666",
+      "product_name": "Architectural Cargo Pant",
+      "category": "Bottoms",
+      "color_name": "Pitch Black",
+      "size": "S",
+      "quantity": 1,
+      "unit_price": 170,
+      "created_at": "2026-11-11T14:49:33.913Z"
+    },
+    {
+      "id": "oi000027-0000-4000-8000-000000000270",
+      "order_id": "o0000027-0000-4000-8000-000000000027",
+      "variant_id": "v306-3333-4333-8333-333333333333",
+      "product_id": "p3333333-3333-4333-8333-333333333333",
+      "product_name": "Purgatory Brutalist Gabardine Trench",
+      "category": "Outerwear",
+      "color_name": "Graphite",
+      "size": "M",
+      "quantity": 2,
+      "unit_price": 310,
+      "created_at": "2026-11-12T05:26:05.217Z"
+    },
+    {
+      "id": "oi000028-0000-4000-8000-000000000280",
+      "order_id": "o0000028-0000-4000-8000-000000000028",
+      "variant_id": "v405-4444-4444-8444-444444444444",
+      "product_id": "p4444444-4444-4444-8444-444444444444",
+      "product_name": "Vibram Commando Lug Minimalist Derby",
+      "category": "Footwear",
+      "color_name": "Raw Umber",
+      "size": "S",
+      "quantity": 1,
+      "unit_price": 225,
+      "created_at": "2026-11-12T20:02:36.521Z"
+    },
+    {
+      "id": "oi000028-0001-4000-8000-000000000281",
+      "order_id": "o0000028-0000-4000-8000-000000000028",
+      "variant_id": "v602-6666-4666-8666-666666666666",
+      "product_id": "p6666666-6666-4666-8666-666666666666",
+      "product_name": "Architectural Cargo Pant",
+      "category": "Bottoms",
+      "color_name": "Pitch Black",
+      "size": "M",
+      "quantity": 2,
+      "unit_price": 170,
+      "created_at": "2026-11-12T20:02:36.521Z"
+    },
+    {
+      "id": "oi000029-0000-4000-8000-000000000290",
+      "order_id": "o0000029-0000-4000-8000-000000000029",
+      "variant_id": "v504-5555-4555-8555-555555555555",
+      "product_id": "p5555555-5555-4555-8555-555555555555",
+      "product_name": "Seamless Heavy Gauge Merino Mockneck",
+      "category": "Tops",
+      "color_name": "Charcoal Marl",
+      "size": "XL",
+      "quantity": 2,
+      "unit_price": 125,
+      "created_at": "2026-11-13T10:39:07.826Z"
+    },
+    {
+      "id": "oi000029-0001-4000-8000-000000000291",
+      "order_id": "o0000029-0000-4000-8000-000000000029",
+      "variant_id": "v701-7777-4777-8777-777777777777",
+      "product_id": "p7777777-7777-4777-8777-777777777777",
+      "product_name": "Falling Flames Technical Overshirt",
+      "category": "Outerwear",
+      "color_name": "Mineral Taupe",
+      "size": "S",
+      "quantity": 1,
+      "unit_price": 210,
+      "created_at": "2026-11-13T10:39:07.826Z"
+    },
+    {
+      "id": "oi000029-0002-4000-8000-000000000292",
+      "order_id": "o0000029-0000-4000-8000-000000000029",
+      "variant_id": "v106-1111-4111-8111-111111111111",
+      "product_id": "p1111111-1111-4111-8111-111111111111",
+      "product_name": "Falling Flames Heavyweight Boxy Tee",
+      "category": "Tops",
+      "color_name": "Ash Chalk",
+      "size": "M",
+      "quantity": 2,
+      "unit_price": 75,
+      "created_at": "2026-11-13T10:39:07.826Z"
+    },
+    {
+      "id": "oi000030-0000-4000-8000-000000000300",
+      "order_id": "o0000030-0000-4000-8000-000000000030",
+      "variant_id": "v603-6666-4666-8666-666666666666",
+      "product_id": "p6666666-6666-4666-8666-666666666666",
+      "product_name": "Architectural Cargo Pant",
+      "category": "Bottoms",
+      "color_name": "Pitch Black",
+      "size": "L",
+      "quantity": 1,
+      "unit_price": 170,
+      "created_at": "2026-11-14T01:15:39.130Z"
+    },
+    {
+      "id": "oi000031-0000-4000-8000-000000000310",
+      "order_id": "o0000031-0000-4000-8000-000000000031",
+      "variant_id": "v702-7777-4777-8777-777777777777",
+      "product_id": "p7777777-7777-4777-8777-777777777777",
+      "product_name": "Falling Flames Technical Overshirt",
+      "category": "Outerwear",
+      "color_name": "Mineral Taupe",
+      "size": "M",
+      "quantity": 2,
+      "unit_price": 210,
+      "created_at": "2026-11-14T15:52:10.434Z"
+    },
+    {
+      "id": "oi000031-0001-4000-8000-000000000311",
+      "order_id": "o0000031-0000-4000-8000-000000000031",
+      "variant_id": "v107-1111-4111-8111-111111111111",
+      "product_id": "p1111111-1111-4111-8111-111111111111",
+      "product_name": "Falling Flames Heavyweight Boxy Tee",
+      "category": "Tops",
+      "color_name": "Ash Chalk",
+      "size": "L",
+      "quantity": 1,
+      "unit_price": 75,
+      "created_at": "2026-11-14T15:52:10.434Z"
+    },
+    {
+      "id": "oi000032-0000-4000-8000-000000000320",
+      "order_id": "o0000032-0000-4000-8000-000000000032",
+      "variant_id": "v101-1111-4111-8111-111111111111",
+      "product_id": "p1111111-1111-4111-8111-111111111111",
+      "product_name": "Falling Flames Heavyweight Boxy Tee",
+      "category": "Tops",
+      "color_name": "Washed Slate",
+      "size": "S",
+      "quantity": 1,
+      "unit_price": 75,
+      "created_at": "2026-11-15T06:28:41.739Z"
+    },
+    {
+      "id": "oi000032-0001-4000-8000-000000000321",
+      "order_id": "o0000032-0000-4000-8000-000000000032",
+      "variant_id": "v206-2222-4222-8222-222222222222",
+      "product_id": "p2222222-2222-4222-8222-222222222222",
+      "product_name": "Pleated Relaxed Studio Trouser",
+      "category": "Bottoms",
+      "color_name": "Sandrift Pumice",
+      "size": "M",
+      "quantity": 2,
+      "unit_price": 155,
+      "created_at": "2026-11-15T06:28:41.739Z"
+    },
+    {
+      "id": "oi000032-0002-4000-8000-000000000322",
+      "order_id": "o0000032-0000-4000-8000-000000000032",
+      "variant_id": "v403-4444-4444-8444-444444444444",
+      "product_id": "p4444444-4444-4444-8444-444444444444",
+      "product_name": "Vibram Commando Lug Minimalist Derby",
+      "category": "Footwear",
+      "color_name": "Matte Black",
+      "size": "L",
+      "quantity": 1,
+      "unit_price": 225,
+      "created_at": "2026-11-15T06:28:41.739Z"
+    },
+    {
+      "id": "oi000033-0000-4000-8000-000000000330",
+      "order_id": "o0000033-0000-4000-8000-000000000033",
+      "variant_id": "v108-1111-4111-8111-111111111111",
+      "product_id": "p1111111-1111-4111-8111-111111111111",
+      "product_name": "Falling Flames Heavyweight Boxy Tee",
+      "category": "Tops",
+      "color_name": "Ash Chalk",
+      "size": "XL",
+      "quantity": 2,
+      "unit_price": 75,
+      "created_at": "2026-11-15T21:05:13.043Z"
+    },
+    {
+      "id": "oi000034-0000-4000-8000-000000000340",
+      "order_id": "o0000034-0000-4000-8000-000000000034",
+      "variant_id": "v207-2222-4222-8222-222222222222",
+      "product_id": "p2222222-2222-4222-8222-222222222222",
+      "product_name": "Pleated Relaxed Studio Trouser",
+      "category": "Bottoms",
+      "color_name": "Sandrift Pumice",
+      "size": "L",
+      "quantity": 1,
+      "unit_price": 155,
+      "created_at": "2026-11-16T11:41:44.347Z"
+    },
+    {
+      "id": "oi000034-0001-4000-8000-000000000341",
+      "order_id": "o0000034-0000-4000-8000-000000000034",
+      "variant_id": "v404-4444-4444-8444-444444444444",
+      "product_id": "p4444444-4444-4444-8444-444444444444",
+      "product_name": "Vibram Commando Lug Minimalist Derby",
+      "category": "Footwear",
+      "color_name": "Matte Black",
+      "size": "XL",
+      "quantity": 2,
+      "unit_price": 225,
+      "created_at": "2026-11-16T11:41:44.347Z"
+    },
+    {
+      "id": "oi000035-0000-4000-8000-000000000350",
+      "order_id": "o0000035-0000-4000-8000-000000000035",
+      "variant_id": "v306-3333-4333-8333-333333333333",
+      "product_id": "p3333333-3333-4333-8333-333333333333",
+      "product_name": "Purgatory Brutalist Gabardine Trench",
+      "category": "Outerwear",
+      "color_name": "Graphite",
+      "size": "M",
+      "quantity": 2,
+      "unit_price": 310,
+      "created_at": "2026-11-17T02:18:15.652Z"
+    },
+    {
+      "id": "oi000035-0001-4000-8000-000000000351",
+      "order_id": "o0000035-0000-4000-8000-000000000035",
+      "variant_id": "v503-5555-4555-8555-555555555555",
+      "product_id": "p5555555-5555-4555-8555-555555555555",
+      "product_name": "Seamless Heavy Gauge Merino Mockneck",
+      "category": "Tops",
+      "color_name": "Charcoal Marl",
+      "size": "L",
+      "quantity": 1,
+      "unit_price": 125,
+      "created_at": "2026-11-17T02:18:15.652Z"
+    },
+    {
+      "id": "oi000035-0002-4000-8000-000000000352",
+      "order_id": "o0000035-0000-4000-8000-000000000035",
+      "variant_id": "v608-6666-4666-8666-666666666666",
+      "product_id": "p6666666-6666-4666-8666-666666666666",
+      "product_name": "Architectural Cargo Pant",
+      "category": "Bottoms",
+      "color_name": "Raw Pumice",
+      "size": "XL",
+      "quantity": 2,
+      "unit_price": 170,
+      "created_at": "2026-11-17T02:18:15.652Z"
+    },
+    {
+      "id": "oi000036-0000-4000-8000-000000000360",
+      "order_id": "o0000036-0000-4000-8000-000000000036",
+      "variant_id": "v405-4444-4444-8444-444444444444",
+      "product_id": "p4444444-4444-4444-8444-444444444444",
+      "product_name": "Vibram Commando Lug Minimalist Derby",
+      "category": "Footwear",
+      "color_name": "Raw Umber",
+      "size": "S",
+      "quantity": 1,
+      "unit_price": 225,
+      "created_at": "2026-11-17T16:54:46.956Z"
+    },
+    {
+      "id": "oi000037-0000-4000-8000-000000000370",
+      "order_id": "o0000037-0000-4000-8000-000000000037",
+      "variant_id": "v504-5555-4555-8555-555555555555",
+      "product_id": "p5555555-5555-4555-8555-555555555555",
+      "product_name": "Seamless Heavy Gauge Merino Mockneck",
+      "category": "Tops",
+      "color_name": "Charcoal Marl",
+      "size": "XL",
+      "quantity": 2,
+      "unit_price": 125,
+      "created_at": "2026-11-18T07:31:18.260Z"
+    },
+    {
+      "id": "oi000037-0001-4000-8000-000000000371",
+      "order_id": "o0000037-0000-4000-8000-000000000037",
+      "variant_id": "v701-7777-4777-8777-777777777777",
+      "product_id": "p7777777-7777-4777-8777-777777777777",
+      "product_name": "Falling Flames Technical Overshirt",
+      "category": "Outerwear",
+      "color_name": "Mineral Taupe",
+      "size": "S",
+      "quantity": 1,
+      "unit_price": 210,
+      "created_at": "2026-11-18T07:31:18.260Z"
+    },
+    {
+      "id": "oi000038-0000-4000-8000-000000000380",
+      "order_id": "o0000038-0000-4000-8000-000000000038",
+      "variant_id": "v603-6666-4666-8666-666666666666",
+      "product_id": "p6666666-6666-4666-8666-666666666666",
+      "product_name": "Architectural Cargo Pant",
+      "category": "Bottoms",
+      "color_name": "Pitch Black",
+      "size": "L",
+      "quantity": 1,
+      "unit_price": 170,
+      "created_at": "2026-11-18T22:07:49.565Z"
+    },
+    {
+      "id": "oi000038-0001-4000-8000-000000000381",
+      "order_id": "o0000038-0000-4000-8000-000000000038",
+      "variant_id": "v804-8888-4888-8888-888888888888",
+      "product_id": "p8888888-8888-4888-8888-888888888888",
+      "product_name": "Molded Bio-EVA Minimalist Mule",
+      "category": "Footwear",
+      "color_name": "Clay Cement",
+      "size": "XL",
+      "quantity": 2,
+      "unit_price": 90,
+      "created_at": "2026-11-18T22:07:49.565Z"
+    },
+    {
+      "id": "oi000038-0002-4000-8000-000000000382",
+      "order_id": "o0000038-0000-4000-8000-000000000038",
+      "variant_id": "v205-2222-4222-8222-222222222222",
+      "product_id": "p2222222-2222-4222-8222-222222222222",
+      "product_name": "Pleated Relaxed Studio Trouser",
+      "category": "Bottoms",
+      "color_name": "Sandrift Pumice",
+      "size": "S",
+      "quantity": 1,
+      "unit_price": 155,
+      "created_at": "2026-11-18T22:07:49.565Z"
+    },
+    {
+      "id": "oi000039-0000-4000-8000-000000000390",
+      "order_id": "o0000039-0000-4000-8000-000000000039",
+      "variant_id": "v702-7777-4777-8777-777777777777",
+      "product_id": "p7777777-7777-4777-8777-777777777777",
+      "product_name": "Falling Flames Technical Overshirt",
+      "category": "Outerwear",
+      "color_name": "Mineral Taupe",
+      "size": "M",
+      "quantity": 2,
+      "unit_price": 210,
+      "created_at": "2026-11-19T12:44:20.869Z"
+    },
+    {
+      "id": "oi000040-0000-4000-8000-000000000400",
+      "order_id": "o0000040-0000-4000-8000-000000000040",
+      "variant_id": "v101-1111-4111-8111-111111111111",
+      "product_id": "p1111111-1111-4111-8111-111111111111",
+      "product_name": "Falling Flames Heavyweight Boxy Tee",
+      "category": "Tops",
+      "color_name": "Washed Slate",
+      "size": "S",
+      "quantity": 1,
+      "unit_price": 75,
+      "created_at": "2026-11-20T03:20:52.173Z"
+    },
+    {
+      "id": "oi000040-0001-4000-8000-000000000401",
+      "order_id": "o0000040-0000-4000-8000-000000000040",
+      "variant_id": "v206-2222-4222-8222-222222222222",
+      "product_id": "p2222222-2222-4222-8222-222222222222",
+      "product_name": "Pleated Relaxed Studio Trouser",
+      "category": "Bottoms",
+      "color_name": "Sandrift Pumice",
+      "size": "M",
+      "quantity": 2,
+      "unit_price": 155,
+      "created_at": "2026-11-20T03:20:52.173Z"
+    },
+    {
+      "id": "oi000041-0000-4000-8000-000000000410",
+      "order_id": "o0000041-0000-4000-8000-000000000041",
+      "variant_id": "v108-1111-4111-8111-111111111111",
+      "product_id": "p1111111-1111-4111-8111-111111111111",
+      "product_name": "Falling Flames Heavyweight Boxy Tee",
+      "category": "Tops",
+      "color_name": "Ash Chalk",
+      "size": "XL",
+      "quantity": 2,
+      "unit_price": 75,
+      "created_at": "2026-11-20T17:57:23.478Z"
+    },
+    {
+      "id": "oi000041-0001-4000-8000-000000000411",
+      "order_id": "o0000041-0000-4000-8000-000000000041",
+      "variant_id": "v305-3333-4333-8333-333333333333",
+      "product_id": "p3333333-3333-4333-8333-333333333333",
+      "product_name": "Purgatory Brutalist Gabardine Trench",
+      "category": "Outerwear",
+      "color_name": "Graphite",
+      "size": "S",
+      "quantity": 1,
+      "unit_price": 310,
+      "created_at": "2026-11-20T17:57:23.478Z"
+    },
+    {
+      "id": "oi000041-0002-4000-8000-000000000412",
+      "order_id": "o0000041-0000-4000-8000-000000000041",
+      "variant_id": "v502-5555-4555-8555-555555555555",
+      "product_id": "p5555555-5555-4555-8555-555555555555",
+      "product_name": "Seamless Heavy Gauge Merino Mockneck",
+      "category": "Tops",
+      "color_name": "Charcoal Marl",
+      "size": "M",
+      "quantity": 2,
+      "unit_price": 125,
+      "created_at": "2026-11-20T17:57:23.478Z"
+    },
+    {
+      "id": "oi000042-0000-4000-8000-000000000420",
+      "order_id": "o0000042-0000-4000-8000-000000000042",
+      "variant_id": "v207-2222-4222-8222-222222222222",
+      "product_id": "p2222222-2222-4222-8222-222222222222",
+      "product_name": "Pleated Relaxed Studio Trouser",
+      "category": "Bottoms",
+      "color_name": "Sandrift Pumice",
+      "size": "L",
+      "quantity": 1,
+      "unit_price": 155,
+      "created_at": "2026-11-21T08:33:54.782Z"
+    },
+    {
+      "id": "oi000043-0000-4000-8000-000000000430",
+      "order_id": "o0000043-0000-4000-8000-000000000043",
+      "variant_id": "v306-3333-4333-8333-333333333333",
+      "product_id": "p3333333-3333-4333-8333-333333333333",
+      "product_name": "Purgatory Brutalist Gabardine Trench",
+      "category": "Outerwear",
+      "color_name": "Graphite",
+      "size": "M",
+      "quantity": 2,
+      "unit_price": 310,
+      "created_at": "2026-11-21T23:10:26.086Z"
+    },
+    {
+      "id": "oi000043-0001-4000-8000-000000000431",
+      "order_id": "o0000043-0000-4000-8000-000000000043",
+      "variant_id": "v503-5555-4555-8555-555555555555",
+      "product_id": "p5555555-5555-4555-8555-555555555555",
+      "product_name": "Seamless Heavy Gauge Merino Mockneck",
+      "category": "Tops",
+      "color_name": "Charcoal Marl",
+      "size": "L",
+      "quantity": 1,
+      "unit_price": 125,
+      "created_at": "2026-11-21T23:10:26.086Z"
+    },
+    {
+      "id": "oi000044-0000-4000-8000-000000000440",
+      "order_id": "o0000044-0000-4000-8000-000000000044",
+      "variant_id": "v405-4444-4444-8444-444444444444",
+      "product_id": "p4444444-4444-4444-8444-444444444444",
+      "product_name": "Vibram Commando Lug Minimalist Derby",
+      "category": "Footwear",
+      "color_name": "Raw Umber",
+      "size": "S",
+      "quantity": 1,
+      "unit_price": 225,
+      "created_at": "2026-11-22T13:46:57.391Z"
+    },
+    {
+      "id": "oi000044-0001-4000-8000-000000000441",
+      "order_id": "o0000044-0000-4000-8000-000000000044",
+      "variant_id": "v602-6666-4666-8666-666666666666",
+      "product_id": "p6666666-6666-4666-8666-666666666666",
+      "product_name": "Architectural Cargo Pant",
+      "category": "Bottoms",
+      "color_name": "Pitch Black",
+      "size": "M",
+      "quantity": 2,
+      "unit_price": 170,
+      "created_at": "2026-11-22T13:46:57.391Z"
+    },
+    {
+      "id": "oi000044-0002-4000-8000-000000000442",
+      "order_id": "o0000044-0000-4000-8000-000000000044",
+      "variant_id": "v803-8888-4888-8888-888888888888",
+      "product_id": "p8888888-8888-4888-8888-888888888888",
+      "product_name": "Molded Bio-EVA Minimalist Mule",
+      "category": "Footwear",
+      "color_name": "Clay Cement",
+      "size": "L",
+      "quantity": 1,
+      "unit_price": 90,
+      "created_at": "2026-11-22T13:46:57.391Z"
+    },
+    {
+      "id": "oi000045-0000-4000-8000-000000000450",
+      "order_id": "o0000045-0000-4000-8000-000000000045",
+      "variant_id": "v504-5555-4555-8555-555555555555",
+      "product_id": "p5555555-5555-4555-8555-555555555555",
+      "product_name": "Seamless Heavy Gauge Merino Mockneck",
+      "category": "Tops",
+      "color_name": "Charcoal Marl",
+      "size": "XL",
+      "quantity": 2,
+      "unit_price": 125,
+      "created_at": "2026-11-23T04:23:28.695Z"
+    },
+    {
+      "id": "oi000046-0000-4000-8000-000000000460",
+      "order_id": "o0000046-0000-4000-8000-000000000046",
+      "variant_id": "v603-6666-4666-8666-666666666666",
+      "product_id": "p6666666-6666-4666-8666-666666666666",
+      "product_name": "Architectural Cargo Pant",
+      "category": "Bottoms",
+      "color_name": "Pitch Black",
+      "size": "L",
+      "quantity": 1,
+      "unit_price": 170,
+      "created_at": "2026-11-23T19:00:00.000Z"
+    },
+    {
+      "id": "oi000046-0001-4000-8000-000000000461",
+      "order_id": "o0000046-0000-4000-8000-000000000046",
+      "variant_id": "v804-8888-4888-8888-888888888888",
+      "product_id": "p8888888-8888-4888-8888-888888888888",
+      "product_name": "Molded Bio-EVA Minimalist Mule",
+      "category": "Footwear",
+      "color_name": "Clay Cement",
+      "size": "XL",
+      "quantity": 2,
+      "unit_price": 90,
+      "created_at": "2026-11-23T19:00:00.000Z"
+    }
+  ]
+}
