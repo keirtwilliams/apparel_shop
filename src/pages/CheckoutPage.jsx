@@ -1,11 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { CreditCard, DeviceMobile, Money, ShieldCheck, ArrowLeft, CheckCircle, User, Sparkle } from '@phosphor-icons/react';
+import { CreditCard, DeviceMobile, Money, ShieldCheck, ArrowLeft, CheckCircle, User, Sparkle, Tag, X } from '@phosphor-icons/react';
 import { useStore } from '../context/StoreContext';
+import { formatCurrency } from '../lib/pricing';
 
 export default function CheckoutPage() {
   const navigate = useNavigate();
-  const { cart, cartSubtotal, placeOrder, clearCart, currentUser, setIsAccountDrawerOpen } = useStore();
+  const {
+    cart,
+    cartSubtotal,
+    cartFinalTotal,
+    couponDiscountAmount,
+    appliedCoupon,
+    applyCouponCode,
+    removeCouponCode,
+    placeOrder,
+    clearCart,
+    currentUser,
+    setIsAccountDrawerOpen
+  } = useStore();
+
+  const [couponInput, setCouponInput] = useState('');
+  const [couponError, setCouponError] = useState('');
+  const [couponSuccess, setCouponSuccess] = useState('');
 
   const [formData, setFormData] = useState({
     name: currentUser?.full_name || '',
@@ -58,8 +75,22 @@ export default function CheckoutPage() {
     );
   }
 
-  const shippingCost = cartSubtotal >= 150 ? 0 : 15;
-  const grandTotal = cartSubtotal + shippingCost;
+  const shippingCost = cartFinalTotal >= 150 ? 0 : 15;
+  const grandTotal = cartFinalTotal + shippingCost;
+
+  const handleApplyCoupon = (e) => {
+    e.preventDefault();
+    if (!couponInput.trim()) return;
+    setCouponError('');
+    setCouponSuccess('');
+    const res = applyCouponCode(couponInput);
+    if (res.success) {
+      setCouponSuccess(res.message);
+      setCouponInput('');
+    } else {
+      setCouponError(res.message);
+    }
+  };
 
   const handleChange = (e) => {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
@@ -269,11 +300,10 @@ export default function CheckoutPage() {
                 <button
                   type="button"
                   onClick={() => setPaymentMethod('card')}
-                  className={`py-3 px-3 rounded-tight border text-xs font-medium flex flex-col items-center gap-1.5 transition-all min-h-[64px] ${
-                    paymentMethod === 'card'
+                  className={`py-3 px-3 rounded-tight border text-xs font-medium flex flex-col items-center gap-1.5 transition-all min-h-[64px] ${paymentMethod === 'card'
                       ? 'bg-surface border-primary text-primary ring-1 ring-primary'
                       : 'bg-canvas border-border text-muted hover:border-primary'
-                  }`}
+                    }`}
                 >
                   <CreditCard size={18} />
                   <span>Credit Card</span>
@@ -282,11 +312,10 @@ export default function CheckoutPage() {
                 <button
                   type="button"
                   onClick={() => setPaymentMethod('gcash')}
-                  className={`py-3 px-3 rounded-tight border text-xs font-medium flex flex-col items-center gap-1.5 transition-all min-h-[64px] ${
-                    paymentMethod === 'gcash'
+                  className={`py-3 px-3 rounded-tight border text-xs font-medium flex flex-col items-center gap-1.5 transition-all min-h-[64px] ${paymentMethod === 'gcash'
                       ? 'bg-surface border-primary text-primary ring-1 ring-primary'
                       : 'bg-canvas border-border text-muted hover:border-primary'
-                  }`}
+                    }`}
                 >
                   <DeviceMobile size={18} />
                   <span>GCash</span>
@@ -295,11 +324,10 @@ export default function CheckoutPage() {
                 <button
                   type="button"
                   onClick={() => setPaymentMethod('cod')}
-                  className={`py-3 px-3 rounded-tight border text-xs font-medium flex flex-col items-center gap-1.5 transition-all min-h-[64px] ${
-                    paymentMethod === 'cod'
+                  className={`py-3 px-3 rounded-tight border text-xs font-medium flex flex-col items-center gap-1.5 transition-all min-h-[64px] ${paymentMethod === 'cod'
                       ? 'bg-surface border-primary text-primary ring-1 ring-primary'
                       : 'bg-canvas border-border text-muted hover:border-primary'
-                  }`}
+                    }`}
                 >
                   <Money size={18} />
                   <span>Cash on Delivery</span>
@@ -423,31 +451,83 @@ export default function CheckoutPage() {
 
             {/* Calculations */}
             <div className="pt-4 border-t border-border space-y-2 text-xs">
+              {/* Promo Code Input on Checkout */}
+              <div className="pb-3 border-b border-border">
+                {appliedCoupon ? (
+                  <div className="flex items-center justify-between bg-surface border border-border px-3 py-2 rounded-tight">
+                    <div className="flex items-center gap-2 text-xs">
+                      <Tag size={14} className="text-primary" weight="bold" />
+                      <span className="font-mono font-bold text-primary">{appliedCoupon.code}</span>
+                      <span className="text-muted text-[11px]">({appliedCoupon.discountPercent}% OFF)</span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={removeCouponCode}
+                      className="text-xs text-muted hover:text-danger p-1"
+                      title="Remove coupon"
+                    >
+                      <X size={13} />
+                    </button>
+                  </div>
+                ) : (
+                  <form onSubmit={handleApplyCoupon} className="space-y-1.5">
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="text"
+                        value={couponInput}
+                        onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
+                        placeholder="PROMO CODE"
+                        className="flex-1 bg-surface border border-border text-xs px-3 py-2 rounded-tight uppercase font-mono tracking-wider focus:outline-none focus:border-primary placeholder:text-muted/50"
+                      />
+                      <button
+                        type="submit"
+                        disabled={!couponInput.trim()}
+                        className="px-3 py-2 bg-primary text-canvas text-xs font-semibold uppercase tracking-wider rounded-tight hover:opacity-90 disabled:opacity-40 transition-opacity"
+                      >
+                        Apply
+                      </button>
+                    </div>
+                    {couponError && <p className="text-[10px] text-danger">{couponError}</p>}
+                    {couponSuccess && <p className="text-[10px] text-success">{couponSuccess}</p>}
+                  </form>
+                )}
+              </div>
+
               <div className="flex items-center justify-between text-muted">
                 <span>Garment Subtotal</span>
                 <span className="font-medium text-primary tabular-nums">
-                  ${cartSubtotal.toFixed(2)}
+                  {formatCurrency(cartSubtotal)}
                 </span>
               </div>
+
+              {couponDiscountAmount > 0 && (
+                <div className="flex items-center justify-between text-[#C43C30]">
+                  <span>Promo Discount ({appliedCoupon?.code})</span>
+                  <span className="font-medium tabular-nums">
+                    −{formatCurrency(couponDiscountAmount)}
+                  </span>
+                </div>
+              )}
+
               <div className="flex items-center justify-between text-muted">
                 <span>Express Courier Shipping</span>
                 <span className="tabular-nums">
                   {shippingCost === 0 ? (
                     <span className="text-success font-medium">Free</span>
                   ) : (
-                    `$${shippingCost.toFixed(2)}`
+                    formatCurrency(shippingCost)
                   )}
                 </span>
               </div>
               <div className="flex items-center justify-between text-muted">
                 <span>Sales Tax (Included)</span>
-                <span className="font-medium text-primary tabular-nums">$0.00</span>
+                <span className="font-medium text-primary tabular-nums">{formatCurrency(0)}</span>
               </div>
 
               <div className="pt-3 border-t border-border flex items-center justify-between text-sm">
                 <span className="font-semibold text-primary">Total Payable</span>
                 <span className="text-base font-bold text-primary tabular-nums">
-                  ${grandTotal.toFixed(2)}
+                  {formatCurrency(grandTotal)}
                 </span>
               </div>
             </div>

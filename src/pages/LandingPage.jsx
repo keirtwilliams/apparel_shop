@@ -22,15 +22,13 @@ export default function LandingPage() {
   const categoryTiles = [
     {
       name: 'Heavyweight Tops',
-      code: 'DIV. 01',
       category: 'Tops',
-      desc: '290 GSM dry-touch combed cottons & drop-shoulder geometry',
-      image: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=800&q=80',
+      desc: '240 GSM dry-touch combed cottons & boxy architectural cuts',
+      image: '/products/walk-with-god-front.png',
       units: 'Limited 50 Units'
     },
     {
       name: 'Tactical Bottoms',
-      code: 'DIV. 02',
       category: 'Bottoms',
       desc: 'Deep pleats, relaxed studio drape & Japanese tropical wools',
       image: 'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&w=800&q=80',
@@ -38,7 +36,6 @@ export default function LandingPage() {
     },
     {
       name: 'Transitional Outerwear',
-      code: 'DIV. 03',
       category: 'Outerwear',
       desc: 'Bonded DWR gabardine overshirts & brutalist trench coats',
       image: 'https://images.unsplash.com/photo-1544923246-77307dd654cb?auto=format&fit=crop&w=800&q=80',
@@ -46,7 +43,6 @@ export default function LandingPage() {
     },
     {
       name: 'Sculptural Footwear',
-      code: 'DIV. 04',
       category: 'Footwear',
       desc: 'Goodyear-welted Vibram lug derbies & bio-EVA minimalist mules',
       image: 'https://images.unsplash.com/photo-1533867617858-e7b97e060509?auto=format&fit=crop&w=800&q=80',
@@ -58,47 +54,41 @@ export default function LandingPage() {
     <div className="min-h-screen bg-canvas text-primary selection:bg-primary selection:text-canvas font-sans">
       {/* 1. CINEMATIC LOOKBOOK HERO (Full Viewport, High-Impact Artwork, Cinematic Tagline, Zero Paragraph Clutter) */}
       <section className="relative min-h-[calc(100vh-5rem)] bg-[#0C0C0B] text-[#FAF9F7] flex flex-col justify-between items-center px-4 sm:px-6 lg:px-8 py-10 sm:py-16 overflow-hidden border-b border-[#242422]">
-        {/* Atmospheric Ambient Lighting / Ember Gradient */}
+        {/* Atmospheric Ambient Lighting / Ember Gradient (Static, No Pulsing) */}
         <div
           className="absolute inset-0 opacity-25 pointer-events-none bg-[radial-gradient(circle_at_50%_45%,#C43C30_0%,transparent_60%)]"
           aria-hidden="true"
         />
 
-
-
-        {/* Center: The Iconic Artwork + Wordmark + Cinematic Tagline */}
-        <div className="relative z-10 flex flex-col items-center text-center my-auto py-8 max-w-4xl mx-auto">
-          {/* Authentic Falling Flames Artwork as Central Campaign Motif (Transparent Floating Silhouette) */}
+        {/* Center: The Iconic Artwork + Wordmark + Cinematic Tagline (Animated Entrance) */}
+        <div className="relative z-10 flex flex-col items-center text-center my-auto py-8 max-w-4xl mx-auto animate-hero-fade">
+          {/* Authentic Falling Flames Artwork as Central Campaign Motif with Ethereal Floating Motion */}
           <div className="relative mb-6 group cursor-pointer">
-            <div className="w-40 sm:w-48 md:w-60 h-auto flex items-center justify-center transition-transform duration-500 group-hover:scale-105">
+            <div className="w-40 sm:w-48 md:w-60 h-auto flex items-center justify-center transition-transform duration-500 group-hover:scale-105 animate-float">
               <img
                 src={brandConfig.campaignArt}
                 alt="Falling Flames Campaign Artwork"
-                className="w-full h-auto object-contain drop-shadow-[0_4px_24px_rgba(255,255,255,0.18)] filter brightness-110"
+                className="w-full h-auto object-contain drop-shadow-[0_4px_28px_rgba(255,255,255,0.22)] filter brightness-110"
               />
             </div>
           </div>
 
-          {/* Shaded Purgatory Wordmark (Pure White Shaded Logo on Dark Cinematic Hero) */}
+          {/* Pure White Purgatory Wordmark (Clean & Crisp, No Pulsating) */}
           <div className="mb-4">
             <img
               src={brandConfig.logoName}
               alt="Purgatory"
-              className="h-16 sm:h-20 md:h-24 w-auto object-contain transition-transform duration-300 hover:scale-[1.01] drop-shadow-[0_2px_16px_rgba(255,255,255,0.25)]"
+              className="h-16 sm:h-20 md:h-24 w-auto object-contain transition-transform duration-300 hover:scale-[1.02] drop-shadow-[0_2px_14px_rgba(255,255,255,0.25)]"
             />
           </div>
 
-          {/* Cinematic High-Fashion Taglines */}
-          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold uppercase tracking-tight text-[#FAF9F7] max-w-2xl font-sans leading-tight">
+          {/* Static Headline Typography with Subtle Continuous Liquid Light Shimmer */}
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold uppercase tracking-tight text-[#FAF9F7] max-w-2xl font-sans leading-tight animate-text-shimmer">
             Raw Decay. Permanent Architecture.
           </h1>
 
           <p className="text-xs sm:text-sm font-mono uppercase tracking-[0.25em] text-[#A8A6A0] mt-2">
             “ Where the flames fall, the form remains. ”
-          </p>
-
-          <p className="text-[11px] font-mono uppercase tracking-widest text-[#82807A] mt-1">
-            290 GSM Heavyweight Garments — Limited 50-Piece Serial
           </p>
 
           {/* Single High-Contrast CTA Button (Min 44px Tap Target) */}
@@ -255,7 +245,7 @@ export default function LandingPage() {
             <Link
               key={tile.name}
               to={`/catalogue?category=${tile.category}`}
-              className="group relative bg-surface border border-border rounded-card overflow-hidden flex flex-col hover:border-primary transition-all duration-300"
+              className="group relative bg-surface border border-border rounded-card overflow-hidden flex flex-col hover:border-primary transition-all duration-300 shadow-sm hover:shadow-md"
             >
               {/* Category Image */}
               <div className="aspect-[4/5] overflow-hidden bg-surface relative">
@@ -264,30 +254,27 @@ export default function LandingPage() {
                   alt={tile.name}
                   className="w-full h-full object-cover grayscale contrast-110 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500 ease-out"
                 />
-                <div className="absolute top-3 left-3 bg-[#0C0C0B]/90 text-[#FAF9F7] text-[10px] font-mono px-2 py-0.5 rounded-input border border-[#242422]">
-                  {tile.code}
-                </div>
-                <div className="absolute top-3 right-3 bg-[#FAF9F7]/90 text-primary text-[10px] font-mono px-2 py-0.5 rounded-input border border-border">
-                  {tile.units}
-                </div>
-              </div>
-
-              {/* Title & Description */}
-              <div className="p-5 flex flex-col justify-between flex-1 bg-canvas">
-                <div>
-                  <h3 className="text-sm font-bold uppercase tracking-wider text-primary group-hover:underline underline-offset-4">
-                    {tile.name}
-                  </h3>
-                  <p className="text-xs text-muted mt-1 leading-relaxed">
-                    {tile.desc}
-                  </p>
+                  <div className="absolute top-3 right-3 bg-[#0C0C0B]/90 backdrop-blur-md text-[#FAF9F7] text-[10px] font-sans font-semibold tracking-wider uppercase px-2.5 py-1 rounded-tight border border-white/10 shadow-sm">
+                    {tile.units}
+                  </div>
                 </div>
 
-                <div className="mt-4 pt-3 border-t border-border flex items-center justify-between text-xs font-mono font-semibold text-primary">
-                  <span>ENTER DIVISION</span>
-                  <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform" />
+                {/* Title & Description */}
+                <div className="p-5 flex flex-col justify-between flex-1 bg-canvas">
+                  <div>
+                    <h3 className="text-sm font-bold uppercase tracking-wider text-primary group-hover:underline underline-offset-4">
+                      {tile.name}
+                    </h3>
+                    <p className="text-xs text-muted mt-1 leading-relaxed">
+                      {tile.desc}
+                    </p>
+                  </div>
+
+                  <div className="mt-4 pt-3 border-t border-border flex items-center justify-between text-xs font-mono font-semibold text-primary">
+                    <span>EXPLORE CATEGORY</span>
+                    <ArrowRight size={13} className="group-hover:translate-x-1.5 transition-transform duration-200" />
+                  </div>
                 </div>
-              </div>
             </Link>
           ))}
         </div>
@@ -312,11 +299,10 @@ export default function LandingPage() {
                 key={tab}
                 type="button"
                 onClick={() => setActiveTab(tab)}
-                className={`px-3 py-1.5 text-xs font-semibold uppercase tracking-wider rounded-tight border transition-colors ${
-                  activeTab === tab
-                    ? 'bg-primary text-canvas border-primary'
-                    : 'bg-surface text-muted border-border hover:text-primary hover:border-primary/50'
-                }`}
+                className={`px-3 py-1.5 text-xs font-semibold uppercase tracking-wider rounded-tight border transition-colors ${activeTab === tab
+                  ? 'bg-primary text-canvas border-primary'
+                  : 'bg-surface text-muted border-border hover:text-primary hover:border-primary/50'
+                  }`}
               >
                 {tab}
               </button>

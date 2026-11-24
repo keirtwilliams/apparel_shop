@@ -1,6 +1,11 @@
 import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import initialData from '../data/initialData.json';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
+import {
+  DEFAULT_PROMO_CODES,
+  calculateEffectiveProductPrice,
+  validateCoupon
+} from '../lib/pricing';
 
 const StoreContext = createContext(null);
 
@@ -103,6 +108,55 @@ export const StoreProvider = ({ children }) => {
   const [role, setRole] = useState(() => {
     return localStorage.getItem('purgatory_role') || 'customer';
   });
+
+  // Storewide / Category Flash Sale Configuration (10% to 90% off)
+  const [saleConfig, setSaleConfig] = useState(() => {
+    const saved = localStorage.getItem('purgatory_sale_config');
+    if (saved) {
+      try { return JSON.parse(saved); } catch (e) { /* ignore */ }
+    }
+    return {
+      active: false,
+      percentage: 20, // default 20%
+      categoryTarget: 'All', // 'All' | 'Tops' | 'Bottoms' | 'Outerwear' | 'Footwear'
+      bannerText: 'ARCHIVE SALE — UP TO 90% OFF SELECT PIECES'
+    };
+  });
+
+  // Applied Coupon Code State
+  const [appliedCoupon, setAppliedCoupon] = useState(() => {
+    const saved = localStorage.getItem('purgatory_applied_coupon');
+    if (saved) {
+      try { return JSON.parse(saved); } catch (e) { /* ignore */ }
+    }
+    return null;
+  });
+
+  // Available Promotional Coupons Registry (can be customized via Admin)
+  const [coupons, setCoupons] = useState(() => {
+    const saved = localStorage.getItem('purgatory_coupons');
+    if (saved) {
+      try { return JSON.parse(saved); } catch (e) { /* ignore */ }
+    }
+    return DEFAULT_PROMO_CODES;
+  });
+
+  // Sync Sale & Promo state to localStorage
+  useEffect(() => {
+    localStorage.setItem('purgatory_sale_config', JSON.stringify(saleConfig));
+  }, [saleConfig]);
+
+  useEffect(() => {
+    if (appliedCoupon) {
+      localStorage.setItem('purgatory_applied_coupon', JSON.stringify(appliedCoupon));
+    } else {
+      localStorage.removeItem('purgatory_applied_coupon');
+    }
+  }, [appliedCoupon]);
+
+  useEffect(() => {
+    localStorage.setItem('purgatory_coupons', JSON.stringify(coupons));
+  }, [coupons]);
 
   // Sync to localStorage
   useEffect(() => {
@@ -281,6 +335,9 @@ export const StoreProvider = ({ children }) => {
 
   // --- CART ACTIONS ---
   const addToCart = (product, variant, quantity = 1) => {
+    // Determine effective selling price considering product markdowns or storewide sale
+    const { currentPrice, originalPrice, isOnSale } = calculateEffectiveProductPrice(product, saleConfig);
+
     setCart(prevCart => {
       const existingIndex = prevCart.findIndex(
         item => item.productId === product.id && item.variantId === variant.id
@@ -306,7 +363,9 @@ export const StoreProvider = ({ children }) => {
             colorName: variant.color_name,
             colorHex: variant.color_hex,
             size: variant.size,
-            unitPrice: product.price,
+            unitPrice: currentPrice,
+            originalUnitPrice: originalPrice,
+            isOnSale,
             stockCount: variant.stock_count,
             quantity: Math.min(quantity, variant.stock_count)
           }
@@ -371,13 +430,40 @@ export const StoreProvider = ({ children }) => {
     setCart([]);
   };
 
+  // Coupon Actions
+  const applyCouponCode = (code) => {
+    const validated = validateCoupon(code, coupons);
+    if (!validated) {
+      return { success: false, message: 'Invalid or expired promotional code.' };
+    }
+    setAppliedCoupon(validated);
+    return { success: true, message: `Applied ${validated.code} (${validated.discountPercent}% OFF)` };
+  };
+
+  const removeCouponCode = () => {
+    setAppliedCoupon(null);
+  };
+
   const cartTotalCount = useMemo(() => {
     return cart.reduce((total, item) => total + item.quantity, 0);
   }, [cart]);
 
+  // Raw Subtotal from Cart Items
   const cartSubtotal = useMemo(() => {
     return cart.reduce((total, item) => total + item.unitPrice * item.quantity, 0);
   }, [cart]);
+
+  // Coupon Discount Amount in Currency
+  const couponDiscountAmount = useMemo(() => {
+    if (!appliedCoupon || !appliedCoupon.discountPercent) return 0;
+    const discount = (cartSubtotal * appliedCoupon.discountPercent) / 100;
+    return Math.round(discount * 100) / 100;
+  }, [cartSubtotal, appliedCoupon]);
+
+  // Final Order Total after Coupon
+  const cartFinalTotal = useMemo(() => {
+    return Math.max(0, cartSubtotal - couponDiscountAmount);
+  }, [cartSubtotal, couponDiscountAmount]);
 
   // --- CHECKOUT & ORDER CREATION ---
   const placeOrder = async ({ customerName, customerEmail, shippingAddress, paymentMethod }) => {
@@ -407,7 +493,9 @@ export const StoreProvider = ({ children }) => {
       payment_method: paymentMethod,
       payment_status: 'paid',
       status: 'pending',
-      total_amount: cartSubtotal,
+      total_amount: cartFinalTotal,
+      coupon_code: appliedCoupon ? appliedCoupon.code : null,
+      discount_amount: couponDiscountAmount,
       created_at: createdAt,
       items: orderItems
     };
@@ -608,6 +696,15 @@ export const StoreProvider = ({ children }) => {
         clearCart,
         cartTotalCount,
         cartSubtotal,
+        cartFinalTotal,
+        couponDiscountAmount,
+        appliedCoupon,
+        applyCouponCode,
+        removeCouponCode,
+        coupons,
+        setCoupons,
+        saleConfig,
+        setSaleConfig,
         placeOrder,
         refundOrder,
         updateOrderStatus,

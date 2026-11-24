@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { X, Plus, Minus, Trash, ArrowRight, Bag } from '@phosphor-icons/react';
+import { X, Plus, Minus, Trash, ArrowRight, Bag, Tag } from '@phosphor-icons/react';
 import { useStore } from '../context/StoreContext';
+import { resolveProductImageUrl } from '../lib/supabase';
+import { formatCurrency } from '../lib/pricing';
 
 export default function CartDrawer() {
   const {
@@ -12,11 +14,34 @@ export default function CartDrawer() {
     updateCartItemSize,
     removeFromCart,
     cartSubtotal,
+    cartFinalTotal,
+    couponDiscountAmount,
+    appliedCoupon,
+    applyCouponCode,
+    removeCouponCode,
     cartTotalCount,
     products
   } = useStore();
 
+  const [couponInput, setCouponInput] = useState('');
+  const [couponError, setCouponError] = useState('');
+  const [couponSuccess, setCouponSuccess] = useState('');
+
   if (!isCartOpen) return null;
+
+  const handleApplyCoupon = (e) => {
+    e.preventDefault();
+    if (!couponInput.trim()) return;
+    setCouponError('');
+    setCouponSuccess('');
+    const res = applyCouponCode(couponInput);
+    if (res.success) {
+      setCouponSuccess(res.message);
+      setCouponInput('');
+    } else {
+      setCouponError(res.message);
+    }
+  };
 
   const freeShippingThreshold = 150;
   const progressToFreeShipping = Math.min(100, (cartSubtotal / freeShippingThreshold) * 100);
@@ -106,7 +131,7 @@ export default function CartDrawer() {
                     {/* 4:5 Thumbnail */}
                     <div className="w-20 aspect-[4/5] bg-surface rounded-input overflow-hidden border border-border shrink-0">
                       <img
-                        src={item.image}
+                        src={resolveProductImageUrl(item.image)}
                         alt={item.productName}
                         className="w-full h-full object-cover object-center"
                       />
@@ -199,12 +224,64 @@ export default function CartDrawer() {
           {/* Footer Checkout Summary */}
           {cart.length > 0 && (
             <div className="p-5 bg-surface border-t border-border space-y-3">
+              {/* Promo Code Input */}
+              <div className="pt-1 pb-2 border-b border-border">
+                {appliedCoupon ? (
+                  <div className="flex items-center justify-between bg-canvas border border-border px-3 py-2 rounded-tight">
+                    <div className="flex items-center gap-2 text-xs">
+                      <Tag size={14} className="text-primary" weight="bold" />
+                      <span className="font-mono font-bold text-primary">{appliedCoupon.code}</span>
+                      <span className="text-muted text-[11px]">({appliedCoupon.discountPercent}% OFF)</span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={removeCouponCode}
+                      className="text-xs text-muted hover:text-danger p-1"
+                      title="Remove coupon"
+                    >
+                      <X size={13} />
+                    </button>
+                  </div>
+                ) : (
+                  <form onSubmit={handleApplyCoupon} className="space-y-1.5">
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="text"
+                        value={couponInput}
+                        onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
+                        placeholder="PROMO CODE (e.g. FLAMES20)"
+                        className="flex-1 bg-canvas border border-border text-xs px-3 py-2 rounded-tight uppercase font-mono tracking-wider focus:outline-none focus:border-primary placeholder:text-muted/50"
+                      />
+                      <button
+                        type="submit"
+                        disabled={!couponInput.trim()}
+                        className="px-3 py-2 bg-primary text-canvas text-xs font-semibold uppercase tracking-wider rounded-tight hover:opacity-90 disabled:opacity-40 transition-opacity"
+                      >
+                        Apply
+                      </button>
+                    </div>
+                    {couponError && <p className="text-[10px] text-danger">{couponError}</p>}
+                    {couponSuccess && <p className="text-[10px] text-success">{couponSuccess}</p>}
+                  </form>
+                )}
+              </div>
+
               <div className="flex items-center justify-between text-xs text-muted">
                 <span>Subtotal</span>
                 <span className="font-medium text-primary tabular-nums">
-                  ${cartSubtotal.toFixed(2)}
+                  {formatCurrency(cartSubtotal)}
                 </span>
               </div>
+
+              {couponDiscountAmount > 0 && (
+                <div className="flex items-center justify-between text-xs text-[#C43C30]">
+                  <span>Discount ({appliedCoupon?.code})</span>
+                  <span className="font-medium tabular-nums">
+                    −{formatCurrency(couponDiscountAmount)}
+                  </span>
+                </div>
+              )}
+
               <div className="flex items-center justify-between text-xs text-muted">
                 <span>Shipping</span>
                 <span>
@@ -218,7 +295,7 @@ export default function CartDrawer() {
               <div className="pt-2 border-t border-border flex items-center justify-between text-sm">
                 <span className="font-semibold text-primary">Estimated Total</span>
                 <span className="font-semibold text-primary tabular-nums">
-                  ${cartSubtotal.toFixed(2)}
+                  {formatCurrency(cartFinalTotal)}
                 </span>
               </div>
 

@@ -5,7 +5,7 @@ import { useStore } from '../context/StoreContext';
 import { brandConfig } from '../config/brand';
 
 export default function Header() {
-  const { cartTotalCount, setIsCartOpen, currentUser, setIsAccountDrawerOpen } = useStore();
+  const { cartTotalCount, setIsCartOpen, currentUser, setIsAccountDrawerOpen, saleConfig } = useStore();
   const location = useLocation();
 
   const navLinks = [
@@ -16,14 +16,26 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-40 bg-canvas/95 backdrop-blur-md border-b border-border">
-      {/* High-Fashion Editorial Top Ticker */}
-      <div className="bg-primary text-canvas text-[11px] uppercase tracking-widest py-2 px-4 text-center font-mono flex items-center justify-center gap-3">
-        <span className="font-semibold tracking-widest">PURGATORY WORLDWIDE</span>
-        <span className="opacity-30">·</span>
-        <span className="tracking-wider">COLLECTION 01: FALLING FLAMES</span>
-        <span className="opacity-30 hidden sm:inline">·</span>
-        <span className="hidden sm:inline text-canvas/80 tracking-wider">COMPLIMENTARY EXPRESS GLOBAL SHIPPING</span>
-      </div>
+      {/* High-Fashion Editorial Top Ticker / Dynamic Flash Sale Banner */}
+      {saleConfig?.active ? (
+        <div className="bg-[#C43C30] text-[#FAF9F7] text-[11px] uppercase tracking-widest py-2 px-4 text-center font-mono flex items-center justify-center gap-3">
+          <span className="font-bold tracking-widest">FLASH ARCHIVE DROP</span>
+          <span className="opacity-40">·</span>
+          <span className="font-semibold tracking-wider">
+            {saleConfig.percentage}% OFF {saleConfig.categoryTarget !== 'All' ? `${saleConfig.categoryTarget.toUpperCase()} ` : 'STOREWIDE '}AUTOMATICALLY APPLIED
+          </span>
+          <span className="opacity-40 hidden sm:inline">·</span>
+          <span className="hidden sm:inline tracking-wider">USE CODE 'PURGATORY10' FOR EXTRA 10%</span>
+        </div>
+      ) : (
+        <div className="bg-primary text-canvas text-[11px] uppercase tracking-widest py-2 px-4 text-center font-mono flex items-center justify-center gap-3">
+          <span className="font-semibold tracking-widest">PURGATORY WORLDWIDE</span>
+          <span className="opacity-30">·</span>
+          <span className="tracking-wider">COLLECTION 01: FALLING FLAMES</span>
+          <span className="opacity-30 hidden sm:inline">·</span>
+          <span className="hidden sm:inline text-canvas/80 tracking-wider">COMPLIMENTARY EXPRESS GLOBAL SHIPPING</span>
+        </div>
+      )}
 
       {/* Main Navigation Bar — Balanced Architectural Layout: Left Logo, Centered Links, Right Tools */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
@@ -46,11 +58,10 @@ export default function Header() {
               <Link
                 key={link.name}
                 to={link.path}
-                className={`text-xs uppercase tracking-widest font-medium transition-all ${
-                  isActive
+                className={`text-xs uppercase tracking-widest font-medium transition-all ${isActive
                     ? 'text-primary font-bold border-b border-primary pb-0.5'
                     : 'text-muted hover:text-primary'
-                }`}
+                  }`}
               >
                 {link.name}
               </Link>
@@ -97,11 +108,10 @@ export default function Header() {
             <Link
               key={link.name}
               to={link.path}
-              className={`px-3 py-1 transition-colors ${
-                isActive
+              className={`px-3 py-1 transition-colors ${isActive
                   ? 'text-primary font-bold border-b border-primary'
                   : 'text-muted'
-              }`}
+                }`}
             >
               {link.name}
             </Link>

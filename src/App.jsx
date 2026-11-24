@@ -1,5 +1,6 @@
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, Outlet } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
 import { StoreProvider } from './context/StoreContext';
 import { brandConfig } from './config/brand';
 import Header from './components/Header';
@@ -53,39 +54,42 @@ function CustomerLayout() {
         <Outlet />
       </main>
 
-      {/* High-Fashion Editorial Footer */}
+      {/* High-Fashion Architectural Footer */}
       <footer className="bg-surface border-t border-border mt-auto print:hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+          {/* Top Row: Brand & Navigation */}
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-8 border-b border-border">
             <div>
-              <div className="flex items-center">
+              <Link to="/" className="inline-flex items-center group" aria-label="Purgatory Home">
                 <img
                   src={brandConfig.logoName}
                   alt="Purgatory"
-                  className="h-7 sm:h-8 w-auto object-contain"
+                  className="h-8 sm:h-9 w-auto object-contain filter invert transition-opacity duration-200 group-hover:opacity-80"
                 />
-              </div>
-              <p className="text-xs text-muted mt-2 max-w-sm">
+              </Link>
+              <p className="text-xs text-muted mt-2 max-w-sm leading-relaxed">
                 {brandConfig.tagline}
               </p>
+
             </div>
 
-            <div className="flex flex-wrap items-center gap-6 text-xs text-muted uppercase tracking-wider font-mono">
-              <Link to="/" className="hover:text-primary transition-colors">Home</Link>
-              <Link to="/catalogue" className="hover:text-primary transition-colors">Catalogue</Link>
-              <Link to="/orders" className="hover:text-primary transition-colors">Orders</Link>
-              <span className="text-border">|</span>
-              <span>Complimentary Global Courier</span>
+            <div className="flex flex-wrap items-center gap-6 sm:gap-8 text-xs text-muted uppercase tracking-wider font-mono">
+              <Link to="/" className="hover:text-primary transition-colors">
+                Home
+              </Link>
+              <Link to="/catalogue" className="hover:text-primary transition-colors">
+                Catalogue
+              </Link>
+              <Link to="/orders" className="hover:text-primary transition-colors">
+                Orders
+              </Link>
             </div>
           </div>
 
-          <div className="pt-6 flex flex-col sm:flex-row items-center justify-between text-[11px] text-muted gap-3 font-mono">
+          {/* Bottom Row: Legal Copyright & Location */}
+          <div className="pt-6 flex flex-col sm:flex-row items-center justify-between text-[11px] text-muted font-mono gap-2">
             <p>© 2026 PURGATORY APPAREL LAB — FALLING FLAMES. ALL RIGHTS RESERVED.</p>
-            <p className="flex items-center gap-2">
-              <span>PALETTE: #FAF9F7 / #1C1C1B</span>
-              <span>·</span>
-              <span>REACT + TAILWIND + ISOLATED OPS GATE</span>
-            </p>
+            <span className="uppercase tracking-wider">Iloilo City, Philippines</span>
           </div>
         </div>
       </footer>
@@ -95,48 +99,50 @@ function CustomerLayout() {
 
 function App() {
   return (
-    <StoreProvider>
-      <Router>
-        <Routes>
-          {/* 1. PUBLIC CUSTOMER STOREFRONT ROUTES */}
-          <Route element={<CustomerLayout />}>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/catalogue" element={<CataloguePage />} />
-            <Route path="/product/:slug" element={<ProductDetailPage />} />
-            <Route path="/checkout" element={<CheckoutPage />} />
-            <Route path="/receipt/:orderId" element={<ReceiptPage />} />
-            <Route path="/orders" element={<AccountOrdersPage />} />
-            {/* Honeypot / Disguised route: standard /admin leads to 404 */}
-            <Route path="/admin" element={<NotFoundPage />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Route>
-
-          {/* 2. ISOLATED OPERATOR PORTAL GATEWAY */}
-          <Route
-            path="/ops-portal"
-            element={
-              <Suspense fallback={<AdminSuspenseFallback />}>
-                <AdminSecurityGate />
-              </Suspense>
-            }
-          />
-
-          {/* 3. PROTECTED OPERATOR CONSOLE (Air-Gapped Layout + Session Guard) */}
-          <Route element={<ProtectedAdminRoute />}>
-            <Route element={<AdminPortalLayout />}>
-              <Route
-                path="/ops-portal/dashboard"
-                element={
-                  <Suspense fallback={<AdminSuspenseFallback />}>
-                    <AdminDashboardPage />
-                  </Suspense>
-                }
-              />
+    <AuthProvider>
+      <StoreProvider>
+        <Router>
+          <Routes>
+            {/* 1. PUBLIC CUSTOMER STOREFRONT ROUTES */}
+            <Route element={<CustomerLayout />}>
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/catalogue" element={<CataloguePage />} />
+              <Route path="/product/:slug" element={<ProductDetailPage />} />
+              <Route path="/checkout" element={<CheckoutPage />} />
+              <Route path="/receipt/:orderId" element={<ReceiptPage />} />
+              <Route path="/orders" element={<AccountOrdersPage />} />
+              {/* Honeypot / Disguised route: standard /admin leads to 404 */}
+              <Route path="/admin" element={<NotFoundPage />} />
+              <Route path="*" element={<NotFoundPage />} />
             </Route>
-          </Route>
-        </Routes>
-      </Router>
-    </StoreProvider>
+
+            {/* 2. ISOLATED OPERATOR PORTAL GATEWAY */}
+            <Route
+              path="/ops-portal"
+              element={
+                <Suspense fallback={<AdminSuspenseFallback />}>
+                  <AdminSecurityGate />
+                </Suspense>
+              }
+            />
+
+            {/* 3. PROTECTED OPERATOR CONSOLE (Air-Gapped Layout + Session Guard) */}
+            <Route element={<ProtectedAdminRoute />}>
+              <Route element={<AdminPortalLayout />}>
+                <Route
+                  path="/ops-portal/dashboard"
+                  element={
+                    <Suspense fallback={<AdminSuspenseFallback />}>
+                      <AdminDashboardPage />
+                    </Suspense>
+                  }
+                />
+              </Route>
+            </Route>
+          </Routes>
+        </Router>
+      </StoreProvider>
+    </AuthProvider>
   );
 }
 

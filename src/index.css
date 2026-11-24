@@ -57,3 +57,90 @@
 .animate-marquee:hover {
   animation-play-state: paused;
 }
+
+/* Ethereal Floating Motion for Campaign Silhouette */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-8px) scale(1.02);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Subtle Breathing Glow for Wordmark & Ambient Artwork */
+@keyframes glowPulse {
+  0%, 100% {
+    filter: drop-shadow(0 2px 14px rgba(255, 255, 255, 0.22));
+  }
+  50% {
+    filter: drop-shadow(0 4px 26px rgba(255, 255, 255, 0.48));
+  }
+}
+
+.animate-glow {
+  animation: glowPulse 4.5s ease-in-out infinite;
+}
+
+/* Elegant Hero Fade-Up Entrance */
+@keyframes heroEntrance {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-hero-fade {
+  animation: heroEntrance 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Metallic & Flame Shimmer for Headline Typography */
+@keyframes textShimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-text-shimmer {
+  background: linear-gradient(
+    90deg,
+    #FAF9F7 0%,
+    #FAF9F7 25%,
+    #E8756C 50%,
+    #FFFFFF 55%,
+    #FAF9F7 75%,
+    #FAF9F7 100%
+  );
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: textShimmer 5s linear infinite;
+}
+
+/* Text Flip-Up Transition on Rotating Phrases */
+@keyframes taglineSlide {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-tagline-slide {
+  animation: taglineSlide 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}

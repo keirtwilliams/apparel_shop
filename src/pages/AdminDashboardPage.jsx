@@ -5,10 +5,11 @@ import {
 } from 'recharts';
 import {
   DownloadSimple, Warning, ArrowClockwise, Plus,
-  ArrowCounterClockwise, Check, CaretDown, Funnel, Trash
+  ArrowCounterClockwise, Check, CaretDown, Funnel, Trash, Tag, Percent, Sparkle
 } from '@phosphor-icons/react';
 import { useStore } from '../context/StoreContext';
 import { exportToCSV, exportToXLSX, exportToXML, exportToTSV } from '../lib/exportUtils';
+import { formatCurrency } from '../lib/pricing';
 
 export default function AdminDashboardPage() {
   const {
@@ -17,7 +18,11 @@ export default function AdminDashboardPage() {
     refundOrder,
     updateOrderStatus,
     lowStockVariants,
-    resetToSeedData
+    resetToSeedData,
+    saleConfig,
+    setSaleConfig,
+    coupons,
+    setCoupons
   } = useStore();
 
   // 3 Shared Interactive Filters
@@ -281,6 +286,107 @@ export default function AdminDashboardPage() {
         </div>
       )}
 
+      {/* SALE ENGINE & PROMOTIONS CONTROL CENTER (10% - 90% Off) */}
+      <div className="mt-6 p-5 bg-canvas border border-border rounded-card shadow-xs">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-border gap-3">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-tight bg-primary text-canvas flex items-center justify-center">
+              <Percent size={16} weight="bold" />
+            </div>
+            <div>
+              <h2 className="text-sm font-semibold uppercase tracking-wider text-primary">
+                Sale Engine & Promotional Controls
+              </h2>
+              <p className="text-xs text-muted">
+                Configure live storewide/category drops from 10% to 90% off and manage active coupon codes.
+              </p>
+            </div>
+          </div>
+
+          <label className="relative inline-flex items-center cursor-pointer select-none">
+            <input
+              type="checkbox"
+              checked={saleConfig.active}
+              onChange={(e) => setSaleConfig(prev => ({ ...prev, active: e.target.checked }))}
+              className="sr-only peer"
+            />
+            <div className="w-11 h-6 bg-surface border border-border peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-muted peer-checked:after:bg-canvas after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+            <span className="ml-3 text-xs font-semibold uppercase tracking-wider text-primary">
+              {saleConfig.active ? 'Sale Active' : 'Sale Inactive'}
+            </span>
+          </label>
+        </div>
+
+        {/* Live Controls */}
+        <div className="pt-4 grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+          {/* 1. Discount Slider (10% to 90%) */}
+          <div>
+            <div className="flex justify-between items-center text-xs mb-2">
+              <span className="font-medium text-muted">Discount Percentage:</span>
+              <span className="font-bold font-mono text-sm text-primary bg-surface px-2 py-0.5 rounded-input border border-border">
+                {saleConfig.percentage}% OFF
+              </span>
+            </div>
+            <input
+              type="range"
+              min="10"
+              max="90"
+              step="5"
+              value={saleConfig.percentage}
+              disabled={!saleConfig.active}
+              onChange={(e) => setSaleConfig(prev => ({ ...prev, percentage: Number(e.target.value) }))}
+              className="w-full accent-primary cursor-pointer disabled:opacity-40"
+            />
+            <div className="flex justify-between text-[10px] text-muted font-mono mt-1">
+              <span>10%</span>
+              <span>30%</span>
+              <span>50%</span>
+              <span>70%</span>
+              <span>90%</span>
+            </div>
+          </div>
+
+          {/* 2. Target Category */}
+          <div>
+            <label className="block text-xs font-medium text-muted mb-2">
+              Target Category Scope:
+            </label>
+            <select
+              value={saleConfig.categoryTarget || 'All'}
+              disabled={!saleConfig.active}
+              onChange={(e) => setSaleConfig(prev => ({ ...prev, categoryTarget: e.target.value }))}
+              className="w-full bg-surface border border-border rounded-input px-3 py-2 text-xs text-primary focus:outline-none focus:border-primary disabled:opacity-40"
+            >
+              <option value="All">Storewide (All Garments)</option>
+              <option value="Tops">Tops Only</option>
+              <option value="Bottoms">Bottoms Only</option>
+              <option value="Outerwear">Outerwear Only</option>
+              <option value="Footwear">Footwear Only</option>
+            </select>
+          </div>
+
+          {/* 3. Active Promo Coupon Codes */}
+          <div>
+            <span className="block text-xs font-medium text-muted mb-2">
+              Active Promo Coupons ({coupons.length}):
+            </span>
+            <div className="flex flex-wrap gap-1.5">
+              {coupons.map(c => (
+                <span
+                  key={c.code}
+                  className="inline-flex items-center gap-1 px-2 py-1 bg-surface border border-border rounded-input text-[11px] font-mono text-primary"
+                  title={c.label}
+                >
+                  <Tag size={11} className="text-muted" />
+                  <span className="font-bold">{c.code}</span>
+                  <span className="text-muted text-[10px]">({c.discountPercent}%)</span>
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* 3 Shared Interactive Filters (Updating all 4 charts simultaneously) */}
       <div className="mt-6 p-4 bg-surface border border-border rounded-card flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
         <div className="flex items-center gap-2 text-xs font-semibold text-primary">
@@ -302,11 +408,10 @@ export default function AdminDashboardPage() {
                 <button
                   key={d.value}
                   onClick={() => setDateFilter(d.value)}
-                  className={`px-2.5 py-1 rounded-input font-medium transition-colors ${
-                    dateFilter === d.value
+                  className={`px-2.5 py-1 rounded-input font-medium transition-colors ${dateFilter === d.value
                       ? 'bg-primary text-canvas'
                       : 'text-muted hover:text-primary'
-                  }`}
+                    }`}
                 >
                   {d.label}
                 </button>
@@ -452,8 +557,8 @@ export default function AdminDashboardPage() {
               <AreaChart data={revenueOverTimeData}>
                 <defs>
                   <linearGradient id="purgatoryGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#1C1C1B" stopOpacity={0.15}/>
-                    <stop offset="95%" stopColor="#1C1C1B" stopOpacity={0.0}/>
+                    <stop offset="5%" stopColor="#1C1C1B" stopOpacity={0.15} />
+                    <stop offset="95%" stopColor="#1C1C1B" stopOpacity={0.0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid stroke="#E5E4E0" strokeDasharray="3 3" vertical={false} />
@@ -656,13 +761,12 @@ export default function AdminDashboardPage() {
                         value={order.status}
                         onChange={(e) => updateOrderStatus(order.id, e.target.value)}
                         disabled={isRefunded}
-                        className={`text-xs px-2 py-1 rounded-input border focus:outline-none cursor-pointer ${
-                          isRefunded
+                        className={`text-xs px-2 py-1 rounded-input border focus:outline-none cursor-pointer ${isRefunded
                             ? 'bg-danger-light text-danger border-danger/30'
                             : order.status === 'delivered'
-                            ? 'bg-success-light text-success border-success/30'
-                            : 'bg-surface text-primary border-border'
-                        }`}
+                              ? 'bg-success-light text-success border-success/30'
+                              : 'bg-surface text-primary border-border'
+                          }`}
                       >
                         <option value="pending">Pending</option>
                         <option value="shipped">Shipped</option>
