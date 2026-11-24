@@ -11,8 +11,8 @@
       "fit_note": "Boxy architectural cut · True to size · Model is 5'9\" wearing size L",
       "care": "Cold machine wash inside-out · Hang dry in shade · Do not iron print",
       "images": [
-        "/products/walk-with-god-front.png",
-        "/products/walk-with-god-back.png"
+        "/products/img1-front.png",
+        "/products/img1-back.png"
       ],
       "variants": [
         {
@@ -56,8 +56,8 @@
       "fit_note": "Relaxed boxy silhouette · True to size · Model is 5'11\" wearing size L",
       "care": "Hand wash or gentle cycle cold · Do not tumble dry · Dry flat",
       "images": [
-        "/products/godspeed-rosary-front.png",
-        "/products/godspeed-rosary-back.png"
+        "/products/img2-front.png",
+        "/products/img2-back.png"
       ],
       "variants": [
         {
@@ -101,8 +101,8 @@
       "fit_note": "Tailored boxy drape · Drop shoulders · Model is 5'8\" wearing size M",
       "care": "Machine wash 30°C · Do not bleach · Iron on reverse side",
       "images": [
-        "/products/in-money-we-trust-front.png",
-        "/products/in-money-we-trust-back.png"
+        "/products/img3-front.png",
+        "/products/img3-back.png"
       ],
       "variants": [
         {
@@ -146,8 +146,8 @@
       "fit_note": "Standard boxy fit · True to size · Model is 5'10\" wearing size L",
       "care": "Cold wash · Line dry · Do not dry clean",
       "images": [
-        "/products/purgatory-og-green-front.png",
-        "/products/purgatory-og-green-back.png"
+        "/products/img4-front.png",
+        "/products/img4-back.png"
       ],
       "variants": [
         {
@@ -191,8 +191,8 @@
       "fit_note": "Oversized drape · Model is 5'7\" wearing size S",
       "care": "Gentle cycle cold · Do not tumble dry · Dry in shade",
       "images": [
-        "/products/icons-grid-front.png",
-        "/products/icons-grid-back.png"
+        "/products/img5-front.png",
+        "/products/img5-back.png"
       ],
       "variants": [
         {
@@ -236,8 +236,8 @@
       "fit_note": "Boxy streetwear cut · True to size · Model is 6'0\" wearing size XL",
       "care": "Wash cold inside-out · Line dry · Avoid ironing direct on ink",
       "images": [
-        "/products/skull-pile-front.png",
-        "/products/skull-pile-back.png"
+        "/products/img6-front.png",
+        "/products/img6-back.png"
       ],
       "variants": [
         {
@@ -267,95 +267,6 @@
           "color_hex": "#F6F5F2",
           "size": "XL",
           "stock_count": 1
-        }
-      ]
-    },
-    {
-      "id": "a0000001-0000-0000-0000-000000000007",
-      "name": "Falling Flames Heavyweight Hoodie",
-      "slug": "falling-flames-heavyweight-hoodie",
-      "category": "Outerwear",
-      "price": 2450,
-      "description": "Engineered 480 GSM thermal loopback French terry fleece with twin-panel hood, dropped shoulder seams, raw-edge hem finish, and embroidered tone-on-tone falling flames motif.",
-      "material": "480 GSM 100% Organic French Terry Cotton",
-      "fit_note": "Substantial structural drape · Relaxed fit · Model is 5'11\" wearing size L",
-      "care": "Dry clean recommended or machine wash cold gentle · Lay flat to dry",
-      "images": [
-        "/brand/falling-flames-transparent-white.png",
-        "/brand/falling-flames-transparent-dark.png"
-      ],
-      "variants": [
-        {
-          "id": "b0000007-0001-0000-0000-000000000001",
-          "color_name": "Washed Charcoal",
-          "color_hex": "#1C1C1B",
-          "size": "S",
-          "stock_count": 6
-        },
-        {
-          "id": "b0000007-0002-0000-0000-000000000002",
-          "color_name": "Washed Charcoal",
-          "color_hex": "#1C1C1B",
-          "size": "M",
-          "stock_count": 14
-        },
-        {
-          "id": "b0000007-0003-0000-0000-000000000003",
-          "color_name": "Washed Charcoal",
-          "color_hex": "#1C1C1B",
-          "size": "L",
-          "stock_count": 3
-        },
-        {
-          "id": "b0000007-0004-0000-0000-000000000004",
-          "color_name": "Washed Charcoal",
-          "color_hex": "#1C1C1B",
-          "size": "XL",
-          "stock_count": 5
-        }
-      ]
-    },
-    {
-      "id": "a0000001-0000-0000-0000-000000000008",
-      "name": "Archival Tactical Cargo Pant",
-      "slug": "archival-tactical-cargo-pant",
-      "category": "Bottoms",
-      "price": 1850,
-      "description": "Modular high-density ripstop cotton trousers equipped with deep gusseted bellows pockets, articulated knee darts, and magnetic buckle hems for adjustable taper.",
-      "material": "320 GSM Reinforced Military Cotton Ripstop",
-      "fit_note": "Wide architectural leg with toggle-adjustable hem · Model is 6'0\" wearing size M",
-      "care": "Machine wash cold with similar colors · Hang to dry · Low iron",
-      "images": [
-        "/brand/purgatory-logo-raw.png"
-      ],
-      "variants": [
-        {
-          "id": "b0000008-0001-0000-0000-000000000001",
-          "color_name": "Ink Black",
-          "color_hex": "#141413",
-          "size": "S",
-          "stock_count": 8
-        },
-        {
-          "id": "b0000008-0002-0000-0000-000000000002",
-          "color_name": "Ink Black",
-          "color_hex": "#141413",
-          "size": "M",
-          "stock_count": 15
-        },
-        {
-          "id": "b0000008-0003-0000-0000-000000000003",
-          "color_name": "Ink Black",
-          "color_hex": "#141413",
-          "size": "L",
-          "stock_count": 4
-        },
-        {
-          "id": "b0000008-0004-0000-0000-000000000004",
-          "color_name": "Ink Black",
-          "color_hex": "#141413",
-          "size": "XL",
-          "stock_count": 7
         }
       ]
     }

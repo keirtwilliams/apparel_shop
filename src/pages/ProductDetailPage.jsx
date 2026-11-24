@@ -99,7 +99,7 @@ export default function ProductDetailPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14">
-        {/* Left: 4:5 Gallery */}
+        {/* Left: Product Gallery */}
         <div className="lg:col-span-7 flex flex-col-reverse sm:flex-row gap-4">
           {/* Thumbnails */}
           {product.images?.length > 1 && (
@@ -109,28 +109,32 @@ export default function ProductDetailPage() {
                   key={idx}
                   type="button"
                   onClick={() => setActiveImage(img)}
-                  className={`relative w-16 sm:w-20 aspect-[4/5] rounded-input overflow-hidden border transition-all ${activeImage === img
-                    ? 'border-primary ring-1 ring-primary'
-                    : 'border-border opacity-70 hover:opacity-100'
-                    }`}
+                  className={`relative w-16 sm:w-20 aspect-square sm:aspect-[4/5] rounded-input overflow-hidden border p-1 bg-surface transition-all ${
+                    (activeImage || product.images[0]) === img
+                      ? 'border-primary ring-2 ring-primary/40 scale-[1.02]'
+                      : 'border-border opacity-70 hover:opacity-100'
+                  }`}
                   aria-label={`View photo ${idx + 1}`}
                 >
                   <img
                     src={resolveProductImageUrl(img)}
                     alt={`${product.name} view ${idx + 1}`}
-                    className="w-full h-full object-cover object-center"
+                    className="w-full h-full object-contain object-center"
                   />
+                  <span className="absolute bottom-1 right-1 text-[8px] font-mono uppercase bg-primary text-canvas px-1 rounded">
+                    {idx === 0 ? 'F' : 'B'}
+                  </span>
                 </button>
               ))}
             </div>
           )}
 
-          {/* Main 4:5 Image */}
-          <div className="flex-1 aspect-[4/5] bg-surface rounded-card overflow-hidden border border-border">
+          {/* Main Full-Garment Unclipped Canvas */}
+          <div className="relative flex-1 aspect-square sm:aspect-[4/5] bg-surface rounded-card overflow-hidden border border-border p-4 sm:p-6 flex items-center justify-center group">
             <img
               src={resolveProductImageUrl(activeImage || product.images?.[0])}
               alt={product.name}
-              className="w-full h-full object-cover object-center"
+              className="w-full h-full object-contain object-center transition-transform duration-500 ease-out group-hover:scale-105"
             />
           </div>
         </div>

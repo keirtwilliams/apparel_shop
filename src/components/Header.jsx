@@ -28,12 +28,12 @@ export default function Header() {
           <span className="hidden sm:inline tracking-wider">USE CODE 'PURGATORY10' FOR EXTRA 10%</span>
         </div>
       ) : (
-        <div className="bg-primary text-canvas text-[11px] uppercase tracking-widest py-2 px-4 text-center font-mono flex items-center justify-center gap-3">
+        <div className="bg-[#C43C30] text-[#FAF9F7] text-[11px] uppercase tracking-widest py-2 px-4 text-center font-mono flex items-center justify-center gap-3 shadow-inner">
           <span className="font-semibold tracking-widest">PURGATORY WORLDWIDE</span>
-          <span className="opacity-30">·</span>
+          <span className="opacity-40">·</span>
           <span className="tracking-wider">COLLECTION 01: FALLING FLAMES</span>
-          <span className="opacity-30 hidden sm:inline">·</span>
-          <span className="hidden sm:inline text-canvas/80 tracking-wider">COMPLIMENTARY EXPRESS GLOBAL SHIPPING</span>
+          <span className="opacity-40 hidden sm:inline">·</span>
+          <span className="hidden sm:inline text-[#FAF9F7]/90 tracking-wider">COMPLIMENTARY EXPRESS GLOBAL SHIPPING</span>
         </div>
       )}
 
@@ -50,7 +50,7 @@ export default function Header() {
           </Link>
         </div>
 
-        {/* 2. Center: Prominent Nav Links (Home, Catalogue, Orders) */}
+        {/* 2. Center: Prominent Nav Links (Home, Catalogue, Orders) with Smooth Sliding Hover Line */}
         <nav className="hidden sm:flex items-center justify-center gap-8 md:gap-10 flex-1">
           {navLinks.map(link => {
             const isActive = location.pathname === link.path;
@@ -58,12 +58,17 @@ export default function Header() {
               <Link
                 key={link.name}
                 to={link.path}
-                className={`text-xs uppercase tracking-widest font-medium transition-all ${isActive
-                    ? 'text-primary font-bold border-b border-primary pb-0.5'
-                    : 'text-muted hover:text-primary'
-                  }`}
+                className={`group relative py-1 text-xs uppercase tracking-widest font-medium transition-colors ${
+                  isActive ? 'text-primary font-bold' : 'text-muted hover:text-primary'
+                }`}
               >
-                {link.name}
+                <span>{link.name}</span>
+                {/* Smooth Animated Hover & Active Line */}
+                <span
+                  className={`absolute left-0 bottom-0 h-[1.5px] bg-primary transition-transform duration-300 ease-out origin-left ${
+                    isActive ? 'w-full scale-x-100' : 'w-full scale-x-0 group-hover:scale-x-100'
+                  }`}
+                />
               </Link>
             );
           })}
@@ -108,12 +113,16 @@ export default function Header() {
             <Link
               key={link.name}
               to={link.path}
-              className={`px-3 py-1 transition-colors ${isActive
-                  ? 'text-primary font-bold border-b border-primary'
-                  : 'text-muted'
-                }`}
+              className={`group relative py-1 px-3 transition-colors ${
+                isActive ? 'text-primary font-bold' : 'text-muted hover:text-primary'
+              }`}
             >
-              {link.name}
+              <span>{link.name}</span>
+              <span
+                className={`absolute left-0 bottom-0 h-[1.5px] bg-primary transition-transform duration-300 ease-out origin-left ${
+                  isActive ? 'w-full scale-x-100' : 'w-full scale-x-0 group-hover:scale-x-100'
+                }`}
+              />
             </Link>
           );
         })}

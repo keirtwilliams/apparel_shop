@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import initialData from '../data/initialData.json';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
+import { appCache, imageCache } from '../lib/cache';
+import { rateLimiter } from '../lib/rateLimiter';
 import {
   DEFAULT_PROMO_CODES,
   calculateEffectiveProductPrice,
@@ -56,11 +58,31 @@ export const DEFAULT_CUSTOMER = {
 };
 
 export const StoreProvider = ({ children }) => {
-  // Products and inventory
+  // Products and inventory with automatic version sync for real product images
   const [products, setProducts] = useState(() => {
+    const CURRENT_VERSION = 'v5_only_6_garments';
+    const version = localStorage.getItem('purgatory_products_version');
+    if (version !== CURRENT_VERSION) {
+      localStorage.setItem('purgatory_products_version', CURRENT_VERSION);
+      localStorage.setItem('purgatory_products', JSON.stringify(initialData.products));
+      return initialData.products || [];
+    }
     const saved = localStorage.getItem('purgatory_products');
     if (saved) {
-      try { return JSON.parse(saved); } catch (e) { /* ignore */ }
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) {
+          // Keep saved variant inventory while syncing master product images from initialData
+          return parsed.map(p => {
+            const master = (initialData.products || []).find(m => m.id === p.id || m.slug === p.slug);
+            if (master && master.images && master.images.length > 0) {
+              return { ...p, images: master.images };
+            }
+            return p;
+          });
+        }
+        return parsed;
+      } catch (e) { /* ignore */ }
     }
     return initialData.products || [];
   });
@@ -85,6 +107,17 @@ export const StoreProvider = ({ children }) => {
 
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isAccountDrawerOpen, setIsAccountDrawerOpen] = useState(false);
+
+  // Background Image Cache Warming for instant, zero-latency hover flips & transitions
+  useEffect(() => {
+    const urls = [];
+    products.forEach(p => {
+      if (Array.isArray(p.images)) {
+        p.images.forEach(img => img && urls.push(img));
+      }
+    });
+    imageCache.preloadMany(urls);
+  }, [products]);
 
   // Registered Customer Accounts Database (localStorage for now, Supabase tomorrow)
   const [accounts, setAccounts] = useState(() => {
@@ -432,6 +465,12 @@ export const StoreProvider = ({ children }) => {
 
   // Coupon Actions
   const applyCouponCode = (code) => {
+    const limitCheck = rateLimiter.check('coupon_attempt');
+    if (!limitCheck.allowed) {
+      return { success: false, message: limitCheck.message };
+    }
+    rateLimiter.record('coupon_attempt');
+
     const validated = validateCoupon(code, coupons);
     if (!validated) {
       return { success: false, message: 'Invalid or expired promotional code.' };
@@ -467,6 +506,13 @@ export const StoreProvider = ({ children }) => {
 
   // --- CHECKOUT & ORDER CREATION ---
   const placeOrder = async ({ customerName, customerEmail, shippingAddress, paymentMethod }) => {
+    // Sliding-window rate limit & double-click debounce protection
+    const limitCheck = rateLimiter.check('checkout_order');
+    if (!limitCheck.allowed) {
+      throw new Error(limitCheck.message);
+    }
+    rateLimiter.record('checkout_order');
+
     const newOrderId = `ORD-2026-${Math.floor(1000 + Math.random() * 9000)}`;
     const createdAt = new Date().toISOString();
 
@@ -655,6 +701,65 @@ export const StoreProvider = ({ children }) => {
     return list;
   }, [products]);
 
+  // Admin Per-Garment Variant Stock Adjustment
+  const updateVariantStock = (productId, variantId, newStock) => {
+    appCache.invalidateTag('products');
+    setProducts(prevProducts => {
+      const updated = prevProducts.map(prod => {
+        if (prod.id === productId) {
+          return {
+            ...prod,
+            variants: prod.variants.map(v => {
+              if (v.id === variantId) {
+                return { ...v, stock_count: Math.max(0, parseInt(newStock, 10) || 0) };
+              }
+              return v;
+            })
+          };
+        }
+        return prod;
+      });
+      localStorage.setItem('purgatory_products', JSON.stringify(updated));
+      return updated;
+    });
+  };
+
+  // Admin Per-Garment Sale & Markdown Controller
+  const updateProductSale = (productId, { isOnSale, discountPercent }) => {
+    appCache.invalidateTag('products');
+    appCache.invalidateTag('pricing');
+    setProducts(prevProducts => {
+      const updated = prevProducts.map(p => {
+        if (p.id === productId) {
+          const original = p.original_base_price || p.compare_at_price || p.price;
+          if (!isOnSale) {
+            return {
+              ...p,
+              price: original,
+              compare_at_price: null,
+              original_base_price: original,
+              on_sale: false,
+              discount_percent: 0
+            };
+          }
+          const pct = Math.min(Math.max(Number(discountPercent) || 20, 5), 90);
+          const salePrice = Math.round(original * (1 - pct / 100));
+          return {
+            ...p,
+            price: salePrice,
+            compare_at_price: original,
+            original_base_price: original,
+            on_sale: true,
+            discount_percent: pct
+          };
+        }
+        return p;
+      });
+      localStorage.setItem('purgatory_products', JSON.stringify(updated));
+      return updated;
+    });
+  };
+
   // Reset to factory seed data
   const resetToSeedData = () => {
     localStorage.removeItem('purgatory_products');
@@ -709,8 +814,13 @@ export const StoreProvider = ({ children }) => {
         refundOrder,
         updateOrderStatus,
         addNewProduct,
+        updateVariantStock,
+        updateProductSale,
         lowStockVariants,
-        resetToSeedData
+        resetToSeedData,
+        appCache,
+        imageCache,
+        rateLimiter
       }}
     >
       {children}

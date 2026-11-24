@@ -16,14 +16,11 @@ export const DEFAULT_PROMO_CODES = [
 ];
 
 /**
- * Format currency in Philippine Peso (PHP) or standard currency
+ * Format currency strictly in Philippine Peso (PHP)
  */
 export function formatCurrency(amount, currency = 'PHP') {
   const num = Number(amount) || 0;
-  if (currency === 'PHP') {
-    return `₱${num.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-  }
-  return `$${num.toFixed(2)}`;
+  return `PHP ${num.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 }
 
 /**

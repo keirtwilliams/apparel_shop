@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Package, ArrowRight, ArrowLeft, LockKey,
-  User, CheckCircle, Warning, Clock, Truck
+  Package, ArrowRight, LockKey,
+  User, CheckCircle, Warning, Clock, Truck, MapPin
 } from '@phosphor-icons/react';
 import { useStore } from '../context/StoreContext';
+import { formatCurrency } from '../lib/pricing';
+import { getOrderTrackingMeta } from '../lib/tracking';
+import ConsignmentTrackingModal from '../components/ConsignmentTrackingModal';
 
 export default function AccountOrdersPage() {
   const { userOrders, currentUser, setIsAccountDrawerOpen } = useStore();
+  const [selectedTrackingOrder, setSelectedTrackingOrder] = useState(null);
 
   const statusColors = {
     pending: 'bg-surface text-primary border-border',
@@ -63,7 +67,7 @@ export default function AccountOrdersPage() {
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 font-sans">
       {/* Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-border gap-4">
+      <div className="pb-6 border-b border-border">
         <div>
           <span className="text-xs uppercase tracking-widest text-muted font-medium font-mono">
             Client Consignments
@@ -75,24 +79,6 @@ export default function AccountOrdersPage() {
             Displaying verified consignments for{' '}
             <span className="text-primary font-medium">{currentUser.full_name}</span> ({currentUser.email}).
           </p>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <button
-            onClick={() => setIsAccountDrawerOpen(true)}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-surface hover:bg-surface-subtle border border-border text-xs text-primary rounded-tight transition-colors min-h-[36px]"
-          >
-            <User size={14} />
-            <span>Manage Profile</span>
-          </button>
-
-          <Link
-            to="/catalogue"
-            className="inline-flex items-center gap-1.5 text-xs text-muted hover:text-primary transition-colors min-h-[36px] px-2"
-          >
-            <ArrowLeft size={14} />
-            <span>Catalogue</span>
-          </Link>
         </div>
       </div>
 
@@ -119,6 +105,7 @@ export default function AccountOrdersPage() {
         ) : (
           <div className="space-y-4">
             {userOrders.map(order => {
+              const tracking = getOrderTrackingMeta(order);
               const formattedDate = new Date(order.created_at).toLocaleDateString('en-US', {
                 month: 'short',
                 day: 'numeric',
@@ -128,9 +115,9 @@ export default function AccountOrdersPage() {
               return (
                 <div
                   key={order.id}
-                  className="bg-canvas border border-border rounded-card p-5 hover:border-primary/50 transition-colors"
+                  className="bg-canvas border border-border rounded-card p-5 hover:border-primary/50 transition-colors space-y-3"
                 >
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-border gap-3 text-xs">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-border gap-3 text-xs">
                     <div className="flex flex-wrap items-center gap-3">
                       <span className="font-mono font-bold text-primary">{order.id}</span>
                       <span className="text-muted">·</span>
@@ -145,17 +132,36 @@ export default function AccountOrdersPage() {
                           statusColors[order.status] || 'bg-surface text-primary'
                         }`}
                       >
-                        {statusIcons[order.status]}
-                        <span>{order.status}</span>
+                        {statusIcons[order.status] || <Clock size={14} className="text-muted" />}
+                        <span>{order.status?.replace(/_/g, ' ')}</span>
                       </span>
                       <span className="font-mono font-bold text-primary tabular-nums">
-                        ${Number(order.total_amount).toFixed(2)}
+                        {formatCurrency(order.total_amount)}
                       </span>
                     </div>
                   </div>
 
+                  {/* Shopee / SHEIN Live Location Callout */}
+                  <div className="py-2.5 px-3 bg-surface/70 border border-border/80 rounded-input flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+                    <div className="flex items-center gap-2">
+                      <span className="relative flex h-2 w-2 shrink-0">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                      </span>
+                      <span className="text-muted text-[11px] font-mono">Location:</span>
+                      <span className="font-semibold text-primary truncate max-w-[280px] sm:max-w-none">
+                        {tracking.currentLocation}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2 text-[11px] font-mono text-muted">
+                      <span>{tracking.courier}</span>
+                      <span>·</span>
+                      <span className="font-bold text-primary">{tracking.trackingNumber}</span>
+                    </div>
+                  </div>
+
                   {/* Items preview & actions */}
-                  <div className="py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs">
+                  <div className="pt-1 flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs">
                     <div className="space-y-1">
                       {order.items?.map(it => (
                         <p key={it.id} className="text-muted">
@@ -171,11 +177,20 @@ export default function AccountOrdersPage() {
                     </div>
 
                     <div className="flex items-center gap-2 shrink-0">
+                      <button
+                        type="button"
+                        onClick={() => setSelectedTrackingOrder(order)}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-primary text-canvas rounded-input text-xs font-semibold uppercase tracking-wider hover:opacity-90 transition-opacity min-h-[36px]"
+                      >
+                        <Truck size={14} />
+                        <span>Live Tracking</span>
+                      </button>
+
                       <Link
                         to={`/receipt/${order.id}`}
                         className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-surface hover:bg-canvas border border-border rounded-input text-xs font-semibold text-primary transition-colors min-h-[36px]"
                       >
-                        <span>View Official Receipt</span>
+                        <span>Receipt</span>
                         <ArrowRight size={13} />
                       </Link>
                     </div>
@@ -186,6 +201,13 @@ export default function AccountOrdersPage() {
           </div>
         )}
       </div>
+
+      {/* Live Consignment Tracking Modal (Shopee / SHEIN Stepper) */}
+      <ConsignmentTrackingModal
+        order={selectedTrackingOrder}
+        isOpen={Boolean(selectedTrackingOrder)}
+        onClose={() => setSelectedTrackingOrder(null)}
+      />
     </div>
   );
 }

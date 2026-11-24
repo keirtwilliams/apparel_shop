@@ -122,7 +122,7 @@ export default function CheckoutPage() {
       }, 600);
     } catch (err) {
       console.error(err);
-      setErrorMessage('An error occurred while creating your order. Please try again.');
+      setErrorMessage(err.message || 'An error occurred while creating your order. Please try again.');
       setIsSubmitting(false);
     }
   };
@@ -410,7 +410,7 @@ export default function CheckoutPage() {
               {isSubmitting ? (
                 <span>Authorizing Order...</span>
               ) : (
-                <span>Confirm & Authorize Order — ${grandTotal.toFixed(2)}</span>
+                <span>Confirm & Authorize Order — {formatCurrency(grandTotal)}</span>
               )}
             </button>
           </form>
@@ -443,7 +443,7 @@ export default function CheckoutPage() {
                     </p>
                   </div>
                   <span className="text-xs font-semibold text-primary tabular-nums">
-                    ${(item.unitPrice * item.quantity).toFixed(2)}
+                    {formatCurrency(item.unitPrice * item.quantity)}
                   </span>
                 </div>
               ))}

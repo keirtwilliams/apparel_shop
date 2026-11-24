@@ -1,15 +1,19 @@
 import React, { useState, useMemo } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import {
-  AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell,
-  XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend
-} from 'recharts';
-import {
-  DownloadSimple, Warning, ArrowClockwise, Plus,
-  ArrowCounterClockwise, Check, CaretDown, Funnel, Trash, Tag, Percent, Sparkle
+  ChartLineUp, Receipt, Package, Truck, Tag,
+  DownloadSimple, ArrowCounterClockwise, CaretDown, Check
 } from '@phosphor-icons/react';
 import { useStore } from '../context/StoreContext';
 import { exportToCSV, exportToXLSX, exportToXML, exportToTSV } from '../lib/exportUtils';
-import { formatCurrency } from '../lib/pricing';
+import ConsignmentTrackingModal from '../components/ConsignmentTrackingModal';
+
+// Modular Tab Components
+import AdminOverviewTab from '../components/admin/AdminOverviewTab';
+import AdminOrdersTab from '../components/admin/AdminOrdersTab';
+import AdminInventoryTab from '../components/admin/AdminInventoryTab';
+import AdminLogisticsTab from '../components/admin/AdminLogisticsTab';
+import AdminPromotionsTab from '../components/admin/AdminPromotionsTab';
 
 export default function AdminDashboardPage() {
   const {
@@ -17,15 +21,24 @@ export default function AdminDashboardPage() {
     products,
     refundOrder,
     updateOrderStatus,
+    updateVariantStock,
     lowStockVariants,
     resetToSeedData,
     saleConfig,
     setSaleConfig,
     coupons,
-    setCoupons
+    setCoupons,
+    updateProductSale
   } = useStore();
 
-  // 3 Shared Interactive Filters
+  const [searchParams, setSearchParams] = useSearchParams();
+  const currentTab = searchParams.get('tab') || 'overview';
+
+  const handleTabChange = (newTab) => {
+    setSearchParams({ tab: newTab });
+  };
+
+  // 3 Shared Interactive Filters (for Overview tab & Data exports)
   const [dateFilter, setDateFilter] = useState('30'); // '7' | '14' | '30' | 'all'
   const [categoryFilter, setCategoryFilter] = useState('All'); // 'All' | 'Tops' | 'Bottoms' | 'Outerwear' | 'Footwear'
   const [statusFilter, setStatusFilter] = useState('All'); // 'All' | 'delivered' | 'shipped' | 'pending' | 'refunded'
@@ -33,8 +46,9 @@ export default function AdminDashboardPage() {
   // Export dropdown state
   const [isExportOpen, setIsExportOpen] = useState(false);
   const [exportNotice, setExportNotice] = useState('');
+  const [selectedAdminTrackingOrder, setSelectedAdminTrackingOrder] = useState(null);
 
-  // Filtered Orders Dataset (Linked across all 4 charts + exports)
+  // Filtered Orders Dataset (Linked across charts + exports)
   const filteredOrders = useMemo(() => {
     const now = new Date('2026-11-23T23:59:59Z');
     const daysLimit = dateFilter === 'all' ? Infinity : parseInt(dateFilter, 10);
@@ -52,7 +66,7 @@ export default function AdminDashboardPage() {
         return false;
       }
 
-      // 3. Category filter (check if order contains any item in category)
+      // 3. Category filter
       if (categoryFilter !== 'All') {
         const hasCategoryItem = order.items?.some(it => it.category === categoryFilter);
         if (!hasCategoryItem) return false;
@@ -78,6 +92,11 @@ export default function AdminDashboardPage() {
   const activeOrdersCount = useMemo(() => {
     return filteredOrders.filter(o => o.status !== 'refunded').length;
   }, [filteredOrders]);
+
+  // In-transit active logistics count
+  const inTransitCount = useMemo(() => {
+    return orders.filter(o => o.status === 'shipped' || o.status === 'out_for_delivery').length;
+  }, [orders]);
 
   // CHART 1: Revenue & Order Volume Over Time
   const revenueOverTimeData = useMemo(() => {
@@ -133,10 +152,10 @@ export default function AdminDashboardPage() {
     });
 
     return [
-      { name: 'Delivered', value: counts.delivered, color: '#2E5A44' }, // Success green
-      { name: 'Shipped', value: counts.shipped, color: '#575654' },   // Muted
-      { name: 'Pending', value: counts.pending, color: '#8B847A' },   // Taupe
-      { name: 'Refunded', value: counts.refunded, color: '#9E3B33' }, // Danger red
+      { name: 'Delivered', value: counts.delivered, color: '#2E5A44' },
+      { name: 'Shipped', value: counts.shipped, color: '#575654' },
+      { name: 'Pending', value: counts.pending, color: '#8B847A' },
+      { name: 'Refunded', value: counts.refunded, color: '#9E3B33' },
     ].filter(item => item.value > 0);
   }, [filteredOrders]);
 
@@ -155,7 +174,6 @@ export default function AdminDashboardPage() {
         });
       });
     });
-    // Sort so lowest stock appears first for operational priority
     return list.sort((a, b) => a.stock - b.stock).slice(0, 12);
   }, [products, categoryFilter]);
 
@@ -175,53 +193,73 @@ export default function AdminDashboardPage() {
     }));
   }, [filteredOrders]);
 
-  // Handle Client-Side Exports
   const handleExport = async (format) => {
     setIsExportOpen(false);
-    const filename = `purgatory-sales-filtered-${dateFilter}d-${categoryFilter.toLowerCase()}.${format}`;
-
+    const filename = `purgatory_operations_${new Date().toISOString().split('T')[0]}`;
     try {
-      if (format === 'csv') {
-        exportToCSV(exportableData, filename);
-      } else if (format === 'xlsx') {
-        await exportToXLSX(exportableData, filename);
-      } else if (format === 'tsv') {
-        exportToTSV(exportableData, filename);
-      } else if (format === 'xml') {
-        exportToXML(exportableData, 'PurgatorySales', 'OrderRecord', filename);
-      }
+      if (format === 'xlsx') await exportToXLSX(exportableData, filename);
+      if (format === 'csv') exportToCSV(exportableData, filename);
+      if (format === 'tsv') exportToTSV(exportableData, filename);
+      if (format === 'xml') exportToXML(exportableData, filename);
+
       setExportNotice(`Exported ${exportableData.length} records as ${format.toUpperCase()}`);
-      setTimeout(() => setExportNotice(''), 3000);
+      setTimeout(() => setExportNotice(''), 4000);
     } catch (err) {
       console.error('Export failed:', err);
     }
   };
 
+  const tabTitles = {
+    overview: {
+      title: 'Executive Sales & Stock Overview',
+      subtitle: 'Real-time performance metrics, 4 Recharts analytics models, and low-stock telemetry.'
+    },
+    orders: {
+      title: 'Consignments & Orders Ledger',
+      subtitle: 'Order tracking, live fulfillment toggles, 1-click stage advancement & stock refunds.'
+    },
+    inventory: {
+      title: 'Variant Stock & Inventory Matrix',
+      subtitle: 'Interactive per-size stock adjustment, low-stock alerts, and warehouse totals.'
+    },
+    logistics: {
+      title: 'Shopee / SHEIN Logistics Hub Network',
+      subtitle: 'Deterministic courier dispatch, central sorting gateway tracking, and active transit pipeline.'
+    },
+    promotions: {
+      title: 'Promotional Engine & Coupon Center',
+      subtitle: 'Storewide flash sales (10% to 90% off), promo code vouchers, and per-garment markdowns.'
+    }
+  };
+
+  const currentTabInfo = tabTitles[currentTab] || tabTitles.overview;
+
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-      {/* Top Header & Operational Actions */}
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 font-sans">
+      {/* 1. TOP OPERATIONS BANNER */}
       <div className="flex flex-col md:flex-row md:items-center justify-between pb-6 border-b border-border gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-xs uppercase tracking-widest text-muted font-medium">
-              Enterprise Operations
+            <span className="text-[10px] uppercase font-mono tracking-widest text-muted font-bold">
+              Operations Center · {currentTab.toUpperCase()}
             </span>
             <span className="w-2 h-2 rounded-full bg-success animate-pulse" />
-            <span className="text-xs text-success font-medium">Live Supabase Sync Ready</span>
+            <span className="text-[11px] font-mono text-success">Live Atelier Terminal</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-semibold text-primary mt-1">
-            Admin Sales & Inventory Intelligence
+          <h1 className="text-2xl sm:text-3xl font-bold text-primary mt-1 tracking-tight">
+            {currentTabInfo.title}
           </h1>
-          <p className="text-xs text-muted mt-1">
-            Recharts analytics, real-time stock decrements, multi-format export & refund automation.
+          <p className="text-xs text-muted mt-0.5">
+            {currentTabInfo.subtitle}
           </p>
         </div>
 
-        {/* Action Buttons: Export & Reset */}
+        {/* Global Operational Tools: Export & Reset Seed Data */}
         <div className="flex flex-wrap items-center gap-3">
-          {/* Data Export Dropdown */}
+          {/* Export Dropdown */}
           <div className="relative">
             <button
+              type="button"
               onClick={() => setIsExportOpen(!isExportOpen)}
               className="px-3.5 py-2 rounded-input bg-surface border border-border text-primary hover:bg-canvas text-xs font-semibold flex items-center gap-2 transition-colors min-h-[38px]"
             >
@@ -231,37 +269,41 @@ export default function AdminDashboardPage() {
             </button>
 
             {isExportOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-canvas border border-border rounded-card shadow-lg py-1 z-30 text-xs">
-                <div className="px-3 py-1.5 font-semibold text-muted border-b border-border text-[10px] uppercase">
-                  Select Format ({exportableData.length} rows)
+              <div className="absolute right-0 mt-2 w-48 bg-canvas border border-border rounded-card shadow-xl py-1 z-30 text-xs">
+                <div className="px-3 py-1.5 font-semibold text-muted border-b border-border text-[10px] uppercase font-mono">
+                  Select Format ({exportableData.length} records)
                 </div>
                 <button
+                  type="button"
                   onClick={() => handleExport('xlsx')}
                   className="w-full text-left px-3 py-2 hover:bg-surface text-primary flex items-center justify-between"
                 >
                   <span>Excel (.xlsx)</span>
-                  <span className="text-[10px] text-muted">write-excel-file</span>
+                  <span className="text-[10px] text-muted">Formatted</span>
                 </button>
                 <button
+                  type="button"
                   onClick={() => handleExport('csv')}
                   className="w-full text-left px-3 py-2 hover:bg-surface text-primary flex items-center justify-between"
                 >
                   <span>Comma-Separated (.csv)</span>
-                  <span className="text-[10px] text-muted">Blob</span>
+                  <span className="text-[10px] text-muted">Standard</span>
                 </button>
                 <button
+                  type="button"
                   onClick={() => handleExport('tsv')}
                   className="w-full text-left px-3 py-2 hover:bg-surface text-primary flex items-center justify-between"
                 >
                   <span>Tab-Separated (.tsv)</span>
-                  <span className="text-[10px] text-muted">Blob</span>
+                  <span className="text-[10px] text-muted">Tabular</span>
                 </button>
                 <button
+                  type="button"
                   onClick={() => handleExport('xml')}
                   className="w-full text-left px-3 py-2 hover:bg-surface text-primary flex items-center justify-between"
                 >
                   <span>XML Schema (.xml)</span>
-                  <span className="text-[10px] text-muted">Blob</span>
+                  <span className="text-[10px] text-muted">Raw Schema</span>
                 </button>
               </div>
             )}
@@ -269,16 +311,18 @@ export default function AdminDashboardPage() {
 
           {/* Reset Demo State to Initial Seed */}
           <button
+            type="button"
             onClick={resetToSeedData}
             title="Reset to 46 synthetic seed orders & clean stock"
-            className="p-2 rounded-input bg-surface border border-border text-muted hover:text-primary transition-colors min-h-[38px] min-w-[38px] flex items-center justify-center"
+            className="px-3 py-2 rounded-input bg-surface border border-border text-muted hover:text-primary transition-colors min-h-[38px] flex items-center gap-1.5 text-xs font-medium"
           >
-            <ArrowCounterClockwise size={15} />
+            <ArrowCounterClockwise size={14} />
+            <span className="hidden sm:inline">Reset State</span>
           </button>
         </div>
       </div>
 
-      {/* Export notification banner */}
+      {/* Export Notification */}
       {exportNotice && (
         <div className="mt-4 p-3 bg-success-light border border-success/30 rounded-input text-xs text-success flex items-center gap-2 animate-in fade-in">
           <Check size={14} weight="bold" />
@@ -286,517 +330,72 @@ export default function AdminDashboardPage() {
         </div>
       )}
 
-      {/* SALE ENGINE & PROMOTIONS CONTROL CENTER (10% - 90% Off) */}
-      <div className="mt-6 p-5 bg-canvas border border-border rounded-card shadow-xs">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-border gap-3">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-tight bg-primary text-canvas flex items-center justify-center">
-              <Percent size={16} weight="bold" />
-            </div>
-            <div>
-              <h2 className="text-sm font-semibold uppercase tracking-wider text-primary">
-                Sale Engine & Promotional Controls
-              </h2>
-              <p className="text-xs text-muted">
-                Configure live storewide/category drops from 10% to 90% off and manage active coupon codes.
-              </p>
-            </div>
-          </div>
+      {/* 2. DEDICATED TAB VIEWS */}
+      <div className="mt-6">
+        {currentTab === 'overview' && (
+          <AdminOverviewTab
+            dateFilter={dateFilter}
+            setDateFilter={setDateFilter}
+            categoryFilter={categoryFilter}
+            setCategoryFilter={setCategoryFilter}
+            statusFilter={statusFilter}
+            setStatusFilter={setStatusFilter}
+            totalRevenue={totalRevenue}
+            activeOrdersCount={activeOrdersCount}
+            filteredOrders={filteredOrders}
+            lowStockVariants={lowStockVariants}
+            totalRefundedAmount={totalRefundedAmount}
+            revenueOverTimeData={revenueOverTimeData}
+            salesByCategoryData={salesByCategoryData}
+            orderStatusData={orderStatusData}
+            inventoryStockData={inventoryStockData}
+            onNavigateToTab={handleTabChange}
+          />
+        )}
 
-          <label className="relative inline-flex items-center cursor-pointer select-none">
-            <input
-              type="checkbox"
-              checked={saleConfig.active}
-              onChange={(e) => setSaleConfig(prev => ({ ...prev, active: e.target.checked }))}
-              className="sr-only peer"
-            />
-            <div className="w-11 h-6 bg-surface border border-border peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-muted peer-checked:after:bg-canvas after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-            <span className="ml-3 text-xs font-semibold uppercase tracking-wider text-primary">
-              {saleConfig.active ? 'Sale Active' : 'Sale Inactive'}
-            </span>
-          </label>
-        </div>
+        {currentTab === 'orders' && (
+          <AdminOrdersTab
+            orders={orders}
+            updateOrderStatus={updateOrderStatus}
+            refundOrder={refundOrder}
+            onOpenTrackingModal={(order) => setSelectedAdminTrackingOrder(order)}
+          />
+        )}
 
-        {/* Live Controls */}
-        <div className="pt-4 grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
-          {/* 1. Discount Slider (10% to 90%) */}
-          <div>
-            <div className="flex justify-between items-center text-xs mb-2">
-              <span className="font-medium text-muted">Discount Percentage:</span>
-              <span className="font-bold font-mono text-sm text-primary bg-surface px-2 py-0.5 rounded-input border border-border">
-                {saleConfig.percentage}% OFF
-              </span>
-            </div>
-            <input
-              type="range"
-              min="10"
-              max="90"
-              step="5"
-              value={saleConfig.percentage}
-              disabled={!saleConfig.active}
-              onChange={(e) => setSaleConfig(prev => ({ ...prev, percentage: Number(e.target.value) }))}
-              className="w-full accent-primary cursor-pointer disabled:opacity-40"
-            />
-            <div className="flex justify-between text-[10px] text-muted font-mono mt-1">
-              <span>10%</span>
-              <span>30%</span>
-              <span>50%</span>
-              <span>70%</span>
-              <span>90%</span>
-            </div>
-          </div>
+        {currentTab === 'inventory' && (
+          <AdminInventoryTab
+            products={products}
+            updateVariantStock={updateVariantStock}
+            lowStockVariants={lowStockVariants}
+          />
+        )}
 
-          {/* 2. Target Category */}
-          <div>
-            <label className="block text-xs font-medium text-muted mb-2">
-              Target Category Scope:
-            </label>
-            <select
-              value={saleConfig.categoryTarget || 'All'}
-              disabled={!saleConfig.active}
-              onChange={(e) => setSaleConfig(prev => ({ ...prev, categoryTarget: e.target.value }))}
-              className="w-full bg-surface border border-border rounded-input px-3 py-2 text-xs text-primary focus:outline-none focus:border-primary disabled:opacity-40"
-            >
-              <option value="All">Storewide (All Garments)</option>
-              <option value="Tops">Tops Only</option>
-              <option value="Bottoms">Bottoms Only</option>
-              <option value="Outerwear">Outerwear Only</option>
-              <option value="Footwear">Footwear Only</option>
-            </select>
-          </div>
+        {currentTab === 'logistics' && (
+          <AdminLogisticsTab
+            orders={orders}
+            updateOrderStatus={updateOrderStatus}
+            onOpenTrackingModal={(order) => setSelectedAdminTrackingOrder(order)}
+          />
+        )}
 
-          {/* 3. Active Promo Coupon Codes */}
-          <div>
-            <span className="block text-xs font-medium text-muted mb-2">
-              Active Promo Coupons ({coupons.length}):
-            </span>
-            <div className="flex flex-wrap gap-1.5">
-              {coupons.map(c => (
-                <span
-                  key={c.code}
-                  className="inline-flex items-center gap-1 px-2 py-1 bg-surface border border-border rounded-input text-[11px] font-mono text-primary"
-                  title={c.label}
-                >
-                  <Tag size={11} className="text-muted" />
-                  <span className="font-bold">{c.code}</span>
-                  <span className="text-muted text-[10px]">({c.discountPercent}%)</span>
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
+        {currentTab === 'promotions' && (
+          <AdminPromotionsTab
+            saleConfig={saleConfig}
+            setSaleConfig={setSaleConfig}
+            coupons={coupons}
+            setCoupons={setCoupons}
+            products={products}
+            updateProductSale={updateProductSale}
+          />
+        )}
       </div>
 
-      {/* 3 Shared Interactive Filters (Updating all 4 charts simultaneously) */}
-      <div className="mt-6 p-4 bg-surface border border-border rounded-card flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
-        <div className="flex items-center gap-2 text-xs font-semibold text-primary">
-          <Funnel size={14} />
-          <span>Interactive Global Filter:</span>
-        </div>
-
-        <div className="flex flex-wrap items-center gap-3 text-xs">
-          {/* Filter 1: Date Range */}
-          <div className="flex items-center gap-1.5">
-            <span className="text-muted">Date:</span>
-            <div className="flex bg-canvas p-0.5 rounded-input border border-border">
-              {[
-                { label: '7D', value: '7' },
-                { label: '14D', value: '14' },
-                { label: '30D', value: '30' },
-                { label: 'All', value: 'all' },
-              ].map(d => (
-                <button
-                  key={d.value}
-                  onClick={() => setDateFilter(d.value)}
-                  className={`px-2.5 py-1 rounded-input font-medium transition-colors ${dateFilter === d.value
-                      ? 'bg-primary text-canvas'
-                      : 'text-muted hover:text-primary'
-                    }`}
-                >
-                  {d.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Filter 2: Category */}
-          <div className="flex items-center gap-1.5">
-            <span className="text-muted">Category:</span>
-            <select
-              value={categoryFilter}
-              onChange={(e) => setCategoryFilter(e.target.value)}
-              className="bg-canvas border border-border rounded-input px-2.5 py-1 text-xs text-primary focus:outline-none focus:border-primary"
-            >
-              <option value="All">All Categories</option>
-              <option value="Tops">Tops</option>
-              <option value="Bottoms">Bottoms</option>
-              <option value="Outerwear">Outerwear</option>
-              <option value="Footwear">Footwear</option>
-            </select>
-          </div>
-
-          {/* Filter 3: Order Status */}
-          <div className="flex items-center gap-1.5">
-            <span className="text-muted">Status:</span>
-            <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              className="bg-canvas border border-border rounded-input px-2.5 py-1 text-xs text-primary focus:outline-none focus:border-primary"
-            >
-              <option value="All">All Statuses</option>
-              <option value="delivered">Delivered</option>
-              <option value="shipped">Shipped</option>
-              <option value="pending">Pending</option>
-              <option value="refunded">Refunded</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      {/* KPI Summary Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
-        <div className="bg-canvas border border-border rounded-card p-4">
-          <span className="text-xs text-muted uppercase font-medium">Net Realized Revenue</span>
-          <div className="text-2xl font-bold text-primary mt-1 tabular-nums">
-            ${totalRevenue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-          </div>
-          <span className="text-[11px] text-success mt-1 block">
-            {activeOrdersCount} paid consignments
-          </span>
-        </div>
-
-        <div className="bg-canvas border border-border rounded-card p-4">
-          <span className="text-xs text-muted uppercase font-medium">Orders Count</span>
-          <div className="text-2xl font-bold text-primary mt-1 tabular-nums">
-            {filteredOrders.length}
-          </div>
-          <span className="text-[11px] text-muted mt-1 block">
-            Avg ${(totalRevenue / (activeOrdersCount || 1)).toFixed(2)} / order
-          </span>
-        </div>
-
-        <div className="bg-canvas border border-border rounded-card p-4">
-          <span className="text-xs text-muted uppercase font-medium">Low-Stock Variants</span>
-          <div className="text-2xl font-bold text-danger mt-1 tabular-nums">
-            {lowStockVariants.length}
-          </div>
-          <span className="text-[11px] text-danger mt-1 block">
-            Stock count ≤ 5 units
-          </span>
-        </div>
-
-        <div className="bg-canvas border border-border rounded-card p-4">
-          <span className="text-xs text-muted uppercase font-medium">Refunded Volume</span>
-          <div className="text-2xl font-bold text-muted mt-1 tabular-nums">
-            ${totalRefundedAmount.toFixed(2)}
-          </div>
-          <span className="text-[11px] text-muted mt-1 block">
-            Auto-restored to inventory
-          </span>
-        </div>
-      </div>
-
-      {/* REAL-TIME LOW-STOCK ALERTS BANNER (Strict Requirement: Flag stock_count <= 5) */}
-      {lowStockVariants.length > 0 && (
-        <div className="mt-6 bg-danger-light border border-danger/30 rounded-card p-4">
-          <div className="flex items-center gap-2 text-danger pb-2 border-b border-danger/20">
-            <Warning size={18} weight="bold" />
-            <span className="text-xs font-semibold uppercase tracking-wider">
-              Real-Time Low-Stock Inventory Alerts ({lowStockVariants.length} Variants Flagged)
-            </span>
-          </div>
-
-          <div className="mt-3 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2.5">
-            {lowStockVariants.slice(0, 8).map(v => (
-              <div
-                key={v.variantId}
-                className="bg-canvas p-2.5 rounded-input border border-border text-xs flex flex-col justify-between"
-              >
-                <div>
-                  <span className="text-[10px] text-muted uppercase font-medium block">
-                    {v.category}
-                  </span>
-                  <span className="font-semibold text-primary truncate block">
-                    {v.productName}
-                  </span>
-                  <span className="text-muted text-[11px]">
-                    {v.colorName} · Size {v.size}
-                  </span>
-                </div>
-                <div className="mt-2 flex items-center justify-between">
-                  <span className="text-[10px] text-muted">Available:</span>
-                  <span className="font-bold text-danger tabular-nums">
-                    {v.stockCount === 0 ? 'SOLD OUT' : `${v.stockCount} units`}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* 4 RECHARTS ANALYTICS GRAPHS */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-        {/* GRAPH 1: Revenue Over Time */}
-        <div className="bg-canvas border border-border rounded-card p-5">
-          <div className="flex items-center justify-between pb-3 border-b border-border">
-            <div>
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-primary">
-                1. Revenue Over Time
-              </h3>
-              <p className="text-[11px] text-muted mt-0.5">
-                Daily aggregated turnover in USD
-              </p>
-            </div>
-            <span className="text-xs font-semibold text-primary tabular-nums">
-              ${totalRevenue.toFixed(0)}
-            </span>
-          </div>
-          <div className="h-64 mt-4 w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={revenueOverTimeData}>
-                <defs>
-                  <linearGradient id="purgatoryGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#1C1C1B" stopOpacity={0.15} />
-                    <stop offset="95%" stopColor="#1C1C1B" stopOpacity={0.0} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid stroke="#E5E4E0" strokeDasharray="3 3" vertical={false} />
-                <XAxis dataKey="date" stroke="#575654" fontSize={10} tickLine={false} />
-                <YAxis stroke="#575654" fontSize={10} tickLine={false} tickFormatter={(v) => `$${v}`} />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: '#FAF9F7',
-                    borderColor: '#E5E4E0',
-                    borderRadius: '4px',
-                    fontSize: '11px',
-                    color: '#1C1C1B'
-                  }}
-                  formatter={(val) => [`$${Number(val).toFixed(2)}`, 'Revenue']}
-                />
-                <Area
-                  type="monotone"
-                  dataKey="revenue"
-                  stroke="#1C1C1B"
-                  strokeWidth={2}
-                  fillOpacity={1}
-                  fill="url(#purgatoryGradient)"
-                />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        {/* GRAPH 2: Sales by Category */}
-        <div className="bg-canvas border border-border rounded-card p-5">
-          <div className="flex items-center justify-between pb-3 border-b border-border">
-            <div>
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-primary">
-                2. Sales by Category
-              </h3>
-              <p className="text-[11px] text-muted mt-0.5">
-                Volume and total gross sales per segment
-              </p>
-            </div>
-          </div>
-          <div className="h-64 mt-4 w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={salesByCategoryData}>
-                <CartesianGrid stroke="#E5E4E0" strokeDasharray="3 3" vertical={false} />
-                <XAxis dataKey="category" stroke="#575654" fontSize={10} tickLine={false} />
-                <YAxis stroke="#575654" fontSize={10} tickLine={false} tickFormatter={(v) => `$${v}`} />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: '#FAF9F7',
-                    borderColor: '#E5E4E0',
-                    borderRadius: '4px',
-                    fontSize: '11px',
-                    color: '#1C1C1B'
-                  }}
-                  formatter={(val, name) => [name === 'revenue' ? `$${Number(val).toFixed(2)}` : val, name === 'revenue' ? 'Revenue' : 'Units Sold']}
-                />
-                <Bar dataKey="revenue" fill="#1C1C1B" radius={[3, 3, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        {/* GRAPH 3: Order Status Breakdown */}
-        <div className="bg-canvas border border-border rounded-card p-5">
-          <div className="flex items-center justify-between pb-3 border-b border-border">
-            <div>
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-primary">
-                3. Order Status Breakdown
-              </h3>
-              <p className="text-[11px] text-muted mt-0.5">
-                Fulfillment pipeline & refund distribution
-              </p>
-            </div>
-          </div>
-          <div className="h-64 mt-4 w-full flex items-center justify-center">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={orderStatusData}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={55}
-                  outerRadius={85}
-                  paddingAngle={3}
-                  dataKey="value"
-                >
-                  {orderStatusData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: '#FAF9F7',
-                    borderColor: '#E5E4E0',
-                    borderRadius: '4px',
-                    fontSize: '11px',
-                    color: '#1C1C1B'
-                  }}
-                  formatter={(val, name) => [`${val} orders`, name]}
-                />
-                <Legend
-                  formatter={(val) => <span style={{ color: '#1C1C1B', fontSize: '11px' }}>{val}</span>}
-                />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        {/* GRAPH 4: Inventory / Low-Stock Levels */}
-        <div className="bg-canvas border border-border rounded-card p-5">
-          <div className="flex items-center justify-between pb-3 border-b border-border">
-            <div>
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-primary">
-                4. Variant Inventory Levels
-              </h3>
-              <p className="text-[11px] text-muted mt-0.5">
-                Units in stock (Red denotes low-stock ≤ 5 units)
-              </p>
-            </div>
-          </div>
-          <div className="h-64 mt-4 w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={inventoryStockData} layout="vertical">
-                <CartesianGrid stroke="#E5E4E0" strokeDasharray="3 3" horizontal={false} />
-                <XAxis type="number" stroke="#575654" fontSize={10} tickLine={false} />
-                <YAxis dataKey="shortName" type="category" stroke="#575654" fontSize={9} tickLine={false} width={85} />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: '#FAF9F7',
-                    borderColor: '#E5E4E0',
-                    borderRadius: '4px',
-                    fontSize: '11px',
-                    color: '#1C1C1B'
-                  }}
-                  formatter={(val, _, item) => [`${val} units`, item.payload.name]}
-                />
-                <Bar dataKey="stock" radius={[0, 3, 3, 0]}>
-                  {inventoryStockData.map((entry, index) => (
-                    <Cell key={`stock-cell-${index}`} fill={entry.isLow ? '#9E3B33' : '#1C1C1B'} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-      </div>
-
-      {/* ORDERS MANAGEMENT TABLE & 1-CLICK REFUND */}
-      <div className="mt-8 bg-canvas border border-border rounded-card p-5">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-border gap-2">
-          <div>
-            <h3 className="text-sm font-semibold tracking-wide text-primary uppercase">
-              Consignment & Orders Ledger ({filteredOrders.length} records)
-            </h3>
-            <p className="text-xs text-muted">
-              Live fulfillment status toggles and 1-click refund stock recovery trigger
-            </p>
-          </div>
-        </div>
-
-        <div className="overflow-x-auto mt-4">
-          <table className="w-full text-left text-xs">
-            <thead className="bg-surface text-muted uppercase tracking-wider border-b border-border">
-              <tr>
-                <th className="py-2.5 px-3 font-semibold">Order ID</th>
-                <th className="py-2.5 px-3 font-semibold">Date</th>
-                <th className="py-2.5 px-3 font-semibold">Customer</th>
-                <th className="py-2.5 px-3 font-semibold">Method</th>
-                <th className="py-2.5 px-3 font-semibold">Total</th>
-                <th className="py-2.5 px-3 font-semibold">Status</th>
-                <th className="py-2.5 px-3 font-semibold text-right">Inventory Action</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border tabular-nums">
-              {filteredOrders.slice(0, 15).map(order => {
-                const isRefunded = order.status === 'refunded';
-                const formattedDate = new Date(order.created_at).toLocaleDateString('en-US', {
-                  month: 'short',
-                  day: 'numeric'
-                });
-
-                return (
-                  <tr key={order.id} className="hover:bg-surface/50 transition-colors">
-                    <td className="py-3 px-3 font-mono font-medium text-primary">
-                      {order.id.slice(0, 14)}...
-                    </td>
-                    <td className="py-3 px-3 text-muted">{formattedDate}</td>
-                    <td className="py-3 px-3">
-                      <div className="font-medium text-primary">{order.customer_name}</div>
-                      <div className="text-[10px] text-muted">{order.customer_email}</div>
-                    </td>
-                    <td className="py-3 px-3 uppercase text-[11px] text-muted">
-                      {order.payment_method}
-                    </td>
-                    <td className="py-3 px-3 font-semibold text-primary">
-                      ${Number(order.total_amount).toFixed(2)}
-                    </td>
-                    <td className="py-3 px-3">
-                      <select
-                        value={order.status}
-                        onChange={(e) => updateOrderStatus(order.id, e.target.value)}
-                        disabled={isRefunded}
-                        className={`text-xs px-2 py-1 rounded-input border focus:outline-none cursor-pointer ${isRefunded
-                            ? 'bg-danger-light text-danger border-danger/30'
-                            : order.status === 'delivered'
-                              ? 'bg-success-light text-success border-success/30'
-                              : 'bg-surface text-primary border-border'
-                          }`}
-                      >
-                        <option value="pending">Pending</option>
-                        <option value="shipped">Shipped</option>
-                        <option value="delivered">Delivered</option>
-                        <option value="refunded">Refunded</option>
-                      </select>
-                    </td>
-                    <td className="py-3 px-3 text-right">
-                      {isRefunded ? (
-                        <span className="text-xs text-muted italic">
-                          Stock Restored ✓
-                        </span>
-                      ) : (
-                        <button
-                          type="button"
-                          onClick={() => refundOrder(order.id)}
-                          className="px-2.5 py-1 bg-surface hover:bg-danger-light hover:text-danger hover:border-danger/40 border border-border rounded-input text-xs font-medium text-muted transition-colors min-h-[32px]"
-                          title="Restores garment quantities back to product_variants stock"
-                        >
-                          1-Click Refund
-                        </button>
-                      )}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      {/* Global Shopee / SHEIN Consignment Tracking Inspector Modal */}
+      <ConsignmentTrackingModal
+        order={orders.find(o => o.id === selectedAdminTrackingOrder?.id) || selectedAdminTrackingOrder}
+        isOpen={Boolean(selectedAdminTrackingOrder)}
+        onClose={() => setSelectedAdminTrackingOrder(null)}
+      />
     </div>
   );
 }

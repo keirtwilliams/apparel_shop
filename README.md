@@ -1,173 +1,203 @@
-# MONOKROM — Architectural Apparel & Functional Essentials
-> **Production-Ready 3–4 Day MVP Clothing E-Commerce Web App & Admin Dashboard**
-> Built with **React (Vite) + Tailwind CSS + Supabase + Recharts + write-excel-file**
+# PURGATORY // FALLING FLAMES — ARCHIVAL LUXURY STREETWEAR
+
+> **Production-Ready Philippine Luxury Apparel Web App & Operations Console**  
+> Built with **React 18 + Vite + Tailwind CSS + Recharts + write-excel-file + HTML5 Canvas**  
+> Tailored for live investor/evaluator demonstrations with 100% client-side resilience and zero external database blockers.
 
 ---
 
-## 1. Brand & Design System Philosophy
+## 1. Brand Manifesto & Anti-AI-Slop Visual System
 
-**MONOKROM** is a minimalist, high-end apparel label engineered around architectural silhouettes, heavy-density organic cottons, virgin tropical wools, and Japanese technical textiles.
+**PURGATORY (Falling Flames Collection)** is an independent luxury streetwear atelier based in Iloilo City and Metro Manila, Philippines. Engineered around raw architectural silhouettes, heavy-density 240 GSM combed cottons, cured archival screenprints, and industrial dark-minimalist aesthetics.
 
-### Strict Anti-AI-Slop Compliance
-- **No Pure Colors:** Never `#FFFFFF` or `#000000`. We strictly employ warm museum canvas `#FAF9F7` and charcoal ink `#1C1C1B`.
-- **Zero Bloat:** No popup modals, no countdown timers, no fake badges, no floating elements, and no bloated marketing banners.
-- **Micro-interactivity:** Tactile button states, instant filter updates without page reloads, and tabular numerals on all prices, stock counts, and financial totals.
+### Color Tokens (Unified Storefront & Admin Palette)
+Strictly adheres to an organic, high-contrast, anti-AI-slop design system. Pure digital primaries (`#FFFFFF`, `#000000`, saturated blues) are forbidden:
 
-### Color Tokens
-| Token | Hex Value | Usage |
+| Token | Hex Value | Application |
 | :--- | :--- | :--- |
-| **Canvas** | `#FAF9F7` | Body background, modal base |
-| **Surface** | `#F2F1EE` | Secondary containers, inputs, table headers |
-| **Surface Subtle** | `#EAE9E5` | Hover backgrounds, secondary button states |
-| **Primary** | `#1C1C1B` | Core text, primary buttons, monogram |
-| **Muted** | `#575654` | Labels, specifications, metadata |
-| **Border** | `#E5E4E0` | Tight `1px solid` architectural borders |
-| **Success** | `#2E5A44` | In-stock tags, paid indicators, free shipping |
-| **Danger / Low-Stock** | `#9E3B33` | Stock alerts (`≤ 5 units`), refunds, errors |
+| **Chalk Canvas** | `#FAF9F7` | Body background, card surfaces, modal bases |
+| **Obsidian Primary** | `#0C0C0B` | Core typography, primary action buttons, active pills |
+| **Surface Neutral** | `#F5F3EE` | Secondary containers, inputs, table headers, drawer bases |
+| **Atelier Border** | `#E5E4E0` | Tight `1px` architectural borders and division lines |
+| **Flame Red** | `#C43C30` | Sale badges, markdown accents, critical stock warnings |
+| **Taupe Muted** | `#82807A` | Labels, specifications, metadata, breadcrumbs |
+| **Success Emerald** | `#2E5A44` | In-stock tags, paid indicators, live tracking beacon |
 
 ---
 
-## 2. Core Architecture & Tech Stack
+## 2. Core Architecture & Resilient Performance Engine
 
-- **Frontend:** React 18, Vite 6, Tailwind CSS 3, React Router v6.
-- **State Management:** `StoreContext` syncing cart state to `localStorage` and maintaining optimistic local data for immediate demo readiness.
-- **Analytics & Visualizations:** **Recharts** powering 4 linked real-time charts.
-- **Client-Side Data Exports:** **`write-excel-file/browser`** for native `.xlsx` workbooks; Native JS `Blob` for `.csv`, `.tsv`, and `.xml`.
-- **Backend & Database:** Supabase (`@supabase/supabase-js` v2 singleton in `src/lib/supabase.js`) + PostgreSQL RLS policies + inventory trigger automations.
-- **Data Integrity:** Real-time stock reservation, low-stock flagging, and 1-click refund stock recovery.
+```
+┌────────────────────────────────────────────────────────┐
+│                   PURGATORY WEB APP                    │
+├───────────────────────────┬────────────────────────────┤
+│     BUYER STOREFRONT      │   ADMIN OPERATIONS GATE    │
+│   (Chalk Luxury Funnel)   │   (Left-Sidebar Console)   │
+├───────────────────────────┴────────────────────────────┤
+│                  SHARED CLIENT ENGINE                  │
+│  ├── MemoryCache (L1 RAM) + SessionStorage (L2 SWR)    │
+│  ├── Sliding-Window Rate Limiter (Debounce & Defense)  │
+│  ├── Deterministic Tracking Engine (Shopee/SHEIN Hub)  │
+│  └── HTML5 2x Retina Canvas PNG Receipt Generator      │
+└────────────────────────────────────────────────────────┘
+```
 
----
+### High-Performance Tiered Caching (`src/lib/cache.js`)
+- **L1 RAM Cache:** In-memory LRU storage with sub-millisecond lookups for products and order tracking.
+- **L2 Persistent Session Cache:** Survives page navigations with configurable Time-To-Live (TTL).
+- **Stale-While-Revalidate (SWR):** Instantly yields cached responses while quietly updating in the background.
+- **Tag-Based Invalidation:** Adjusting product stock or markdowns automatically purges `'products'` and `'pricing'` tags across all components.
 
-## 3. Database Schema & Inventory Automation
-
-The database runs on Supabase (PostgreSQL) with 2-role RBAC (`customer` and `admin`) and Row-Level Security:
-
-### Tables
-1. `profiles`: `id` (FK to `auth.users`), `email`, `full_name`, `role` (`'customer' | 'admin'`), `created_at`
-2. `products`: `id`, `name`, `slug`, `category`, `price`, `description`, `material`, `fit_note`, `care`, `images[]`, `created_at`
-3. `product_variants`: `id`, `product_id`, `color_name`, `color_hex`, `size`, `stock_count`
-4. `orders`: `id`, `user_id`, `customer_name`, `customer_email`, `shipping_address`, `payment_method`, `payment_status`, `status`, `total_amount`, `created_at`
-5. `order_items`: `id`, `order_id`, `variant_id`, `quantity`, `unit_price`, `created_at`
-
-### PostgreSQL Triggers (`supabase/schema.sql`)
-- **Stock Decrement on Purchase:**
-  ```sql
-  CREATE TRIGGER trigger_decrement_stock
-  AFTER INSERT ON public.order_items
-  FOR EACH ROW EXECUTE FUNCTION public.handle_stock_decrement();
-  ```
-- **Stock Restoration on Refund:**
-  ```sql
-  CREATE TRIGGER trigger_restore_stock_on_refund
-  AFTER UPDATE ON public.orders
-  FOR EACH ROW EXECUTE FUNCTION public.handle_stock_restore_on_refund();
-  ```
+### Sliding-Window Rate Limiter (`src/lib/rateLimiter.js`)
+- **Checkout Double-Click Throttle:** Prevents duplicate order placement during network or rapid click events.
+- **Coupon Brute-Force Shield:** Limits promotional voucher testing to 5 attempts per minute.
+- **Console Lockout:** Auto-throttles authentication retries.
 
 ---
 
-## 4. Key Features & Demo Flow
+## 3. Buyer Journey & Storefront Features
 
-### A. Clutter-Free 4:5 Apparel Catalogue (`/`)
-- Shows **ONLY 4 elements**: 4:5 photograph, title, price (`tabular-nums`), and color swatch dots.
-- Instant, no-reload filters:
-  - **Category:** All, Tops, Bottoms, Outerwear, Footwear
-  - **Size:** All, S, M, L, XL
-  - **Price Range & Sort:** Featured, Price Ascending, Price Descending, Alphabetical
-  - **Search:** Instant matching across name, fabric, and silhouette
+### A. Streamlined 3-Stage Luxury Funnel (`/`)
+1. **Cinematic Lookbook Hero:** High-impact "Falling Flames" campaign artwork, inverted brand crest, and liquid-light typography.
+2. **Curated Archival Garments (`#archive`):** 4:5 fashion card grid displaying authentic curated graphic tees (`img1` to `img6`), hover zoom, real-time PHP pricing, and color swatches.
+3. **Fabrication Manifesto:** Architectural atelier matrix detailing 240 GSM combed cotton specifications, cured screenprinting, and deadstock drop policies.
 
-### B. Fit-First Product Pages (`/product/:slug`)
-- 4:5 dual-photo gallery with thumbnail switcher.
-- **1-Line Fit Tag** positioned right above size pills.
-- **Clickable S / M / L / XL size pills** that auto-disable with strikethrough styling when `stock_count === 0`.
-- **Real-Time Stock Warning:** Dynamic alert (`Only X remaining in stock`) whenever `stock_count <= 5`.
-- **1-Click Size Chart Modal:** High-precision garment measurements with instant `CM` and `INCHES` toggle.
-- **3 Upfront Specs:** Accordions for **Material**, **Fit**, and **Care**.
-- **Mobile Sticky "Add to Bag" Bar:** Strict `44px` minimum tap target.
+### B. Product Detail Page (`/product/:slug`)
+- Dual-photo 4:5 gallery with front/back inspection.
+- Tactile size selector (S, M, L, XL, XXL) with automatic sold-out strikethroughs.
+- Low-stock indicator (`Only X units remaining`) for stock counts $\le 5$.
+- Expandable accordions for **Fabrication Specs**, **Silhouette Fit**, and **Garment Care**.
+- Mobile sticky checkout action bar with strict $\ge 44\text{px}$ touch targets.
 
-### C. Editable Slide-Over Cart Drawer
-- Open from any page without navigation interruption.
-- Inline size dropdown to swap sizes directly inside the drawer.
-- Stepper controls (`-`, `+`) with automatic stock limit clamping.
-- Complimentary shipping progress indicator ($150 threshold).
+### C. Slide-Over Cart Drawer
+- Non-interruptive slide-out from any page.
+- Inline size switcher and quantity stepper with stock clamping.
+- Live promo coupon voucher redemption.
 
-### D. Multi-Method Checkout & Receipts (`/checkout` & `/receipt/:id`)
-- Supports **Test Card** (`4242 4242 4242 4242`), **GCash**, and **Cash on Delivery (COD)**.
-- Forgiving inline validation with upfront cost breakdowns.
-- On order confirmation, stock counts decrement automatically.
-- **Clean Printable Tax Invoice & Receipt** with fulfillment step tracker (`Pending` → `Shipped` → `Delivered`).
+### D. Multi-Method Checkout (`/checkout`)
+- Currency: **Philippine Peso (PHP, ₱)**.
+- Payment options: **Cash on Delivery (COD)**, **GCash**, and **Card**.
+- Instant local stock deduction and order reservation.
 
-### E. Admin Intelligence & Operations Dashboard (`/admin`)
-- **Role Switcher:** Instant `[ Customer ] | [ Admin ]` toggle in the header for frictionless testing.
-- **4 Recharts Graphs:**
-  1. *Revenue Over Time:* Daily financial volume and orders area chart.
-  2. *Sales by Category:* Segment gross revenue comparison.
-  3. *Order Status Breakdown:* Donut chart of Delivered, Shipped, Pending, Refunded.
-  4. *Variant Inventory Levels:* Horizontal bar chart flagging variants with stock `≤ 5` in `#9E3B33`.
-- **3 Shared Interactive Filters:** Date Range (7D, 14D, 30D, All), Category, and Order Status update all 4 charts and KPI cards simultaneously.
-- **Real-Time Low-Stock Alerts Banner:** Highlights all variants with `stock_count <= 5`.
-- **Multi-Format Client-Side Data Export:** 1-click export of the active filtered dataset to **CSV, XLSX (Excel), XML, and TSV**.
-- **1-Click Refund Action:** Instantly marks order as refunded and restores variant inventory in real time.
+### E. Retina PNG Receipt Download & Shopee/SHEIN Tracking (`/receipt/:id`)
+- **Direct PNG Image Download:** 2x Retina resolution receipt generated via HTML5 Canvas (`PURGATORY-RECEIPT-${id}.png`) for mobile galleries and proof of purchase.
+- **Live Tracking Beacon:** Shows real-time Metro Manila hub location (e.g. *BGC Atelier Sorting Center*, *Pasig Sorting Gateway*).
+- **Shopee/SHEIN 5-Stage Stepper:** Visual tracking pipeline synced directly to admin status updates.
 
 ---
 
-## 5. Quickstart & Local Setup
+## 4. Admin Operations Portal (`/ops-portal`)
+
+### Secure Authentication (`/ops-portal`)
+- Standard Email & Password authentication:
+  - **Email:** `admin@purgatory.com` *(pre-filled)*
+  - **Password:** `purgatory2026` *(pre-filled)*
+- 1-click **"Fill Credentials"** helper for swift testing.
+- Styled in the authentic buyer branding palette (Chalk `#FAF9F7`, Obsidian `#0C0C0B`).
+
+### Collapsible Left-Sidebar Navigation Bar
+- **Hamburger Toggle Icon:** Located at top-left.
+  - **Desktop:** Smoothly collapses sidebar to compact icon-only column (`w-18`) or expands (`w-64`) to give full screen width to data tables and charts.
+  - **Mobile:** Off-canvas slide-over drawer with backdrop blur.
+- **5 Dedicated Functional Modules:**
+
+#### 1. Overview (`?tab=overview`)
+- Executive KPIs: Net Realized Revenue (PHP), Consignments Count, Low-Stock Flagged Count, Refund Volume.
+- Interactive Global Filters: Date range (`7D`, `14D`, `30D`, `All`), Category, and Status simultaneously updating all 4 analytics charts.
+- Low-Stock Alerts Banner: Instant overview of garments with $\le 5$ units remaining.
+- 4 Recharts Analytics Visualizations:
+  1. *Revenue & Order Volume Over Time* (Area chart)
+  2. *Sales by Category* (Bar chart)
+  3. *Order Status Breakdown* (Donut chart)
+  4. *Variant Inventory Levels* (Horizontal bar chart flagging low stock in Flame Red)
+
+#### 2. Consignments & Orders (`?tab=orders`)
+- Search by Order ID, Customer Name, Email, or City.
+- Status Filter Tabs with live count badges (`All`, `Pending`, `Atelier Packed`, `In Transit`, `Out for Delivery`, `Delivered`, `Refunded`).
+- **1-Click Rapid Stage Advancement:**
+  - `Pack Atelier →` (Moves order to BGC Packaging Facility)
+  - `Dispatch Hub →` (Generates courier tracking code and logs package at Pasig Central Gateway)
+  - `Out for Delivery →` (Dispatches with local courier rider Kuya Jonathan M.)
+  - `Deliver ✓` (Marks consignment completed and signed)
+- **1-Click Refund Action:** Instantly refunds payment and automatically restores garment quantities back into inventory.
+- **Live Tracking Inspector:** Opens the Shopee/SHEIN tracking modal.
+
+#### 3. Inventory & Stock Matrix (`?tab=inventory`)
+- Real-time stock matrix per garment and size variant (S, M, L, XL, XXL).
+- **Interactive Stock Adjuster:** `−` and `+` decrement/increment buttons and direct numeric input that instantly persists to state and `localStorage`.
+- Real-time status tags: `In Stock` (green), `Low Stock` (amber), `Sold Out` (red).
+
+#### 4. Logistics & Dispatch Hub (`?tab=logistics`)
+- Shopee / SHEIN 5-Stage command board with parcel count cards.
+- Courier Fleet filter (`J&T Express PH`, `Flash Express`, `NinjaVan PH`).
+- Active Dispatch Queue with 1-click buttons to push packages to the next hub.
+
+#### 5. Promotions & Coupons (`?tab=promotions`)
+- Storewide flash sale switch with interactive slider (**10% to 90% OFF**).
+- Promo coupon voucher creator (Add code, discount %, campaign label).
+- Per-garment individual markdown manager with preset discount buttons (`10%`, `20%`, `30%`, `50%`).
+
+#### Global Tools:
+- **Dataset Export:** 1-click export of filtered orders to **Excel (.xlsx)**, **CSV**, **TSV**, or **XML**.
+- **Reset Seed State:** 1-click button to reset testing state back to the original 46 orders and clean stock.
+
+---
+
+## 5. Local Setup & Testing
 
 ### Installation
 ```bash
-# Clone and enter workspace
+# Enter directory
 cd e-commerce
 
 # Install dependencies
 npm install
 
-# Start development server
+# Start Vite development server
 npm run dev
 ```
 
-### Connecting Live Supabase (Optional)
-The application includes high-fidelity synthetic seed data (46 realistic orders, 8 products, 32 variants) out of the box.
-
-To connect your live Supabase backend:
-1. Create a project at [supabase.com](https://supabase.com).
-2. Run the SQL schema found in `supabase/schema.sql` in the Supabase SQL Editor.
-3. Run `supabase/seed.sql` to populate initial products and synthetic orders.
-4. Copy `.env.example` to `.env.local` and add your project credentials:
-   ```env
-   VITE_SUPABASE_URL=https://your-project-id.supabase.co
-   VITE_SUPABASE_ANON_KEY=your-anon-public-key
-   ```
-5. Restart Vite (`npm run dev`).
-
----
-
-## 6. Deployment to Vercel
-
+### Production Build
 ```bash
-# Build verification
 npm run build
-
-# Deploy via Vercel CLI or Git integration
-vercel --prod
 ```
 
 ---
 
-## 7. 3–4 Day MVP Milestone Breakdown
+## 6. Project Directory Map
 
-- **Day 1: Design Tokens, Schema & Curated Seed Data**
-  - Setup Vite + Tailwind CSS with strict `#FAF9F7` / `#1C1C1B` tokens.
-  - Implement Supabase SQL schema, RLS, and stock triggers (`trigger_decrement_stock`, `trigger_restore_stock_on_refund`).
-  - Seed 46 synthetic orders over the last 30 days and 4:5 fashion catalogue.
-- **Day 2: Storefront, Catalogue & Fit-First PDP**
-  - Build clutter-free 4:5 product cards (image, title, price, swatches).
-  - Implement no-reload instant category, size, price, and search filtering.
-  - Build PDP with 1-line fit tag, disabled size pills on stockout, 1-click size chart, and specs accordions.
-- **Day 3: Slide-Over Cart, Single-Page Checkout & Receipts**
-  - Implement cart drawer with inline size editing and shipping threshold progress.
-  - Multi-method checkout (Test Card `4242...`, GCash, COD) with stock reservation.
-  - Printable receipt with live step tracker.
-- **Day 4: Admin Dashboard, 4 Recharts & Exports**
-  - Implement 4 Recharts graphs linked to 3 shared interactive filters.
-  - Real-time low-stock alerts (`stock_count <= 5`).
-  - Client-side export dropdown (CSV, XLSX, XML, TSV).
-  - 1-click refund stock restoration.
+```
+src/
+├── components/
+│   ├── admin/
+│   │   ├── AdminInventoryTab.jsx      # Per-variant stock matrix & live adjustment
+│   │   ├── AdminLogisticsTab.jsx      # Shopee/SHEIN 5-stage dispatch command board
+│   │   ├── AdminOrdersTab.jsx         # Searchable orders ledger & 1-click stage advancers
+│   │   ├── AdminOverviewTab.jsx       # KPIs, interactive filters, 4 Recharts graphs
+│   │   ├── AdminPortalLayout.jsx      # Collapsible Left-Sidebar layout & hamburger toggle
+│   │   ├── AdminPromotionsTab.jsx     # Flash sale engine, coupons & garment markdowns
+│   │   └── ProtectedAdminRoute.jsx    # Session-based route guard
+│   ├── ConsignmentTrackingModal.jsx   # Shopee/SHEIN live tracking modal
+│   ├── CartDrawer.jsx                 # Slide-over cart with live size editing
+│   ├── Header.jsx                     # Customer navigation header
+│   └── ProductCard.jsx                # 4:5 fashion garment card
+├── context/
+│   ├── AuthContext.jsx                # User authentication state
+│   └── StoreContext.jsx               # Global inventory, orders, cart, and rate limiting
+├── lib/
+│   ├── cache.js                       # L1 RAM + L2 SessionStorage tiered cache
+│   ├── exportUtils.js                 # XLSX, CSV, TSV, XML & Retina Canvas PNG receipt
+│   ├── pricing.js                     # Strict Philippine Peso (PHP) formatting
+│   ├── rateLimiter.js                 # Sliding-window debounce & security rate limiter
+│   └── tracking.js                    # Deterministic tracking metadata & hub routing
+└── pages/
+    ├── admin/
+    │   └── AdminSecurityGate.jsx      # Standard password-based admin login
+    ├── AccountOrdersPage.jsx          # Customer order history & live hub beacon
+    ├── AdminDashboardPage.jsx         # Admin container routing to dedicated tabs
+    ├── CataloguePage.jsx              # Filterable garment archive
+    ├── CheckoutPage.jsx               # PHP multi-method checkout
+    ├── LandingPage.jsx                # Streamlined 3-stage luxury funnel
+    ├── ProductDetailPage.jsx          # Fit-first garment detail view
+    └── ReceiptPage.jsx                # Order invoice & 5-stage tracking stepper
+```

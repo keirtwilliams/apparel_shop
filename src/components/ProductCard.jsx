@@ -11,6 +11,7 @@ import { calculateEffectiveProductPrice, formatCurrency } from '../lib/pricing';
 export default function ProductCard({ product }) {
   const { saleConfig } = useStore();
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
   const [selectedColor, setSelectedColor] = useState(
     product.variants?.[0]?.color_name || ''
   );
@@ -29,30 +30,51 @@ export default function ProductCard({ product }) {
     hex
   }));
 
-  const mainImage = product.images?.[activeImageIndex] || product.images?.[0];
-  const secondaryImage = product.images?.[1] || product.images?.[0];
+  const frontImage = product.images?.[0];
+  const backImage = product.images?.[1];
+
+  // Active angle determined by hover state or manual button toggle
+  const showBack = (isHovered && backImage) || activeImageIndex === 1;
 
   return (
     <div className="group flex flex-col">
-      {/* 1. 4:5 Aspect Ratio Image Container */}
+      {/* 1. Full-Garment Image Container (Dual-Layer Silky Smooth Crossfade) */}
       <Link
         to={`/product/${product.slug}`}
-        className="relative block aspect-[4/5] bg-surface rounded-card overflow-hidden border border-border"
-        onMouseEnter={() => {
-          if (product.images?.length > 1) setActiveImageIndex(1);
+        className="relative block aspect-square sm:aspect-[4/5] bg-surface rounded-card overflow-hidden border border-border p-2 sm:p-3 transition-all duration-500 ease-out group-hover:border-primary/40 group-hover:shadow-[0_8px_30px_rgba(0,0,0,0.04)]"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => {
+          setIsHovered(false);
+          setActiveImageIndex(0);
         }}
-        onMouseLeave={() => setActiveImageIndex(0)}
       >
-        <img
-          src={resolveProductImageUrl(mainImage)}
-          alt={product.name}
-          className="w-full h-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-[1.02]"
-          loading="lazy"
-        />
+        {/* Layer 1: Front Image (Silky Opacity Crossfade) */}
+        {frontImage && (
+          <img
+            src={resolveProductImageUrl(frontImage)}
+            alt={`${product.name} Front View`}
+            className={`absolute inset-0 w-full h-full object-contain object-center p-2 sm:p-3 transition-all duration-700 ease-out ${
+              showBack ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100 scale-100'
+            }`}
+            loading="lazy"
+          />
+        )}
+
+        {/* Layer 2: Back Image (Silky Opacity Crossfade) */}
+        {backImage && (
+          <img
+            src={resolveProductImageUrl(backImage)}
+            alt={`${product.name} Back View`}
+            className={`absolute inset-0 w-full h-full object-contain object-center p-2 sm:p-3 transition-all duration-700 ease-out ${
+              showBack ? 'opacity-100 scale-100' : 'opacity-0 scale-105 pointer-events-none'
+            }`}
+            loading="lazy"
+          />
+        )}
 
         {/* Minimal Archival Sale Pill */}
         {isOnSale && (
-          <div className="absolute top-2.5 right-2.5 bg-[#0C0C0B]/90 backdrop-blur-sm text-[#FAF9F7] text-[10px] font-sans font-semibold tracking-wider px-2 py-0.5 rounded-tight border border-white/10 shadow-sm">
+          <div className="absolute top-2.5 right-2.5 z-10 bg-[#0C0C0B]/90 backdrop-blur-sm text-[#FAF9F7] text-[10px] font-sans font-semibold tracking-wider px-2 py-0.5 rounded-tight border border-white/10 shadow-sm">
             −{discountPercent}%
           </div>
         )}
@@ -62,10 +84,10 @@ export default function ProductCard({ product }) {
       <div className="pt-3 pb-1 flex flex-col gap-1.5">
         {/* Row: Title & Price */}
         <div className="flex items-baseline justify-between gap-2">
-          {/* 2. Title */}
+          {/* 2. Title without hover underline */}
           <Link
             to={`/product/${product.slug}`}
-            className="text-sm font-medium text-primary hover:text-muted transition-colors truncate"
+            className="text-sm font-medium text-primary hover:text-muted transition-colors truncate max-w-[70%]"
             title={product.name}
           >
             {product.name}
@@ -84,23 +106,25 @@ export default function ProductCard({ product }) {
           </div>
         </div>
 
-        {/* 4. Color Swatch Dots */}
-        <div className="flex items-center gap-1.5 pt-0.5">
-          {colorSwatches.map(swatch => {
-            const isSelected = selectedColor === swatch.name;
-            return (
-              <button
-                key={swatch.name}
-                type="button"
-                onClick={() => setSelectedColor(swatch.name)}
-                className={`w-3 h-3 rounded-full transition-transform border border-border focus:outline-none ${isSelected ? 'scale-125 ring-1 ring-primary ring-offset-1 ring-offset-canvas' : 'hover:scale-110 opacity-80'
-                  }`}
-                style={{ backgroundColor: swatch.hex }}
-                title={`${swatch.name}`}
-                aria-label={`Select ${swatch.name}`}
-              />
-            );
-          })}
+        {/* 4. Controls Row: Color Swatches */}
+        <div className="flex items-center justify-between gap-2 pt-0.5">
+          <div className="flex items-center gap-1.5">
+            {colorSwatches.map(swatch => {
+              const isSelected = selectedColor === swatch.name;
+              return (
+                <button
+                  key={swatch.name}
+                  type="button"
+                  onClick={() => setSelectedColor(swatch.name)}
+                  className={`w-3 h-3 rounded-full transition-transform border border-border focus:outline-none ${isSelected ? 'scale-125 ring-1 ring-primary ring-offset-1 ring-offset-canvas' : 'hover:scale-110 opacity-80'
+                    }`}
+                  style={{ backgroundColor: swatch.hex }}
+                  title={`${swatch.name}`}
+                  aria-label={`Select ${swatch.name}`}
+                />
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>

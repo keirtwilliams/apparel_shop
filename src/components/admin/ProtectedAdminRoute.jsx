@@ -11,7 +11,7 @@ export default function ProtectedAdminRoute() {
 
   try {
     const parsed = JSON.parse(sessionData);
-    if (!parsed.token || parsed.role !== 'master_operator') {
+    if (!parsed || !parsed.token) {
       sessionStorage.removeItem('purgatory_ops_session');
       return <Navigate to="/ops-portal" replace />;
     }

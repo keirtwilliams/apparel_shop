@@ -43,7 +43,7 @@ export default function CartDrawer() {
     }
   };
 
-  const freeShippingThreshold = 150;
+  const freeShippingThreshold = 1500;
   const progressToFreeShipping = Math.min(100, (cartSubtotal / freeShippingThreshold) * 100);
   const remainingForFreeShipping = Math.max(0, freeShippingThreshold - cartSubtotal);
 
@@ -84,7 +84,7 @@ export default function CartDrawer() {
           <div className="px-5 py-3 bg-surface border-b border-border text-xs">
             {remainingForFreeShipping > 0 ? (
               <p className="text-muted">
-                Add <span className="font-semibold text-primary tabular-nums">${remainingForFreeShipping.toFixed(2)}</span> more to unlock complimentary express shipping.
+                Add <span className="font-semibold text-primary tabular-nums">{formatCurrency(remainingForFreeShipping)}</span> more to unlock complimentary express shipping.
               </p>
             ) : (
               <p className="text-success font-medium flex items-center gap-1.5">
@@ -145,7 +145,7 @@ export default function CartDrawer() {
                             {item.productName}
                           </h4>
                           <span className="text-xs font-semibold text-primary tabular-nums shrink-0">
-                            ${(item.unitPrice * item.quantity).toFixed(2)}
+                            {formatCurrency(item.unitPrice * item.quantity)}
                           </span>
                         </div>
 

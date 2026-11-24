@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { MagnifyingGlass, Funnel, X, ArrowDown } from '@phosphor-icons/react';
 import { useStore } from '../context/StoreContext';
+import { appCache } from '../lib/cache';
 import { brandConfig } from '../config/brand';
 import ProductCard from '../components/ProductCard';
 
@@ -11,14 +12,28 @@ export default function CataloguePage() {
   const [selectedSize, setSelectedSize] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('featured');
-  const [maxPrice, setMaxPrice] = useState(350);
+  const [maxPrice, setMaxPrice] = useState(10000);
+  const [gridCols, setGridCols] = useState(3); // 3 (Large Lookbook) or 4 (Compact)
 
-  const categories = ['All', 'Tops', 'Bottoms', 'Outerwear', 'Footwear'];
+  // Dynamically derive categories from active inventory (removes empty categories like Bottoms/Outerwear for now)
+  const categories = useMemo(() => {
+    const list = ['All'];
+    products.forEach(p => {
+      if (p.category && !list.includes(p.category)) {
+        list.push(p.category);
+      }
+    });
+    return list;
+  }, [products]);
   const sizes = ['All', 'S', 'M', 'L', 'XL'];
 
-  // Instant, no-reload filter computation
+  // Instant, tiered-cache accelerated filter computation
   const filteredProducts = useMemo(() => {
-    return products.filter(product => {
+    const cacheKey = `cat_query_${selectedCategory}_${selectedSize}_${maxPrice}_${searchQuery.trim().toLowerCase()}_${sortBy}`;
+    const cached = appCache.get(cacheKey);
+    if (cached) return cached;
+
+    const result = products.filter(product => {
       if (selectedCategory !== 'All' && product.category !== selectedCategory) {
         return false;
       }
@@ -45,13 +60,15 @@ export default function CataloguePage() {
       if (sortBy === 'name') return a.name.localeCompare(b.name);
       return 0;
     });
+
+    return appCache.set(cacheKey, result, { ttlMs: 120000, tags: ['products'] });
   }, [products, selectedCategory, selectedSize, maxPrice, searchQuery, sortBy]);
 
   const resetFilters = () => {
     setSelectedCategory('All');
     setSelectedSize('All');
     setSearchQuery('');
-    setMaxPrice(350);
+    setMaxPrice(10000);
     setSortBy('featured');
   };
 
@@ -59,7 +76,7 @@ export default function CataloguePage() {
     selectedCategory !== 'All' ||
     selectedSize !== 'All' ||
     searchQuery.trim() !== '' ||
-    maxPrice < 350 ||
+    maxPrice < 10000 ||
     sortBy !== 'featured';
 
   return (
@@ -158,6 +175,34 @@ export default function CataloguePage() {
             </select>
           </div>
 
+          {/* Grid Layout Toggle */}
+          <div className="hidden sm:flex items-center gap-1 border border-border rounded-input p-1 bg-surface">
+            <button
+              type="button"
+              onClick={() => setGridCols(3)}
+              className={`px-2.5 py-1 text-[11px] font-mono uppercase tracking-wider rounded transition-colors ${
+                gridCols === 3
+                  ? 'bg-primary text-canvas font-bold'
+                  : 'text-muted hover:text-primary'
+              }`}
+              title="Large 3-Column Lookbook"
+            >
+              Large (3)
+            </button>
+            <button
+              type="button"
+              onClick={() => setGridCols(4)}
+              className={`px-2.5 py-1 text-[11px] font-mono uppercase tracking-wider rounded transition-colors ${
+                gridCols === 4
+                  ? 'bg-primary text-canvas font-bold'
+                  : 'text-muted hover:text-primary'
+              }`}
+              title="Compact 4-Column Grid"
+            >
+              Compact (4)
+            </button>
+          </div>
+
           {/* Reset Filters */}
           {hasActiveFilters && (
             <button
@@ -189,7 +234,11 @@ export default function CataloguePage() {
           </button>
         </div>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 sm:gap-x-6 gap-y-8 sm:gap-y-12 pt-8">
+        <div className={`grid gap-x-4 sm:gap-x-8 gap-y-8 sm:gap-y-12 pt-8 ${
+          gridCols === 3
+            ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
+            : 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4'
+        }`}>
           {filteredProducts.map(product => (
             <ProductCard key={product.id} product={product} />
           ))}

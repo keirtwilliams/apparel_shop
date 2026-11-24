@@ -1,5 +1,6 @@
 import React from 'react';
 import { Bag } from '@phosphor-icons/react';
+import { formatCurrency } from '../lib/pricing';
 
 /**
  * Mobile-First Sticky "Add to Cart" Bar
@@ -25,7 +26,7 @@ export default function StickyMobileBar({
           </span>
           <div className="flex items-center gap-2">
             <span className="text-sm font-semibold text-primary tabular-nums">
-              ${Number(product.price).toFixed(2)}
+              {formatCurrency(product.price)}
             </span>
             <span className="text-xs text-muted">
               ({selectedVariant.color_name} · {selectedVariant.size})

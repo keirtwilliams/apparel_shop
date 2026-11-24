@@ -1,12 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Printer, CheckCircle, ArrowRight, Package, Truck, Clock } from '@phosphor-icons/react';
+import { DownloadSimple, CheckCircle, ArrowRight, Package, Truck, Clock, MapPin } from '@phosphor-icons/react';
 import { useStore } from '../context/StoreContext';
 import { brandConfig } from '../config/brand';
+import { formatCurrency } from '../lib/pricing';
+import { downloadReceiptImage } from '../lib/exportUtils';
+import { getOrderTrackingMeta, TRACKING_STEPS } from '../lib/tracking';
+import ConsignmentTrackingModal from '../components/ConsignmentTrackingModal';
 
 export default function ReceiptPage() {
   const { orderId } = useParams();
   const { orders } = useStore();
+  const [isTrackingOpen, setIsTrackingOpen] = useState(false);
 
   const order = orders.find(o => o.id === orderId);
 
@@ -25,8 +30,8 @@ export default function ReceiptPage() {
     );
   }
 
-  const handlePrint = () => {
-    window.print();
+  const handleDownload = () => {
+    downloadReceiptImage(order);
   };
 
   const steps = [
@@ -61,11 +66,12 @@ export default function ReceiptPage() {
         </div>
         <div className="flex items-center gap-3">
           <button
-            onClick={handlePrint}
+            onClick={handleDownload}
             className="px-3.5 py-1.5 rounded-input border border-border bg-surface text-primary hover:bg-canvas text-xs font-medium flex items-center gap-1.5 transition-colors min-h-[36px]"
+            title="Download receipt as high-resolution PNG image"
           >
-            <Printer size={15} />
-            <span>Print Receipt</span>
+            <DownloadSimple size={15} />
+            <span>Download Receipt (PNG)</span>
           </button>
           <Link
             to="/orders"
@@ -107,40 +113,88 @@ export default function ReceiptPage() {
           </div>
         </div>
 
-        {/* Live Status Tracker (Stepped) */}
-        <div className="py-6 border-b border-border print:hidden">
-          <div className="flex items-center justify-between text-xs font-medium mb-3">
-            <span className="text-muted">Fulfillment Tracking:</span>
-            <span className={`px-2 py-0.5 rounded-input uppercase text-[10px] tracking-wider font-semibold ${
-              order.status === 'refunded'
-                ? 'bg-danger-light text-danger'
-                : order.status === 'delivered'
-                ? 'bg-success-light text-success'
-                : 'bg-surface text-primary'
-            }`}>
-              {order.status}
-            </span>
-          </div>
+        {/* Live Status Tracker (Shopee / SHEIN Stepped Journey) */}
+        <div className="py-6 border-b border-border print:hidden space-y-4">
+          {(() => {
+            const tracking = getOrderTrackingMeta(order);
+            const statusHierarchy = ['pending', 'processing', 'shipped', 'out_for_delivery', 'delivered'];
+            const currentStepIndex = statusHierarchy.indexOf(order.status);
 
-          <div className="grid grid-cols-3 gap-2">
-            {steps.map((st, i) => (
-              <div
-                key={st.label}
-                className={`p-2.5 rounded-tight border text-xs flex flex-col gap-1 ${
-                  st.status === 'completed'
-                    ? 'bg-surface border-primary text-primary'
-                    : st.status === 'active'
-                    ? 'bg-surface border-border text-primary'
-                    : 'bg-canvas border-border text-muted/60'
-                }`}
-              >
-                <span className="text-[10px] uppercase font-semibold text-muted">
-                  Step 0{i + 1}
-                </span>
-                <span className="font-medium truncate">{st.label}</span>
-              </div>
-            ))}
-          </div>
+            return (
+              <>
+                {/* Shopee / SHEIN Live Connection Badge */}
+                <div className="p-3.5 bg-surface border border-border rounded-input flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="relative flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                      </span>
+                      <span className="text-[10px] font-mono text-muted uppercase tracking-wider">
+                        Current Hub Connection:
+                      </span>
+                      <span className="font-bold text-primary">
+                        {tracking.currentLocation}
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-muted mt-1 leading-relaxed pl-4">
+                      {tracking.currentDetail}
+                    </p>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => setIsTrackingOpen(true)}
+                    className="px-3 py-1.5 bg-canvas hover:bg-surface border border-border rounded-tight text-xs font-semibold text-primary transition-colors shrink-0 flex items-center justify-center gap-1.5"
+                  >
+                    <Truck size={14} />
+                    <span>View Journey Logs</span>
+                  </button>
+                </div>
+
+                {/* 5-Stage Stepper Track */}
+                <div className="pt-2">
+                  <div className="relative">
+                    <div className="absolute top-4 left-0 right-0 h-0.5 bg-border -translate-y-1/2 z-0" />
+                    <div
+                      className="absolute top-4 left-0 h-0.5 bg-primary -translate-y-1/2 transition-all duration-500 z-0"
+                      style={{
+                        width: `${Math.max(0, Math.min(100, (currentStepIndex / (statusHierarchy.length - 1)) * 100))}%`
+                      }}
+                    />
+
+                    <div className="relative flex justify-between z-10">
+                      {TRACKING_STEPS.map((step, idx) => {
+                        const isDone = idx <= currentStepIndex;
+                        const isCurrent = idx === currentStepIndex;
+
+                        return (
+                          <div key={step.key} className="flex flex-col items-center text-center max-w-[70px]">
+                            <div
+                              className={`w-7 h-7 rounded-full border-2 flex items-center justify-center text-xs transition-all ${
+                                isDone
+                                  ? 'bg-primary border-primary text-canvas'
+                                  : 'bg-canvas border-border text-muted/60'
+                              } ${isCurrent ? 'ring-3 ring-primary/20 scale-105 font-bold' : ''}`}
+                            >
+                              {isDone ? <CheckCircle size={13} weight="bold" /> : idx + 1}
+                            </div>
+                            <span
+                              className={`text-[9px] font-mono mt-1.5 leading-tight uppercase tracking-wider ${
+                                isDone ? 'font-bold text-primary' : 'text-muted/60'
+                              }`}
+                            >
+                              {step.label}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </>
+            );
+          })()}
         </div>
 
         {/* Customer & Shipping Summary */}
@@ -192,10 +246,10 @@ export default function ReceiptPage() {
                     {item.quantity}
                   </td>
                   <td className="py-2.5 text-right text-muted">
-                    ${Number(item.unit_price).toFixed(2)}
+                    {formatCurrency(item.unit_price)}
                   </td>
                   <td className="py-2.5 text-right font-semibold text-primary">
-                    ${(Number(item.unit_price) * item.quantity).toFixed(2)}
+                    {formatCurrency(Number(item.unit_price) * item.quantity)}
                   </td>
                 </tr>
               ))}
@@ -209,7 +263,7 @@ export default function ReceiptPage() {
             <div className="flex justify-between text-muted">
               <span>Subtotal</span>
               <span className="font-medium text-primary tabular-nums">
-                ${Number(order.total_amount).toFixed(2)}
+                {formatCurrency(order.total_amount)}
               </span>
             </div>
             <div className="flex justify-between text-muted">
@@ -219,7 +273,7 @@ export default function ReceiptPage() {
             <div className="pt-2 border-t border-border flex justify-between text-sm">
               <span className="font-semibold text-primary">Total Paid</span>
               <span className="font-bold text-primary tabular-nums">
-                ${Number(order.total_amount).toFixed(2)}
+                {formatCurrency(order.total_amount)}
               </span>
             </div>
           </div>
@@ -231,6 +285,13 @@ export default function ReceiptPage() {
           FOR RETURNS OR ARCHIVAL INQUIRIES: <span className="text-primary font-semibold">CONCIERGE@PURGATORY.LA</span> (REF: {order.id})
         </div>
       </div>
+
+      {/* Shopee / SHEIN Live Consignment Journey Modal */}
+      <ConsignmentTrackingModal
+        order={order}
+        isOpen={isTrackingOpen}
+        onClose={() => setIsTrackingOpen(false)}
+      />
     </div>
   );
 }
