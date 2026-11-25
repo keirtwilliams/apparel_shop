@@ -1,9 +1,9 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Ruler, Check, CaretDown, CaretUp, Bag } from '@phosphor-icons/react';
+import { ArrowLeft, Ruler, Check, CaretDown, CaretUp, Bag, Clock } from '@phosphor-icons/react';
 import { useStore } from '../context/StoreContext';
 import { resolveProductImageUrl } from '../lib/supabase';
-import { calculateEffectiveProductPrice, formatCurrency } from '../lib/pricing';
+import { calculateEffectiveProductPrice, formatCurrency, formatCountdown } from '../lib/pricing';
 import SizeChartModal from '../components/SizeChartModal';
 import StickyMobileBar from '../components/StickyMobileBar';
 
@@ -11,8 +11,15 @@ export default function ProductDetailPage() {
   const { slug } = useParams();
   const navigate = useNavigate();
   const { products, addToCart, saleConfig } = useStore();
+  const [now, setNow] = useState(() => Date.now());
 
   const product = products.find(p => p.slug === slug);
+
+  useEffect(() => {
+    if (!product?.sale_ends_at || product.sale_ends_at <= Date.now()) return;
+    const timer = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(timer);
+  }, [product?.sale_ends_at]);
 
   // Fallback if product not found
   if (!product) {
@@ -158,7 +165,8 @@ export default function ProductDetailPage() {
             {/* Price & Savings Display */}
             <div className="mt-3 flex flex-wrap items-baseline gap-3">
               {(() => {
-                const { currentPrice, originalPrice, isOnSale, discountPercent } = calculateEffectiveProductPrice(product, saleConfig);
+                const { currentPrice, originalPrice, isOnSale, discountPercent, saleEndsAt } = calculateEffectiveProductPrice(product, saleConfig);
+                const countdown = saleEndsAt ? formatCountdown(saleEndsAt - now) : null;
                 return (
                   <>
                     <span className={`text-xl sm:text-2xl font-semibold tabular-nums ${isOnSale ? 'text-[#C43C30]' : 'text-primary'}`}>
@@ -169,9 +177,15 @@ export default function ProductDetailPage() {
                         <span className="text-sm text-muted/60 line-through tabular-nums">
                           {formatCurrency(originalPrice)}
                         </span>
-                        <span className="bg-[#0C0C0B] text-[#FAF9F7] text-[10px] font-sans font-bold tracking-wider px-2 py-0.5 rounded-tight">
-                          SAVE {discountPercent}%
+                        <span className="bg-[#C43C30] text-[#FAF9F7] text-[10px] font-sans font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-tight">
+                          SALE -{discountPercent}%
                         </span>
+                        {countdown && (
+                          <span className="inline-flex items-center gap-1 bg-primary text-canvas text-[10px] font-sans font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded-tight tabular-nums">
+                            <Clock size={12} weight="bold" className="text-[#C43C30]" />
+                            <span>Ends in {countdown}</span>
+                          </span>
+                        )}
                       </>
                     )}
                     <span className="text-xs text-muted">Taxes included</span>

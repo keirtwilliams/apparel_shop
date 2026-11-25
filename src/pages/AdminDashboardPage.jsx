@@ -51,7 +51,7 @@ export default function AdminDashboardPage() {
 
   // Filtered Orders Dataset (Linked across charts + exports)
   const filteredOrders = useMemo(() => {
-    const now = new Date('2026-11-23T23:59:59Z');
+    const now = new Date();
     const daysLimit = dateFilter === 'all' ? Infinity : parseInt(dateFilter, 10);
     const cutoffDate = new Date(now.getTime() - daysLimit * 24 * 60 * 60 * 1000);
 
@@ -145,7 +145,7 @@ export default function AdminDashboardPage() {
 
   // CHART 3: Order Status Breakdown
   const orderStatusData = useMemo(() => {
-    const counts = { delivered: 0, shipped: 0, pending: 0, refunded: 0 };
+    const counts = { delivered: 0, out_for_delivery: 0, shipped: 0, processing: 0, pending: 0, refunded: 0 };
     filteredOrders.forEach(o => {
       if (counts[o.status] !== undefined) {
         counts[o.status] += 1;
@@ -154,9 +154,11 @@ export default function AdminDashboardPage() {
 
     return [
       { name: 'Delivered', value: counts.delivered, color: '#2E5A44' },
-      { name: 'Shipped', value: counts.shipped, color: '#575654' },
-      { name: 'Pending', value: counts.pending, color: '#8B847A' },
-      { name: 'Refunded', value: counts.refunded, color: '#9E3B33' },
+      { name: 'Out for Delivery', value: counts.out_for_delivery, color: '#D97706' },
+      { name: 'In Transit', value: counts.shipped, color: '#52525B' },
+      { name: 'Atelier Packed', value: counts.processing, color: '#0C0C0B' },
+      { name: 'Pending', value: counts.pending, color: '#A8A29E' },
+      { name: 'Refunded', value: counts.refunded, color: '#C43C30' },
     ].filter(item => item.value > 0);
   }, [filteredOrders]);
 
@@ -224,7 +226,7 @@ export default function AdminDashboardPage() {
       subtitle: 'Interactive per-size stock adjustment, low-stock alerts, and warehouse totals.'
     },
     logistics: {
-      title: 'Shopee / SHEIN Logistics Hub Network',
+      title: 'Logistics & Dispatch',
       subtitle: 'Deterministic courier dispatch, central sorting gateway tracking, and active transit pipeline.'
     },
     promotions: {
@@ -236,99 +238,101 @@ export default function AdminDashboardPage() {
   const currentTabInfo = tabTitles[currentTab] || tabTitles.overview;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 font-sans">
+    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 font-sans space-y-8">
       {/* 1. TOP OPERATIONS BANNER */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between pb-6 border-b border-border gap-4">
+      <div className="flex flex-col md:flex-row md:items-end justify-between pb-6 border-b border-border gap-6">
         <div>
-          <div className="flex items-center gap-2">
-            <span className="text-[10px] uppercase font-mono tracking-widest text-muted font-bold">
-              Operations Center · {currentTab.toUpperCase()}
-            </span>
-            <span className="w-2 h-2 rounded-full bg-success animate-pulse" />
-            <span className="text-[11px] font-mono text-success">Live Atelier Terminal</span>
-          </div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-primary mt-1 tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-bold text-primary tracking-tight uppercase">
             {currentTabInfo.title}
           </h1>
-          <p className="text-xs text-muted mt-0.5">
-            {currentTabInfo.subtitle}
-          </p>
         </div>
 
         {/* Global Operational Tools: Export & Reset Seed Data */}
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3 shrink-0">
           {/* Export Dropdown */}
           <div className="relative">
             <button
               type="button"
               onClick={() => setIsExportOpen(!isExportOpen)}
-              className="px-3.5 py-2 rounded-input bg-surface border border-border text-primary hover:bg-canvas text-xs font-semibold flex items-center gap-2 transition-colors min-h-[38px]"
+              className="h-10 px-4 rounded-tight bg-surface hover:bg-canvas border border-border text-primary text-xs font-semibold uppercase tracking-wider flex items-center gap-2 transition-all active:scale-95 cursor-pointer shadow-2xs"
             >
-              <DownloadSimple size={15} />
-              <span>Export Dataset</span>
-              <CaretDown size={12} />
+              <DownloadSimple size={15} weight="bold" />
+              <span>Export Ledger</span>
+              <CaretDown size={12} weight="bold" />
             </button>
 
             {isExportOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-canvas border border-border rounded-card shadow-xl py-1 z-30 text-xs">
-                <div className="px-3 py-1.5 font-semibold text-muted border-b border-border text-[10px] uppercase font-mono">
+              <div className="absolute right-0 mt-2 w-52 bg-surface border border-border rounded-card shadow-xl py-1.5 z-40 text-xs animate-in fade-in zoom-in-95 duration-150">
+                <div className="px-3.5 py-2 font-bold text-muted border-b border-border text-xs uppercase tracking-wider">
                   Select Format ({exportableData.length} records)
                 </div>
                 <button
                   type="button"
                   onClick={() => handleExport('xlsx')}
-                  className="w-full text-left px-3 py-2 hover:bg-surface text-primary flex items-center justify-between"
+                  className="w-full text-left px-3.5 py-2.5 hover:bg-canvas text-primary flex items-center justify-between transition-colors cursor-pointer"
                 >
-                  <span>Excel (.xlsx)</span>
-                  <span className="text-[10px] text-muted">Formatted</span>
+                  <span className="font-medium">Excel Spreadsheet (.xlsx)</span>
+                  <span className="text-xs font-medium text-muted">write-excel</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => handleExport('csv')}
-                  className="w-full text-left px-3 py-2 hover:bg-surface text-primary flex items-center justify-between"
+                  className="w-full text-left px-3.5 py-2.5 hover:bg-canvas text-primary flex items-center justify-between transition-colors cursor-pointer"
                 >
-                  <span>Comma-Separated (.csv)</span>
-                  <span className="text-[10px] text-muted">Standard</span>
+                  <span className="font-medium">Comma-Separated (.csv)</span>
+                  <span className="text-xs font-medium text-muted">Standard</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => handleExport('tsv')}
-                  className="w-full text-left px-3 py-2 hover:bg-surface text-primary flex items-center justify-between"
+                  className="w-full text-left px-3.5 py-2.5 hover:bg-canvas text-primary flex items-center justify-between transition-colors cursor-pointer"
                 >
-                  <span>Tab-Separated (.tsv)</span>
-                  <span className="text-[10px] text-muted">Tabular</span>
+                  <span className="font-medium">Tab-Separated (.tsv)</span>
+                  <span className="text-xs font-medium text-muted">Tabular</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => handleExport('xml')}
-                  className="w-full text-left px-3 py-2 hover:bg-surface text-primary flex items-center justify-between"
+                  className="w-full text-left px-3.5 py-2.5 hover:bg-canvas text-primary flex items-center justify-between transition-colors cursor-pointer"
                 >
-                  <span>XML Schema (.xml)</span>
-                  <span className="text-[10px] text-muted">Raw Schema</span>
+                  <span className="font-medium">XML Schema (.xml)</span>
+                  <span className="text-xs font-medium text-muted">Schema</span>
                 </button>
               </div>
             )}
           </div>
-
-          {/* Reset Demo State to Initial Seed */}
-          <button
-            type="button"
-            onClick={resetToSeedData}
-            title="Reset to 46 synthetic seed orders & clean stock"
-            className="px-3 py-2 rounded-input bg-surface border border-border text-muted hover:text-primary transition-colors min-h-[38px] flex items-center gap-1.5 text-xs font-medium"
-          >
-            <ArrowCounterClockwise size={14} />
-            <span className="hidden sm:inline">Reset State</span>
-          </button>
         </div>
       </div>
 
-      {/* Export Notification */}
+      {/* Top-Right Floating Pop-up Modal: Report Exported */}
       {exportNotice && (
-        <div className="mt-4 p-3 bg-success-light border border-success/30 rounded-input text-xs text-success flex items-center gap-2 animate-in fade-in">
-          <Check size={14} weight="bold" />
-          <span>{exportNotice}</span>
-        </div>
+        <aside
+          role="status"
+          aria-live="polite"
+          className="fixed top-4 inset-x-4 sm:inset-x-auto sm:top-6 sm:right-6 z-50 sm:max-w-sm sm:w-full animate-in fade-in slide-in-from-top-4 duration-300 drop-shadow-2xl"
+        >
+          <div className="bg-canvas border border-[#2E5A44]/40 shadow-2xl rounded-card p-4 flex items-start gap-3 text-primary ring-1 ring-[#2E5A44]/20">
+            <div className="w-8 h-8 rounded-full bg-[#EAF2ED] text-[#2E5A44] flex items-center justify-center shrink-0 mt-0.5">
+              <Check size={18} weight="bold" />
+            </div>
+            <div className="flex-1 pr-1">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-primary">
+                Report Exported
+              </h4>
+              <p className="text-xs text-muted mt-1 leading-relaxed">
+                {exportNotice}
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setExportNotice('')}
+              className="text-muted hover:text-primary transition-colors p-1 cursor-pointer"
+              aria-label="Close notification"
+            >
+              ×
+            </button>
+          </div>
+        </aside>
       )}
 
       {/* 2. DEDICATED TAB VIEWS */}

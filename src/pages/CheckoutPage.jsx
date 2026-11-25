@@ -14,6 +14,7 @@ export default function CheckoutPage() {
     appliedCoupon,
     applyCouponCode,
     removeCouponCode,
+    coupons,
     placeOrder,
     clearCart,
     currentUser,
@@ -525,6 +526,34 @@ export default function CheckoutPage() {
                     </div>
                     {couponError && <p className="text-[10px] text-danger">{couponError}</p>}
                     {couponSuccess && <p className="text-[10px] text-success">{couponSuccess}</p>}
+                    {coupons?.length > 0 && (
+                      <div className="pt-1.5">
+                        <span className="text-[10px] uppercase tracking-wider text-muted font-semibold block mb-1.5">
+                          Available Vouchers
+                        </span>
+                        <div className="flex flex-wrap gap-1.5">
+                          {coupons.map(c => (
+                            <button
+                              key={c.code}
+                              type="button"
+                              onClick={() => {
+                                setCouponError('');
+                                setCouponSuccess('');
+                                const res = applyCouponCode(c.code);
+                                if (res.success) setCouponSuccess(res.message);
+                                else setCouponError(res.message);
+                              }}
+                              className="inline-flex items-center gap-1.5 px-2 py-1 bg-surface border border-border hover:border-primary rounded-tight text-[10px] font-semibold text-primary transition-colors cursor-pointer"
+                              title={c.label}
+                            >
+                              <Tag size={10} weight="bold" className="text-[#C43C30]" />
+                              <span>{c.code}</span>
+                              <span className="text-muted">({c.discountPercent}%)</span>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </form>
                 )}
               </div>

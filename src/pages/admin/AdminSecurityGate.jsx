@@ -76,7 +76,7 @@ export default function AdminSecurityGate() {
             className="h-9 sm:h-10 w-auto object-contain mx-auto filter invert transition-opacity group-hover:opacity-80"
           />
         </Link>
-        <span className="text-[11px] font-mono uppercase tracking-widest text-muted block mt-2 font-medium">
+        <span className="text-xs uppercase tracking-wider text-muted block mt-2 font-semibold">
           {brandConfig.collection} — Atelier Administration
         </span>
       </div>
@@ -91,7 +91,7 @@ export default function AdminSecurityGate() {
                 Admin Sign In
               </h1>
             </div>
-            <span className="text-[10px] font-mono uppercase text-muted tracking-wider px-2 py-0.5 bg-canvas rounded border border-border">
+            <span className="text-xs uppercase text-muted tracking-wider px-2 py-0.5 bg-canvas rounded border border-border font-semibold">
               Secure Portal
             </span>
           </div>
@@ -152,8 +152,8 @@ export default function AdminSecurityGate() {
 
           {/* Quick Demo Credentials Autofill */}
           <div className="p-3 bg-canvas border border-border rounded-input flex items-center justify-between text-xs">
-            <div className="text-[11px] text-muted">
-              Demo: <span className="font-mono font-semibold text-primary">purgatory2026</span>
+            <div className="text-xs text-muted font-medium">
+              Demo: <span className="font-bold text-primary">purgatory2026</span>
             </div>
             <button
               type="button"
@@ -190,7 +190,7 @@ export default function AdminSecurityGate() {
             <ArrowLeft size={13} />
             <span>Return to Storefront</span>
           </Link>
-          <span className="font-mono text-[10px]">TLS SHA-256 Session</span>
+          <span className="text-xs font-medium text-muted">TLS SHA-256 Session</span>
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import {
   Lock, Envelope, ArrowRight, Check, WarningCircle, ArrowLeft, Eye, EyeSlash, X
@@ -18,6 +18,13 @@ export default function LoginPage() {
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Auto-dismiss authentication error popup after 2 seconds
+  useEffect(() => {
+    if (!errorMsg) return;
+    const timer = setTimeout(() => setErrorMsg(''), 2000);
+    return () => clearTimeout(timer);
+  }, [errorMsg]);
 
   const handleSignIn = async (e) => {
     e.preventDefault();
@@ -54,12 +61,43 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-[calc(100vh-5rem)] flex items-center justify-center px-4 py-12 sm:px-6 lg:px-8 bg-surface/50 relative">
+      {/* ================= TOP-RIGHT FLOATING POP-UP MODAL: ERROR ================= */}
+      {errorMsg && (
+        <aside
+          role="alert"
+          aria-live="assertive"
+          className="fixed top-4 inset-x-4 sm:inset-x-auto sm:top-6 sm:right-6 z-50 sm:max-w-sm sm:w-full animate-in fade-in slide-in-from-top-4 duration-300 drop-shadow-2xl"
+        >
+          <div className="bg-canvas border border-[#C43C30]/40 shadow-2xl rounded-card p-4 flex items-start gap-3 text-primary ring-1 ring-[#C43C30]/20">
+            <div className="w-8 h-8 rounded-full bg-danger-light text-[#C43C30] flex items-center justify-center shrink-0 mt-0.5">
+              <WarningCircle size={18} weight="bold" />
+            </div>
+            <div className="flex-1 pr-1">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-[#C43C30]">
+                Authentication Failed
+              </h4>
+              <p className="text-xs text-muted mt-1 leading-relaxed">
+                {errorMsg}
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setErrorMsg('')}
+              className="text-muted hover:text-primary transition-colors p-1 cursor-pointer"
+              aria-label="Close error notification"
+            >
+              <X size={14} />
+            </button>
+          </div>
+        </aside>
+      )}
+
       {/* ================= TOP-RIGHT FLOATING POP-UP MODAL: SIGNED IN ================= */}
       {successMsg && (
         <aside
           role="status"
           aria-live="polite"
-          className="fixed top-6 right-6 z-50 max-w-sm w-full animate-in fade-in slide-in-from-top-4 duration-300 drop-shadow-2xl"
+          className="fixed top-4 inset-x-4 sm:inset-x-auto sm:top-6 sm:right-6 z-50 sm:max-w-sm sm:w-full animate-in fade-in slide-in-from-top-4 duration-300 drop-shadow-2xl"
         >
           <div className="bg-canvas border border-[#2E5A44]/40 shadow-2xl rounded-card p-4 flex items-start gap-3 text-primary ring-1 ring-[#2E5A44]/20">
             <div className="w-8 h-8 rounded-full bg-[#EAF2ED] text-[#2E5A44] flex items-center justify-center shrink-0 mt-0.5">
@@ -72,8 +110,8 @@ export default function LoginPage() {
               <p className="text-xs text-muted mt-1 leading-relaxed">
                 {successMsg}
               </p>
-              <div className="mt-2.5 flex items-center gap-1.5 text-[11px] font-mono text-[#2E5A44]">
-                <div className="w-1.5 h-1.5 rounded-full bg-[#2E5A44] animate-ping" />
+              <div className="mt-2.5 flex items-center gap-1.5 text-[11px] font-sans font-medium text-[#2E5A44]">
+                <div className="w-1.5 h-1.5 rounded-full bg-[#2E5A44]" />
                 <span>Redirecting to your session...</span>
               </div>
             </div>
@@ -108,16 +146,8 @@ export default function LoginPage() {
           </p>
         </div>
 
-        {/* Status Alerts */}
-        {errorMsg && (
-          <div className="mb-5 p-3.5 bg-danger-light border border-danger/30 rounded-tight text-xs text-danger flex items-start gap-2.5">
-            <WarningCircle size={16} className="shrink-0 mt-0.5" />
-            <span className="leading-snug">{errorMsg}</span>
-          </div>
-        )}
-
         {/* SIGN IN FORM */}
-        <form onSubmit={handleSignIn} className="space-y-4">
+        <form onSubmit={handleSignIn} autoComplete="off" className="space-y-4">
           <div>
             <label className="block text-xs uppercase font-semibold text-primary tracking-wider mb-1.5">
               Email Address
@@ -125,13 +155,14 @@ export default function LoginPage() {
             <div className="relative">
               <input
                 type="email"
+                name="login_email_field"
                 value={signInEmail}
                 onChange={(e) => setSignInEmail(e.target.value)}
                 autoComplete="off"
                 autoCorrect="off"
                 autoCapitalize="none"
                 spellCheck="false"
-                placeholder=""
+                placeholder="Enter your email"
                 required
                 className="w-full px-3.5 py-2.5 bg-surface border border-border rounded-input text-xs text-primary focus:outline-none focus:border-primary transition-colors font-sans"
               />
@@ -146,10 +177,11 @@ export default function LoginPage() {
             <div className="relative">
               <input
                 type={showPassword ? 'text' : 'password'}
+                name="login_password_field"
                 value={signInPassword}
                 onChange={(e) => setSignInPassword(e.target.value)}
-                autoComplete="current-password"
-                placeholder="••••••••••••"
+                autoComplete="new-password"
+                placeholder="Enter your password"
                 required
                 className="w-full px-3.5 py-2.5 pr-10 bg-surface border border-border rounded-input text-xs text-primary focus:outline-none focus:border-primary transition-colors font-sans"
               />

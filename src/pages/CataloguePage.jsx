@@ -27,13 +27,9 @@ export default function CataloguePage() {
   }, [products]);
   const sizes = ['All', 'S', 'M', 'L', 'XL'];
 
-  // Instant, tiered-cache accelerated filter computation
+  // Filter & sort products reactively whenever products or filter controls change
   const filteredProducts = useMemo(() => {
-    const cacheKey = `cat_query_${selectedCategory}_${selectedSize}_${maxPrice}_${searchQuery.trim().toLowerCase()}_${sortBy}`;
-    const cached = appCache.get(cacheKey);
-    if (cached) return cached;
-
-    const result = products.filter(product => {
+    return products.filter(product => {
       if (selectedCategory !== 'All' && product.category !== selectedCategory) {
         return false;
       }
@@ -48,9 +44,9 @@ export default function CataloguePage() {
       }
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase();
-        const matchesName = product.name.toLowerCase().includes(q);
-        const matchesCategory = product.category.toLowerCase().includes(q);
-        const matchesMaterial = product.material.toLowerCase().includes(q);
+        const matchesName = product.name?.toLowerCase().includes(q);
+        const matchesCategory = product.category?.toLowerCase().includes(q);
+        const matchesMaterial = product.material?.toLowerCase().includes(q);
         if (!matchesName && !matchesCategory && !matchesMaterial) return false;
       }
       return true;
@@ -60,8 +56,6 @@ export default function CataloguePage() {
       if (sortBy === 'name') return a.name.localeCompare(b.name);
       return 0;
     });
-
-    return appCache.set(cacheKey, result, { ttlMs: 120000, tags: ['products'] });
   }, [products, selectedCategory, selectedSize, maxPrice, searchQuery, sortBy]);
 
   const resetFilters = () => {
@@ -118,9 +112,9 @@ export default function CataloguePage() {
         </div>
 
         {/* Search, Size, & Sort Controls */}
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-2.5 sm:gap-3">
           {/* Search Box */}
-          <div className="relative flex-1 sm:w-56 min-w-[180px]">
+          <div className="relative w-full sm:w-56">
             <MagnifyingGlass
               size={15}
               className="absolute left-3 top-1/2 -translate-y-1/2 text-muted"
@@ -143,36 +137,38 @@ export default function CataloguePage() {
             )}
           </div>
 
-          {/* Size Filter Dropdown */}
-          <div className="flex items-center gap-1.5">
-            <span className="text-xs text-muted font-mono hidden sm:inline">SIZE:</span>
-            <select
-              value={selectedSize}
-              onChange={(e) => setSelectedSize(e.target.value)}
-              aria-label="Filter by size"
-              className="bg-surface border border-border rounded-input px-2.5 py-1.5 text-xs text-primary focus:outline-none focus:border-primary cursor-pointer min-h-[38px]"
-            >
-              <option value="All">All Sizes</option>
-              {sizes.filter(s => s !== 'All').map(s => (
-                <option key={s} value={s}>Size {s}</option>
-              ))}
-            </select>
-          </div>
+          <div className="grid grid-cols-2 sm:flex items-center gap-2.5">
+            {/* Size Filter Dropdown */}
+            <div className="flex items-center gap-1.5">
+              <span className="text-xs text-muted font-mono hidden sm:inline">SIZE:</span>
+              <select
+                value={selectedSize}
+                onChange={(e) => setSelectedSize(e.target.value)}
+                aria-label="Filter by size"
+                className="w-full sm:w-auto bg-surface border border-border rounded-input px-2.5 py-1.5 text-xs text-primary focus:outline-none focus:border-primary cursor-pointer min-h-[38px]"
+              >
+                <option value="All">All Sizes</option>
+                {sizes.filter(s => s !== 'All').map(s => (
+                  <option key={s} value={s}>Size {s}</option>
+                ))}
+              </select>
+            </div>
 
-          {/* Sort By Dropdown */}
-          <div className="flex items-center gap-1.5">
-            <span className="text-xs text-muted font-mono hidden sm:inline">SORT:</span>
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              aria-label="Sort products"
-              className="bg-surface border border-border rounded-input px-2.5 py-1.5 text-xs text-primary focus:outline-none focus:border-primary cursor-pointer min-h-[38px]"
-            >
-              <option value="featured">Featured Drop</option>
-              <option value="price-asc">Price: Low to High</option>
-              <option value="price-desc">Price: High to Low</option>
-              <option value="name">Alphabetical</option>
-            </select>
+            {/* Sort By Dropdown */}
+            <div className="flex items-center gap-1.5">
+              <span className="text-xs text-muted font-mono hidden sm:inline">SORT:</span>
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                aria-label="Sort products"
+                className="w-full sm:w-auto bg-surface border border-border rounded-input px-2.5 py-1.5 text-xs text-primary focus:outline-none focus:border-primary cursor-pointer min-h-[38px]"
+              >
+                <option value="featured">Featured Drop</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+                <option value="name">Alphabetical</option>
+              </select>
+            </div>
           </div>
 
           {/* Grid Layout Toggle */}

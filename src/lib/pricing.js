@@ -24,23 +24,44 @@ export function formatCurrency(amount, currency = 'PHP') {
 }
 
 /**
+ * Format remaining milliseconds into HH:MM:SS or MM:SS countdown string
+ */
+export function formatCountdown(msRemaining) {
+  if (!msRemaining || msRemaining <= 0) return null;
+  const totalSeconds = Math.floor(msRemaining / 1000);
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  const mm = String(minutes).padStart(2, '0');
+  const ss = String(seconds).padStart(2, '0');
+  if (hours > 0) {
+    return `${String(hours).padStart(2, '0')}:${mm}:${ss}`;
+  }
+  return `${mm}:${ss}`;
+}
+
+/**
  * Calculate effective price of a product taking into account product-level discounts
  * and storewide/category sales (capped between 10% and 90% off).
  */
 export function calculateEffectiveProductPrice(product, storeSaleConfig = null) {
-  if (!product) return { currentPrice: 0, originalPrice: 0, isOnSale: false, discountPercent: 0 };
+  if (!product) return { currentPrice: 0, originalPrice: 0, isOnSale: false, discountPercent: 0, saleEndsAt: null };
 
-  const basePrice = Number(product.price) || 0;
-  let originalPrice = product.compare_at_price ? Number(product.compare_at_price) : basePrice;
-  let currentPrice = basePrice;
+  const rawPrice = Number(product.price) || 0;
+  const originalPrice = Number(product.original_base_price || product.compare_at_price || rawPrice) || 0;
+  const now = Date.now();
+  const isTimerExpired = Boolean(product.sale_ends_at && now >= Number(product.sale_ends_at));
+
+  let currentPrice = isTimerExpired ? originalPrice : rawPrice;
+  let saleEndsAt = !isTimerExpired && product.sale_ends_at ? Number(product.sale_ends_at) : null;
 
   // 1. Check Product-Level Discount
-  let hasProductSale = originalPrice > currentPrice;
+  let hasProductSale = !isTimerExpired && originalPrice > currentPrice;
   let productDiscountPercent = hasProductSale
     ? Math.round(((originalPrice - currentPrice) / originalPrice) * 100)
     : 0;
 
-  // 2. Check Storewide / Category Sale
+  // 2. Check Storewide / Category Sale (one discount per item only — never stacks on top of individual markdown)
   if (storeSaleConfig && storeSaleConfig.active && storeSaleConfig.percentage > 0) {
     const isCategoryMatch =
       !storeSaleConfig.categoryTarget ||
@@ -49,16 +70,14 @@ export function calculateEffectiveProductPrice(product, storeSaleConfig = null) 
 
     if (isCategoryMatch) {
       const storeDiscount = Math.min(Math.max(Number(storeSaleConfig.percentage) || 0, 10), 90);
-      const discounted = basePrice * (1 - storeDiscount / 100);
+      const discounted = Math.round(originalPrice * (1 - storeDiscount / 100) * 100) / 100;
 
-      // If storewide discount gives a lower price than individual markdown, apply it
+      // Apply whichever single discount gives the lower price (no stacking)
       if (discounted < currentPrice) {
-        if (!hasProductSale) {
-          originalPrice = basePrice;
-        }
-        currentPrice = Math.round(discounted * 100) / 100;
-        productDiscountPercent = Math.round(((originalPrice - currentPrice) / originalPrice) * 100);
+        currentPrice = discounted;
+        productDiscountPercent = storeDiscount;
         hasProductSale = true;
+        saleEndsAt = null;
       }
     }
   }
@@ -70,7 +89,8 @@ export function calculateEffectiveProductPrice(product, storeSaleConfig = null) 
     currentPrice,
     originalPrice,
     isOnSale: hasProductSale && finalDiscountPercent >= 5,
-    discountPercent: finalDiscountPercent
+    discountPercent: finalDiscountPercent,
+    saleEndsAt: hasProductSale && finalDiscountPercent >= 5 ? saleEndsAt : null
   };
 }
 

@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Clock } from '@phosphor-icons/react';
 import { resolveProductImageUrl } from '../lib/supabase';
 import { useStore } from '../context/StoreContext';
-import { calculateEffectiveProductPrice, formatCurrency } from '../lib/pricing';
+import { calculateEffectiveProductPrice, formatCurrency, formatCountdown } from '../lib/pricing';
 
 /**
  * Clutter-Free 4:5 Apparel Catalogue Card
@@ -16,7 +17,16 @@ export default function ProductCard({ product }) {
     product.variants?.[0]?.color_name || ''
   );
 
-  const { currentPrice, originalPrice, isOnSale, discountPercent } = calculateEffectiveProductPrice(product, saleConfig);
+  const [now, setNow] = useState(() => Date.now());
+  const { currentPrice, originalPrice, isOnSale, discountPercent, saleEndsAt } = calculateEffectiveProductPrice(product, saleConfig);
+
+  useEffect(() => {
+    if (!saleEndsAt) return;
+    const timer = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(timer);
+  }, [saleEndsAt]);
+
+  const countdown = saleEndsAt ? formatCountdown(saleEndsAt - now) : null;
 
   // Unique color swatches
   const colorMap = new Map();
@@ -72,11 +82,19 @@ export default function ProductCard({ product }) {
           />
         )}
 
-        {/* Minimal Archival Sale Pill */}
+        {/* Top-Left Diagonal Corner Sale Ribbon */}
         {isOnSale && (
-          <div className="absolute top-2.5 right-2.5 z-10 bg-[#0C0C0B]/90 backdrop-blur-sm text-[#FAF9F7] text-[10px] font-sans font-semibold tracking-wider px-2 py-0.5 rounded-tight border border-white/10 shadow-sm">
-            −{discountPercent}%
-          </div>
+          <>
+            <div className="absolute top-4 -left-9 z-10 w-32 -rotate-45 bg-[#C43C30] text-[#FAF9F7] text-[10px] font-sans font-bold uppercase tracking-wider text-center py-1 shadow-sm pointer-events-none">
+              SALE -{discountPercent}%
+            </div>
+            {countdown && (
+              <div className="absolute top-2.5 right-2.5 z-10 bg-[#0C0C0B]/90 backdrop-blur-sm text-[#FAF9F7] text-[10px] font-sans font-semibold tracking-wider px-2 py-0.5 rounded-tight border border-white/10 shadow-sm inline-flex items-center gap-1 tabular-nums">
+                <Clock size={11} weight="bold" className="text-[#C43C30]" />
+                <span>{countdown}</span>
+              </div>
+            )}
+          </>
         )}
       </Link>
 

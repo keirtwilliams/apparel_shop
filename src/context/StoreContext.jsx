@@ -88,9 +88,35 @@ export const StoreProvider = ({ children }) => {
     return initialData.orders || [];
   });
 
-  // Cart state synced with localStorage
+  // Per-account storage key helpers
+  const getCartStorageKey = (userObj) => (userObj?.id ? `purgatory_cart_${userObj.id}` : 'purgatory_cart_guest');
+  const getCouponStorageKey = (userObj) => (userObj?.id ? `purgatory_coupon_${userObj.id}` : 'purgatory_coupon_guest');
+
+  // Active Logged-in Customer Profile (null = guest browsing)
+  const [currentUser, setCurrentUser] = useState(() => {
+    const saved = localStorage.getItem('purgatory_current_user');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        // Purge legacy demo customer
+        if (parsed?.id === 'cust-demo-001' || parsed?.email?.includes('marcus.thorne') || parsed?.first_name === 'Marcus') {
+          localStorage.removeItem('purgatory_current_user');
+          return null;
+        }
+        return parsed;
+      } catch (e) { /* ignore */ }
+    }
+    return null;
+  });
+
+  // Cart state synced per-account with localStorage
   const [cart, setCart] = useState(() => {
-    const saved = localStorage.getItem('purgatory_cart');
+    // Purge legacy shared cart key so deleted/other-account items never leak
+    localStorage.removeItem('purgatory_cart');
+    const savedUser = localStorage.getItem('purgatory_current_user');
+    let parsedUser = null;
+    try { parsedUser = savedUser ? JSON.parse(savedUser) : null; } catch (e) { /* ignore */ }
+    const saved = localStorage.getItem(getCartStorageKey(parsedUser));
     if (saved) {
       try { return JSON.parse(saved); } catch (e) { /* ignore */ }
     }
@@ -125,23 +151,6 @@ export const StoreProvider = ({ children }) => {
     return [];
   });
 
-  // Active Logged-in Customer Profile (null = guest browsing)
-  const [currentUser, setCurrentUser] = useState(() => {
-    const saved = localStorage.getItem('purgatory_current_user');
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        // Purge legacy demo customer
-        if (parsed?.id === 'cust-demo-001' || parsed?.email?.includes('marcus.thorne') || parsed?.first_name === 'Marcus') {
-          localStorage.removeItem('purgatory_current_user');
-          return null;
-        }
-        return parsed;
-      } catch (e) { /* ignore */ }
-    }
-    return null;
-  });
-
   // Active user / RBAC Role ('customer' | 'admin')
   const [role, setRole] = useState(() => {
     return localStorage.getItem('purgatory_role') || 'customer';
@@ -161,9 +170,10 @@ export const StoreProvider = ({ children }) => {
     };
   });
 
-  // Applied Coupon Code State
+  // Applied Coupon Code State (per-account)
   const [appliedCoupon, setAppliedCoupon] = useState(() => {
-    const saved = localStorage.getItem('purgatory_applied_coupon');
+    localStorage.removeItem('purgatory_applied_coupon');
+    const saved = localStorage.getItem(getCouponStorageKey(currentUser));
     if (saved) {
       try { return JSON.parse(saved); } catch (e) { /* ignore */ }
     }
@@ -185,21 +195,47 @@ export const StoreProvider = ({ children }) => {
   }, [saleConfig]);
 
   useEffect(() => {
+    const key = getCouponStorageKey(currentUser);
     if (appliedCoupon) {
-      localStorage.setItem('purgatory_applied_coupon', JSON.stringify(appliedCoupon));
+      localStorage.setItem(key, JSON.stringify(appliedCoupon));
     } else {
-      localStorage.removeItem('purgatory_applied_coupon');
+      localStorage.removeItem(key);
     }
-  }, [appliedCoupon]);
+  }, [appliedCoupon, currentUser]);
 
   useEffect(() => {
     localStorage.setItem('purgatory_coupons', JSON.stringify(coupons));
   }, [coupons]);
 
-  // Sync to localStorage
+  // Reload cart & coupon whenever active account changes (login / logout / switch)
   useEffect(() => {
-    localStorage.setItem('purgatory_cart', JSON.stringify(cart));
-  }, [cart]);
+    const savedCart = localStorage.getItem(getCartStorageKey(currentUser));
+    if (savedCart) {
+      try {
+        setCart(JSON.parse(savedCart));
+      } catch (e) {
+        setCart([]);
+      }
+    } else {
+      setCart([]);
+    }
+
+    const savedCoupon = localStorage.getItem(getCouponStorageKey(currentUser));
+    if (savedCoupon) {
+      try {
+        setAppliedCoupon(JSON.parse(savedCoupon));
+      } catch (e) {
+        setAppliedCoupon(null);
+      }
+    } else {
+      setAppliedCoupon(null);
+    }
+  }, [currentUser?.id]);
+
+  // Sync active account's cart to localStorage
+  useEffect(() => {
+    localStorage.setItem(getCartStorageKey(currentUser), JSON.stringify(cart));
+  }, [cart, currentUser]);
 
   useEffect(() => {
     localStorage.setItem('purgatory_products', JSON.stringify(products));
@@ -225,6 +261,28 @@ export const StoreProvider = ({ children }) => {
     localStorage.setItem('purgatory_role', role);
   }, [role]);
 
+  // Cross-tab localStorage sync (keeps Admin tab & Storefront Catalogue tab in instant sync)
+  useEffect(() => {
+    const handleStorageSync = (e) => {
+      if (!e.key || !e.newValue) return;
+      try {
+        if (e.key === 'purgatory_products') {
+          appCache.invalidateTag('products');
+          setProducts(JSON.parse(e.newValue));
+        } else if (e.key === 'purgatory_sale_config') {
+          appCache.invalidateTag('pricing');
+          setSaleConfig(JSON.parse(e.newValue));
+        } else if (e.key === 'purgatory_coupons') {
+          setCoupons(JSON.parse(e.newValue));
+        } else if (e.key === 'purgatory_orders') {
+          setOrders(JSON.parse(e.newValue));
+        }
+      } catch (err) { /* ignore parse errors */ }
+    };
+    window.addEventListener('storage', handleStorageSync);
+    return () => window.removeEventListener('storage', handleStorageSync);
+  }, []);
+
   // If Supabase is connected, fetch from Supabase and subscribe to live changes in real time
   useEffect(() => {
     if (!isSupabaseConfigured || !supabase) return;
@@ -236,7 +294,29 @@ export const StoreProvider = ({ children }) => {
           .select('*, variants:product_variants(*)')
           .order('created_at', { ascending: true });
         if (!pErr && prods && prods.length > 0) {
-          setProducts(prods);
+          // Preserve active local sale/markdown overrides (on_sale, discount_percent, sale_ends_at)
+          let localProducts = [];
+          try {
+            localProducts = JSON.parse(localStorage.getItem('purgatory_products') || '[]');
+          } catch (e) { /* ignore */ }
+          const localMap = new Map(localProducts.map(lp => [lp.id, lp]));
+
+          const merged = prods.map(sp => {
+            const lp = localMap.get(sp.id);
+            if (lp && (lp.on_sale || lp.sale_ends_at || (lp.compare_at_price && lp.compare_at_price > lp.price))) {
+              return {
+                ...sp,
+                price: lp.price,
+                compare_at_price: lp.compare_at_price,
+                original_base_price: lp.original_base_price || sp.price,
+                on_sale: lp.on_sale,
+                discount_percent: lp.discount_percent,
+                sale_ends_at: lp.sale_ends_at || null
+              };
+            }
+            return sp;
+          });
+          setProducts(merged);
         }
 
         const { data: ords, error: oErr } = await supabase
@@ -311,12 +391,24 @@ export const StoreProvider = ({ children }) => {
         }
 
         if (data?.user) {
-          // Fetch user profile from public.profiles
-          const { data: profile } = await supabase
+          // Verify user profile still exists in public.profiles
+          const { data: profile, error: profileError } = await supabase
             .from('profiles')
             .select('*')
             .eq('id', data.user.id)
             .maybeSingle();
+
+          if (!profileError && !profile) {
+            await supabase.auth.signOut();
+            localStorage.removeItem(`purgatory_cart_${data.user.id}`);
+            localStorage.removeItem(`purgatory_coupon_${data.user.id}`);
+            setAccounts(prev => prev.filter(acc => acc.id !== data.user.id && acc.email?.toLowerCase() !== cleanEmail));
+            setCurrentUser(null);
+            return {
+              success: false,
+              error: 'This account no longer exists or has been deleted.'
+            };
+          }
 
           const activeUser = profile || {
             id: data.user.id,
@@ -398,6 +490,14 @@ export const StoreProvider = ({ children }) => {
 
         if (error) {
           return { success: false, error: error.message };
+        }
+
+        // Supabase returns an empty identities array (and sends no email) if the email already exists in auth.users
+        if (data?.user?.identities && data.user.identities.length === 0) {
+          return {
+            success: false,
+            error: 'This email is already registered in Supabase Auth. Please sign in or delete it from Authentication → Users first.'
+          };
         }
 
         // Check if confirmation code / email was dispatched
@@ -725,20 +825,20 @@ export const StoreProvider = ({ children }) => {
     setCart([]);
   };
 
-  // Coupon Actions
+  // Coupon Actions (strictly 1 discount per item — sale items are excluded)
   const applyCouponCode = (code) => {
-    const limitCheck = rateLimiter.check('coupon_attempt');
-    if (!limitCheck.allowed) {
-      return { success: false, message: limitCheck.message };
-    }
-    rateLimiter.record('coupon_attempt');
-
     const validated = validateCoupon(code, coupons);
     if (!validated) {
       return { success: false, message: 'Invalid or expired promotional code.' };
     }
+    if (cart.length > 0 && cart.every(item => item.isOnSale)) {
+      return {
+        success: false,
+        message: 'Items already on sale cannot use a coupon (1 discount per item max).'
+      };
+    }
     setAppliedCoupon(validated);
-    return { success: true, message: `Applied ${validated.code} (${validated.discountPercent}% OFF)` };
+    return { success: true, message: `Applied ${validated.code} (${validated.discountPercent}% OFF regular items)` };
   };
 
   const removeCouponCode = () => {
@@ -754,12 +854,16 @@ export const StoreProvider = ({ children }) => {
     return cart.reduce((total, item) => total + item.unitPrice * item.quantity, 0);
   }, [cart]);
 
-  // Coupon Discount Amount in Currency
+  // Coupon Discount Amount in Currency (strictly 1 discount per item — only regular-priced items)
   const couponDiscountAmount = useMemo(() => {
     if (!appliedCoupon || !appliedCoupon.discountPercent) return 0;
-    const discount = (cartSubtotal * appliedCoupon.discountPercent) / 100;
+    const eligibleSubtotal = cart.reduce(
+      (total, item) => (item.isOnSale ? total : total + item.unitPrice * item.quantity),
+      0
+    );
+    const discount = (eligibleSubtotal * appliedCoupon.discountPercent) / 100;
     return Math.round(discount * 100) / 100;
-  }, [cartSubtotal, appliedCoupon]);
+  }, [cart, appliedCoupon]);
 
   // Final Order Total after Coupon
   const cartFinalTotal = useMemo(() => {
@@ -1001,7 +1105,7 @@ export const StoreProvider = ({ children }) => {
   };
 
   // Admin Per-Garment Sale & Markdown Controller
-  const updateProductSale = (productId, { isOnSale, discountPercent }) => {
+  const updateProductSale = (productId, { isOnSale, discountPercent, durationMinutes }) => {
     appCache.invalidateTag('products');
     appCache.invalidateTag('pricing');
     setProducts(prevProducts => {
@@ -1015,18 +1119,26 @@ export const StoreProvider = ({ children }) => {
               compare_at_price: null,
               original_base_price: original,
               on_sale: false,
-              discount_percent: 0
+              discount_percent: 0,
+              sale_ends_at: null
             };
           }
           const pct = Math.min(Math.max(Number(discountPercent) || 20, 5), 90);
           const salePrice = Math.round(original * (1 - pct / 100));
+          let nextSaleEndsAt = p.sale_ends_at && p.sale_ends_at > Date.now() ? p.sale_ends_at : null;
+          if (durationMinutes === null) {
+            nextSaleEndsAt = null;
+          } else if (typeof durationMinutes === 'number' && durationMinutes > 0) {
+            nextSaleEndsAt = Date.now() + durationMinutes * 60 * 1000;
+          }
           return {
             ...p,
             price: salePrice,
             compare_at_price: original,
             original_base_price: original,
             on_sale: true,
-            discount_percent: pct
+            discount_percent: pct,
+            sale_ends_at: nextSaleEndsAt
           };
         }
         return p;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, Outlet, useSearchParams } from 'react-router-dom';
 import {
-  List, X, ShieldCheck, SignOut, ArrowSquareOut, Warning,
+  List, X, ShieldCheck, SignOut, ArrowSquareOut, WarningCircle,
   ChartLineUp, Receipt, Package, Truck, Tag, ArrowCounterClockwise
 } from '@phosphor-icons/react';
 import { useStore } from '../../context/StoreContext';
@@ -52,34 +52,34 @@ export default function AdminPortalLayout() {
     {
       id: 'overview',
       label: 'Overview',
-      icon: <ChartLineUp size={20} />,
+      icon: <ChartLineUp size={18} weight="bold" />,
       badge: null
     },
     {
       id: 'orders',
       label: 'Consignments & Orders',
-      icon: <Receipt size={20} />,
+      icon: <Receipt size={18} weight="bold" />,
       badge: orders.length,
       badgeColor: 'bg-surface text-primary border border-border'
     },
     {
       id: 'inventory',
       label: 'Inventory & Stock Matrix',
-      icon: <Package size={20} />,
+      icon: <Package size={18} weight="bold" />,
       badge: lowStockVariants.length > 0 ? `${lowStockVariants.length} Alert` : null,
       badgeColor: 'bg-danger text-white'
     },
     {
       id: 'logistics',
       label: 'Logistics & Dispatch Hub',
-      icon: <Truck size={20} />,
+      icon: <Truck size={18} weight="bold" />,
       badge: inTransitCount > 0 ? `${inTransitCount} Active` : null,
       badgeColor: 'bg-primary text-canvas'
     },
     {
       id: 'promotions',
       label: 'Promotions & Coupons',
-      icon: <Tag size={20} />,
+      icon: <Tag size={18} weight="bold" />,
       badge: saleConfig.active ? 'Sale Live' : null,
       badgeColor: 'bg-emerald-600 text-white'
     }
@@ -87,66 +87,58 @@ export default function AdminPortalLayout() {
 
   return (
     <div className="min-h-screen bg-canvas text-primary flex flex-col lg:flex-row font-sans selection:bg-primary selection:text-canvas">
-      {/* 1. MOBILE-ONLY COMPACT TOP BAR */}
-      <div className="lg:hidden sticky top-0 z-40 bg-surface text-primary border-b border-border px-4 h-14 flex items-center justify-between">
+      {/* 1. MOBILE TOP NAVIGATION BAR */}
+      <header className="lg:hidden sticky top-0 z-40 bg-surface/95 backdrop-blur-md text-primary border-b border-border px-4 h-14 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <button
             type="button"
             onClick={() => setIsMobileOpen(true)}
-            className="p-1.5 rounded-input bg-canvas border border-border text-primary hover:bg-surface flex items-center justify-center transition-colors"
+            className="p-2 rounded-tight bg-canvas border border-border text-primary hover:bg-surface active:scale-95 transition-all flex items-center justify-center cursor-pointer"
             aria-label="Open navigation menu"
           >
-            <List size={20} weight="bold" />
+            <List size={18} weight="bold" />
           </button>
           <img
             src={brandConfig.logoName}
             alt="Purgatory"
             className="h-5 w-auto object-contain filter invert"
           />
-          <span className="text-[10px] font-mono uppercase text-muted tracking-wider">
-            Admin Portal
+          <span className="hidden sm:inline text-xs font-semibold uppercase tracking-wider text-muted border-l border-border pl-2.5">
+            Atelier Portal
           </span>
         </div>
 
         <div className="flex items-center gap-2">
-          <Link
-            to="/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="p-1.5 text-xs text-muted hover:text-primary transition-colors"
-            title="View Storefront"
-          >
-            <ArrowSquareOut size={16} />
-          </Link>
           <button
             type="button"
             onClick={handleTerminateSession}
-            className="p-1.5 text-xs text-danger hover:text-danger/80 transition-colors"
-            title="Lock Console"
+            className="px-3 py-1.5 rounded-tight text-xs font-medium text-danger bg-canvas border border-border hover:bg-danger-light transition-colors flex items-center gap-1.5 cursor-pointer"
+            title="Logout"
           >
-            <SignOut size={16} weight="bold" />
+            <SignOut size={14} weight="bold" />
+            <span>Logout</span>
           </button>
         </div>
-      </div>
+      </header>
 
-      {/* 2. DESKTOP FULL-HEIGHT LEFT SIDEBAR NAVIGATION */}
+      {/* 2. DESKTOP FULL-HEIGHT ARCHITECTURAL SIDEBAR */}
       <aside
         className={`hidden lg:flex flex-col bg-surface text-primary border-r border-border sticky top-0 h-screen z-30 transition-all duration-300 ease-in-out shrink-0 select-none ${
           isCollapsed ? 'w-18' : 'w-64'
         }`}
       >
-        {/* Sidebar Header: Hamburger Icon + Logo */}
-        <div className="h-16 px-4 border-b border-border flex items-center justify-between gap-3 bg-surface">
+        {/* Sidebar Header: Hamburger Toggle + Brand Identity */}
+        <div className="h-16 px-4 border-b border-border flex items-center justify-between gap-3 bg-surface shrink-0">
           <div className="flex items-center gap-3 min-w-0">
-            {/* Hamburger Toggle Button */}
+            {/* Hamburger Collapse Button */}
             <button
               type="button"
               onClick={() => setIsCollapsed(prev => !prev)}
-              className="p-2 rounded-input bg-canvas hover:bg-surface border border-border text-primary transition-colors flex items-center justify-center cursor-pointer shrink-0"
-              title={isCollapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
-              aria-label="Toggle sidebar"
+              className="p-2 rounded-tight bg-canvas hover:bg-surface border border-border text-primary transition-all active:scale-95 flex items-center justify-center cursor-pointer shrink-0"
+              title={isCollapsed ? 'Expand Navigation Sidebar' : 'Collapse Sidebar'}
+              aria-label="Toggle navigation sidebar"
             >
-              <List size={20} weight="bold" />
+              <List size={18} weight="bold" />
             </button>
 
             {!isCollapsed && (
@@ -156,8 +148,8 @@ export default function AdminPortalLayout() {
                   alt="Purgatory"
                   className="h-5 w-auto object-contain filter invert shrink-0 transition-opacity group-hover:opacity-80"
                 />
-                <span className="text-[10px] font-mono uppercase tracking-widest text-muted border-l border-border pl-2 truncate font-medium">
-                  Atelier Portal
+                <span className="text-xs font-semibold uppercase tracking-wider text-muted border-l border-border pl-2.5 truncate">
+                  Atelier Ops
                 </span>
               </Link>
             )}
@@ -165,12 +157,12 @@ export default function AdminPortalLayout() {
         </div>
 
         {/* Sidebar Navigation Items */}
-        <div className="flex-1 p-3 flex flex-col justify-between overflow-y-auto">
+        <div className="flex-1 p-3 flex flex-col justify-between overflow-y-auto space-y-6">
           <div className="space-y-6">
             <div>
               {!isCollapsed && (
-                <span className="text-[10px] font-mono uppercase tracking-widest text-muted font-semibold block px-2 mb-2">
-                  Atelier Navigation
+                <span className="text-xs font-bold uppercase tracking-wider text-muted block px-2.5 mb-2.5">
+                  Core Modules
                 </span>
               )}
               <nav className="space-y-1">
@@ -181,7 +173,7 @@ export default function AdminPortalLayout() {
                       key={item.id}
                       type="button"
                       onClick={() => handleSelectTab(item.id)}
-                      className={`w-full flex items-center rounded-input text-xs font-medium transition-all group ${
+                      className={`w-full flex items-center rounded-tight text-xs font-medium transition-all group ${
                         isCollapsed
                           ? 'justify-center p-2.5'
                           : 'justify-between px-3 py-2.5 text-left'
@@ -192,8 +184,8 @@ export default function AdminPortalLayout() {
                       }`}
                       title={isCollapsed ? item.label : undefined}
                     >
-                      <div className="flex items-center gap-2.5 min-w-0">
-                        <span className={`shrink-0 ${isActive ? 'text-canvas' : 'text-muted group-hover:text-primary'}`}>
+                      <div className="flex items-center gap-3 min-w-0">
+                        <span className={`shrink-0 transition-colors ${isActive ? 'text-canvas' : 'text-muted group-hover:text-primary'}`}>
                           {item.icon}
                         </span>
                         {!isCollapsed && (
@@ -203,7 +195,7 @@ export default function AdminPortalLayout() {
 
                       {!isCollapsed && item.badge !== null && item.badge !== undefined && (
                         <span
-                          className={`ml-2 px-1.5 py-0.5 rounded-full text-[10px] font-mono font-bold shrink-0 ${
+                          className={`ml-2 px-2 py-0.5 rounded-full text-xs font-bold shrink-0 ${
                             isActive ? 'bg-canvas/20 text-canvas' : item.badgeColor
                           }`}
                         >
@@ -216,86 +208,45 @@ export default function AdminPortalLayout() {
               </nav>
             </div>
 
-            {/* Quick Actions */}
-            <div className="pt-4 border-t border-border">
-              {!isCollapsed && (
-                <span className="text-[10px] font-mono uppercase tracking-widest text-muted font-semibold block px-2 mb-2">
-                  Atelier Shortcuts
-                </span>
-              )}
-              <div className="space-y-1">
-                <button
-                  type="button"
-                  onClick={resetToSeedData}
-                  className={`w-full flex items-center rounded-input text-xs text-muted hover:text-primary hover:bg-canvas transition-colors ${
-                    isCollapsed ? 'justify-center p-2.5' : 'gap-2.5 px-3 py-2 text-left'
-                  }`}
-                  title="Reset to 46 synthetic seed orders & clean stock"
-                >
-                  <ArrowCounterClockwise size={18} className="shrink-0" />
-                  {!isCollapsed && <span>Reset Seed State</span>}
-                </button>
-
-                <Link
-                  to="/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`w-full flex items-center rounded-input text-xs text-muted hover:text-primary hover:bg-canvas transition-colors ${
-                    isCollapsed ? 'justify-center p-2.5' : 'gap-2.5 px-3 py-2 text-left'
-                  }`}
-                  title="Open Customer Storefront in new tab"
-                >
-                  <ArrowSquareOut size={18} className="shrink-0" />
-                  {!isCollapsed && <span>View Storefront ↗</span>}
-                </Link>
-              </div>
-            </div>
           </div>
 
-          {/* Hardened Console Footer */}
-          <div className="pt-4 border-t border-border space-y-2">
+          {/* Logout */}
+          <div className="pt-4 border-t border-border shrink-0">
             {!isCollapsed ? (
-              <>
-                <div className="flex items-center gap-1.5 text-[10px] font-mono text-success">
-                  <ShieldCheck size={14} />
-                  <span>AUTHENTICATED SESSION</span>
-                </div>
-                <button
-                  type="button"
-                  onClick={handleTerminateSession}
-                  className="w-full py-2 px-3 bg-surface hover:bg-danger-light border border-border hover:border-danger/40 text-muted hover:text-danger rounded text-xs font-medium flex items-center justify-center gap-2 transition-colors"
-                  title="Sign out of the admin console"
-                >
-                  <SignOut size={14} weight="bold" />
-                  <span>Sign Out</span>
-                </button>
-              </>
+              <button
+                type="button"
+                onClick={handleTerminateSession}
+                className="w-full py-2 px-3 bg-surface hover:bg-danger-light border border-border hover:border-danger/40 text-muted hover:text-danger rounded-tight text-xs font-medium flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                title="Logout"
+              >
+                <SignOut size={14} weight="bold" />
+                <span>Logout</span>
+              </button>
             ) : (
               <button
                 type="button"
                 onClick={handleTerminateSession}
-                className="w-full p-2.5 bg-surface hover:bg-danger-light border border-border hover:border-danger/40 text-muted hover:text-danger rounded flex items-center justify-center transition-colors"
-                title="Sign Out"
+                className="w-full p-2.5 bg-surface hover:bg-danger-light border border-border hover:border-danger/40 text-muted hover:text-danger rounded-tight flex items-center justify-center transition-colors cursor-pointer"
+                title="Logout"
               >
-                <SignOut size={18} weight="bold" />
+                <SignOut size={16} weight="bold" />
               </button>
             )}
           </div>
         </div>
       </aside>
 
-      {/* 3. MOBILE OFF-CANVAS SLIDE-OVER DRAWER */}
+      {/* 3. MOBILE OFF-CANVAS DRAWER */}
       {isMobileOpen && (
-        <div className="lg:hidden fixed inset-0 z-50 flex">
+        <div className="fixed inset-0 z-50 lg:hidden font-sans">
           {/* Backdrop */}
           <div
-            className="fixed inset-0 bg-[#0C0C0B]/50 backdrop-blur-xs transition-opacity"
+            className="fixed inset-0 bg-[#0C0C0B]/60 backdrop-blur-xs transition-opacity"
             onClick={() => setIsMobileOpen(false)}
-            aria-hidden="true"
           />
 
-          {/* Drawer Body */}
-          <div className="relative w-72 max-w-[80vw] bg-surface text-primary border-r border-border h-full flex flex-col justify-between p-5 z-10 shadow-xl animate-in slide-in-from-left duration-200">
+          {/* Drawer Pane */}
+          <div className="fixed inset-y-0 left-0 w-72 max-w-[85vw] bg-surface text-primary border-r border-border p-5 flex flex-col justify-between shadow-2xl z-10 animate-in slide-in-from-left duration-200">
             <div className="space-y-6">
               {/* Header with Close */}
               <div className="flex items-center justify-between pb-4 border-b border-border">
@@ -305,14 +256,14 @@ export default function AdminPortalLayout() {
                     alt="Purgatory"
                     className="h-5 w-auto object-contain filter invert"
                   />
-                  <span className="text-[10px] font-mono uppercase text-muted tracking-wider">
-                    Admin Portal
+                  <span className="text-xs font-semibold uppercase tracking-wider text-muted">
+                    Atelier Portal
                   </span>
                 </div>
                 <button
                   type="button"
                   onClick={() => setIsMobileOpen(false)}
-                  className="p-1.5 rounded text-muted hover:text-primary hover:bg-canvas"
+                  className="p-1.5 rounded-tight text-muted hover:text-primary hover:bg-canvas transition-colors"
                   aria-label="Close menu"
                 >
                   <X size={18} />
@@ -321,8 +272,8 @@ export default function AdminPortalLayout() {
 
               {/* Navigation Links */}
               <div>
-                <span className="text-[10px] font-mono uppercase tracking-widest text-muted font-semibold block mb-2">
-                  Atelier Navigation
+                <span className="text-xs font-bold uppercase tracking-wider text-muted block mb-2.5">
+                  Core Modules
                 </span>
                 <nav className="space-y-1">
                   {navItems.map(item => {
@@ -332,13 +283,13 @@ export default function AdminPortalLayout() {
                         key={item.id}
                         type="button"
                         onClick={() => handleSelectTab(item.id)}
-                        className={`w-full flex items-center justify-between px-3 py-2.5 rounded-input text-xs font-medium transition-all text-left ${
+                        className={`w-full flex items-center justify-between px-3 py-2.5 rounded-tight text-xs font-medium transition-all text-left ${
                           isActive
                             ? 'bg-primary text-canvas font-bold shadow-xs'
                             : 'text-muted hover:text-primary hover:bg-canvas'
                         }`}
                       >
-                        <div className="flex items-center gap-2.5">
+                        <div className="flex items-center gap-3">
                           <span className={isActive ? 'text-canvas' : 'text-muted'}>
                             {item.icon}
                           </span>
@@ -346,7 +297,7 @@ export default function AdminPortalLayout() {
                         </div>
                         {item.badge !== null && item.badge !== undefined && (
                           <span
-                            className={`px-1.5 py-0.5 rounded-full text-[10px] font-mono font-bold ${
+                            className={`px-2 py-0.5 rounded-full text-xs font-bold ${
                               isActive ? 'bg-canvas/20 text-canvas' : item.badgeColor
                             }`}
                           >
@@ -358,35 +309,6 @@ export default function AdminPortalLayout() {
                   })}
                 </nav>
               </div>
-
-              {/* Mobile Actions */}
-              <div className="pt-4 border-t border-border">
-                <span className="text-[10px] font-mono uppercase tracking-widest text-muted font-semibold block mb-2">
-                  Actions
-                </span>
-                <div className="space-y-1">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      resetToSeedData();
-                      setIsMobileOpen(false);
-                    }}
-                    className="w-full flex items-center gap-2.5 px-3 py-2 rounded-input text-xs text-muted hover:text-primary hover:bg-canvas text-left"
-                  >
-                    <ArrowCounterClockwise size={16} />
-                    <span>Reset Seed State</span>
-                  </button>
-                  <Link
-                    to="/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full flex items-center gap-2.5 px-3 py-2 rounded-input text-xs text-muted hover:text-primary hover:bg-canvas text-left"
-                  >
-                    <ArrowSquareOut size={16} />
-                    <span>Open Storefront ↗</span>
-                  </Link>
-                </div>
-              </div>
             </div>
 
             {/* Logout */}
@@ -394,32 +316,41 @@ export default function AdminPortalLayout() {
               <button
                 type="button"
                 onClick={handleTerminateSession}
-                className="w-full py-2 bg-danger-light text-danger border border-danger/30 rounded text-xs font-semibold flex items-center justify-center gap-2"
+                className="w-full py-2.5 bg-danger-light text-danger border border-danger/30 rounded-tight text-xs font-semibold flex items-center justify-center gap-2 transition-colors"
               >
-                <SignOut size={14} weight="bold" />
-                <span>Sign Out</span>
+                <SignOut size={16} weight="bold" />
+                <span>Logout</span>
               </button>
             </div>
           </div>
         </div>
       )}
 
-      {/* 4. DEDICATED OPERATIONS MAIN CONTENT */}
+      {/* 4. MAIN OPERATIONAL CANVAS (Fluid Full-Width Responsive Area) */}
       <main className="flex-1 min-w-0 flex flex-col bg-canvas text-primary">
-        {/* Critical Low-Stock Alert Ticker */}
+        {/* Critical Low-Stock Warning Banner */}
         {lowStockVariants.length > 0 && (
-          <div className="bg-danger-light text-danger border-b border-danger/30 py-2 px-4 text-xs font-mono flex items-center justify-between gap-2">
-            <div className="flex items-center gap-2">
-              <Warning size={15} className="shrink-0" />
-              <span>CRITICAL INVENTORY ALERT: {lowStockVariants.length} garment variant(s) have ≤ 5 units remaining in stock.</span>
+          <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+            <div className="bg-surface border border-border border-l-4 border-l-[#C43C30] rounded-card px-4 py-3 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 animate-in fade-in">
+              <div className="flex items-center gap-2.5">
+                <WarningCircle size={18} weight="fill" className="text-[#C43C30] shrink-0" />
+                <div className="text-xs">
+                  <span className="font-bold uppercase tracking-wider text-[#C43C30] mr-2">
+                    Low Stock Alert
+                  </span>
+                  <span className="text-primary font-medium">
+                    {lowStockVariants.length} item size{lowStockVariants.length === 1 ? ' is' : 's are'} running low (5 or fewer left).
+                  </span>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => handleSelectTab('inventory')}
+                className="h-8 px-3.5 rounded-tight bg-[#C43C30] text-[#FAF9F7] hover:opacity-90 active:scale-95 transition-all text-xs font-semibold uppercase tracking-wider whitespace-nowrap cursor-pointer self-start sm:self-auto"
+              >
+                Restock →
+              </button>
             </div>
-            <button
-              type="button"
-              onClick={() => handleSelectTab('inventory')}
-              className="underline hover:text-danger-dark font-bold"
-            >
-              Adjust Stock →
-            </button>
           </div>
         )}
 
@@ -427,12 +358,6 @@ export default function AdminPortalLayout() {
         <div className="flex-1">
           <Outlet />
         </div>
-
-        {/* Hardened Operations Footer */}
-        <footer className="border-t border-border py-4 px-6 text-center sm:text-left text-[11px] font-mono text-muted bg-surface/30 flex flex-col sm:flex-row items-center justify-between gap-2">
-          <span>PURGATORY APPAREL LAB — OPERATIONS CONSOLE</span>
-          <span className="text-[10px]">AUTHENTICATED SESSION · CLIENT-SYNCED ARCHITECTURE</span>
-        </footer>
       </main>
     </div>
   );

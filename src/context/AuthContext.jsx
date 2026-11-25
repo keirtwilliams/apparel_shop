@@ -8,7 +8,7 @@ export const AuthProvider = ({ children }) => {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Fetch or create profile row in public.profiles
+  // Fetch profile row in public.profiles (returns null if deleted)
   const fetchProfile = async (userId, userEmail) => {
     if (!isSupabaseConfigured || !supabase) return null;
 
@@ -19,29 +19,9 @@ export const AuthProvider = ({ children }) => {
         .eq('id', userId)
         .maybeSingle();
 
-      if (!error && data) {
-        return data;
+      if (!error) {
+        return data || null;
       }
-
-      // Check localStorage for account profile created during registration
-      const savedUser = localStorage.getItem('purgatory_current_user');
-      if (savedUser) {
-        try {
-          const parsed = JSON.parse(savedUser);
-          if (parsed && (parsed.id === userId || parsed.email?.toLowerCase() === userEmail?.toLowerCase())) {
-            return parsed;
-          }
-        } catch (e) { /* ignore */ }
-      }
-
-      // Graceful fallback profile in state/memory
-      return {
-        id: userId,
-        email: userEmail,
-        full_name: userEmail ? userEmail.split('@')[0] : 'Client',
-        role: 'customer',
-        created_at: new Date().toISOString()
-      };
     } catch (err) {
       console.warn('Error fetching Supabase profile:', err);
     }
@@ -69,9 +49,17 @@ export const AuthProvider = ({ children }) => {
     supabase.auth.getSession().then(async ({ data: { session } }) => {
       if (!mounted) return;
       if (session?.user) {
-        setUser(session.user);
         const prof = await fetchProfile(session.user.id, session.user.email);
-        if (mounted) setProfile(prof);
+        if (!mounted) return;
+        if (!prof) {
+          await supabase.auth.signOut();
+          localStorage.removeItem('purgatory_current_user');
+          setUser(null);
+          setProfile(null);
+        } else {
+          setUser(session.user);
+          setProfile(prof);
+        }
       } else {
         setUser(null);
         setProfile(null);
@@ -83,9 +71,17 @@ export const AuthProvider = ({ children }) => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (!mounted) return;
       if (session?.user) {
-        setUser(session.user);
         const prof = await fetchProfile(session.user.id, session.user.email);
-        if (mounted) setProfile(prof);
+        if (!mounted) return;
+        if (!prof) {
+          await supabase.auth.signOut();
+          localStorage.removeItem('purgatory_current_user');
+          setUser(null);
+          setProfile(null);
+        } else {
+          setUser(session.user);
+          setProfile(prof);
+        }
       } else {
         setUser(null);
         setProfile(null);

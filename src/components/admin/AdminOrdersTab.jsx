@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import {
-  MagnifyingGlass, Eye, Truck, Check, Warning,
-  ArrowsClockwise, XCircle
+  MagnifyingGlass, ArrowClockwise,
+  Check, XCircle, ArrowRight
 } from '@phosphor-icons/react';
 import { formatCurrency } from '../../lib/pricing';
 
@@ -14,46 +14,44 @@ export default function AdminOrdersTab({
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('All');
 
-  // Status breakdown counts
-  const statusCounts = useMemo(() => {
-    const counts = {
-      All: orders.length,
-      pending: 0,
-      processing: 0,
-      shipped: 0,
-      out_for_delivery: 0,
-      delivered: 0,
-      refunded: 0
-    };
-    orders.forEach(o => {
-      if (counts[o.status] !== undefined) {
-        counts[o.status] += 1;
-      }
-    });
-    return counts;
-  }, [orders]);
-
-  // Filtered orders list
+  // Filtered orders with instant search
   const filteredOrders = useMemo(() => {
-    return orders.filter(o => {
-      // Status filter
-      if (selectedStatus !== 'All' && o.status !== selectedStatus) {
+    return orders.filter(order => {
+      // 1. Status Filter
+      if (selectedStatus !== 'All' && order.status !== selectedStatus) {
         return false;
       }
-      // Search query
+
+      // 2. Text Search Filter
       if (searchQuery.trim()) {
-        const q = searchQuery.toLowerCase().trim();
-        const matchesId = (o.id || '').toLowerCase().includes(q);
-        const matchesCustomer = (o.customer_name || '').toLowerCase().includes(q);
-        const matchesEmail = (o.customer_email || '').toLowerCase().includes(q);
-        const matchesAddress = (o.shipping_address || '').toLowerCase().includes(q);
-        if (!matchesId && !matchesCustomer && !matchesEmail && !matchesAddress) {
+        const query = searchQuery.toLowerCase().trim();
+        const idMatch = order.id?.toLowerCase().includes(query);
+        const nameMatch = order.customer_name?.toLowerCase().includes(query);
+        const emailMatch = order.customer_email?.toLowerCase().includes(query);
+        const addressMatch = order.shipping_address?.toLowerCase().includes(query);
+        const cityMatch = order.city?.toLowerCase().includes(query);
+        const itemsMatch = order.items?.some(it =>
+          it.product_name?.toLowerCase().includes(query) ||
+          it.category?.toLowerCase().includes(query)
+        );
+
+        if (!idMatch && !nameMatch && !emailMatch && !addressMatch && !cityMatch && !itemsMatch) {
           return false;
         }
       }
+
       return true;
     });
   }, [orders, selectedStatus, searchQuery]);
+
+  // Status counts for pills
+  const statusCounts = useMemo(() => {
+    const counts = { All: orders.length };
+    orders.forEach(o => {
+      counts[o.status] = (counts[o.status] || 0) + 1;
+    });
+    return counts;
+  }, [orders]);
 
   const statusPills = [
     { key: 'All', label: 'All Orders' },
@@ -62,50 +60,52 @@ export default function AdminOrdersTab({
     { key: 'shipped', label: 'In Transit' },
     { key: 'out_for_delivery', label: 'Out for Delivery' },
     { key: 'delivered', label: 'Delivered' },
-    { key: 'refunded', label: 'Refunded' }
+    { key: 'refunded', label: 'Refunded' },
   ];
 
   return (
-    <div className="space-y-6">
-      {/* Search Bar & Quick Status Pills */}
-      <div className="p-5 bg-canvas border border-border rounded-card space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="space-y-6 font-sans">
+      {/* 1. SEARCH & FILTER TOOLBAR */}
+      <div className="bg-surface border border-border rounded-card p-4 sm:p-5 space-y-4 shadow-2xs">
+        <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
           <div>
-            <h2 className="text-base font-semibold text-primary uppercase tracking-wide">
-              Consignment & Orders Ledger
-            </h2>
-            <p className="text-xs text-muted mt-0.5">
-              Live status toggles, 1-click stage advancement, instant Shopee/SHEIN hub tracking & automated stock refunds.
-            </p>
+            <span className="text-xs uppercase tracking-wider text-muted font-bold block">
+              Consignments Ledger
+            </span>
+            <span className="text-sm font-bold text-primary tracking-tight">
+              Order Fulfillment & Lifecycle
+            </span>
           </div>
 
           {/* Instant Search Bar */}
-          <div className="relative min-w-[260px] sm:min-w-[320px]">
+          <div className="relative w-full sm:w-[340px]">
             <MagnifyingGlass
               size={15}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-muted"
+              weight="bold"
+              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted"
             />
             <input
               type="text"
-              placeholder="Search by ID, customer, email, city..."
+              placeholder="Search by ID, recipient, email, city..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-surface border border-border rounded-input pl-9 pr-8 py-2 text-xs text-primary focus:outline-none focus:border-primary placeholder:text-muted/60"
+              className="w-full bg-canvas border border-border rounded-tight pl-9 pr-8 py-2 text-xs text-primary focus:outline-none focus:border-primary placeholder:text-muted/60 transition-colors font-medium"
             />
             {searchQuery && (
               <button
                 type="button"
                 onClick={() => setSearchQuery('')}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted hover:text-primary"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-primary cursor-pointer"
+                aria-label="Clear search"
               >
-                <XCircle size={14} />
+                <XCircle size={14} weight="fill" />
               </button>
             )}
           </div>
         </div>
 
         {/* Quick Status Filter Tabs */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-1 pt-1 border-t border-border/60">
+        <div className="flex items-center gap-2 overflow-x-auto pb-1 pt-2 border-t border-border">
           {statusPills.map(tab => {
             const isActive = selectedStatus === tab.key;
             const count = statusCounts[tab.key] || 0;
@@ -114,18 +114,18 @@ export default function AdminOrdersTab({
                 key={tab.key}
                 type="button"
                 onClick={() => setSelectedStatus(tab.key)}
-                className={`px-3 py-1.5 rounded-input text-xs font-medium whitespace-nowrap transition-all flex items-center gap-1.5 ${
+                className={`px-3.5 py-1.5 rounded-tight text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-2 cursor-pointer ${
                   isActive
-                    ? 'bg-primary text-canvas font-semibold shadow-xs'
-                    : 'bg-surface hover:bg-canvas text-muted hover:text-primary border border-border'
+                    ? 'bg-primary text-canvas font-bold shadow-xs'
+                    : 'bg-canvas hover:bg-surface text-muted hover:text-primary border border-border'
                 }`}
               >
                 <span>{tab.label}</span>
                 <span
-                  className={`px-1.5 py-0.2 rounded-full text-[10px] font-mono ${
+                  className={`px-2 py-0.5 rounded-full text-xs font-bold ${
                     isActive
                       ? 'bg-canvas/20 text-canvas'
-                      : 'bg-canvas text-muted border border-border/60'
+                      : 'bg-surface text-muted border border-border'
                   }`}
                 >
                   {count}
@@ -136,49 +136,132 @@ export default function AdminOrdersTab({
         </div>
       </div>
 
-      {/* ORDERS TABLE */}
-      <div className="bg-canvas border border-border rounded-card overflow-hidden">
-        <div className="px-5 py-3.5 bg-surface border-b border-border flex items-center justify-between text-xs">
+      {/* 2. ORDERS MANAGEMENT TABLE */}
+      <div className="bg-surface border border-border rounded-card overflow-hidden shadow-2xs">
+        <div className="px-6 py-4 border-b border-border flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
           <div className="flex items-center gap-2">
-            <span className="font-semibold uppercase tracking-wider text-primary">
-              Showing {filteredOrders.length} of {orders.length} Consignments
+            <span className="font-bold uppercase tracking-wider text-primary">
+              Consignment Registry ({filteredOrders.length} Loaded)
             </span>
             {selectedStatus !== 'All' && (
-              <span className="text-muted font-mono">
-                · Filtered by <strong className="text-primary">{selectedStatus}</strong>
+              <span className="text-muted">
+                · Status: <strong className="text-primary">{selectedStatus}</strong>
               </span>
             )}
           </div>
+          <span className="text-xs font-medium text-muted">
+            1-Click Status Advancement & Automatic Inventory Restoration
+          </span>
         </div>
 
         {filteredOrders.length === 0 ? (
-          <div className="py-16 text-center text-muted">
-            <p className="text-xs">No orders found matching the filter criteria.</p>
-            {(searchQuery || selectedStatus !== 'All') && (
-              <button
-                type="button"
-                onClick={() => {
-                  setSearchQuery('');
-                  setSelectedStatus('All');
-                }}
-                className="mt-3 text-xs text-primary underline font-medium"
-              >
-                Reset Search & Filters
-              </button>
-            )}
+          <div className="py-20 text-center text-muted">
+            <p className="text-sm font-semibold">No consignments match this filter.</p>
+            <p className="text-xs text-muted mt-1">Try clearing your search query or selecting 'All Orders'.</p>
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
-              <thead className="bg-surface/60 text-muted uppercase tracking-wider border-b border-border font-mono text-[10px]">
-                <tr>
-                  <th className="py-3 px-4 font-semibold">Order ID</th>
-                  <th className="py-3 px-4 font-semibold">Date</th>
-                  <th className="py-3 px-4 font-semibold">Customer</th>
-                  <th className="py-3 px-4 font-semibold">Payment</th>
-                  <th className="py-3 px-4 font-semibold">Total</th>
-                  <th className="py-3 px-4 font-semibold">Fulfillment Pipeline</th>
-                  <th className="py-3 px-4 font-semibold text-right">Actions</th>
+          <>
+            {/* Mobile Card List (< md) */}
+            <div className="md:hidden divide-y divide-border">
+              {filteredOrders.map(order => {
+                const isRefunded = order.status === 'refunded';
+                const formattedDate = new Date(order.created_at).toLocaleDateString('en-US', {
+                  month: 'short',
+                  day: 'numeric',
+                  year: 'numeric'
+                });
+                const nextMap = {
+                  pending: { next: 'processing', label: 'Pack Atelier →' },
+                  processing: { next: 'shipped', label: 'Dispatch Hub →' },
+                  shipped: { next: 'out_for_delivery', label: 'Out for Delivery →' },
+                  out_for_delivery: { next: 'delivered', label: 'Deliver ✓' }
+                };
+                const nextAction = nextMap[order.status];
+
+                return (
+                  <div
+                    key={order.id}
+                    onClick={() => onOpenTrackingModal(order)}
+                    className="p-4 space-y-3 text-xs hover:bg-canvas/50 transition-colors cursor-pointer"
+                  >
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="min-w-0">
+                        <span className="font-bold text-primary">
+                          {order.id}
+                        </span>
+                        <div className="text-muted mt-0.5 truncate">
+                          {order.customer_name} · {formattedDate}
+                        </div>
+                      </div>
+                      <span className="font-bold text-primary tabular-nums shrink-0">
+                        {formatCurrency(order.total_amount)}
+                      </span>
+                    </div>
+
+                    <div
+                      className="flex flex-wrap items-center justify-between gap-2 pt-1"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <select
+                        value={order.status}
+                        onChange={(e) => updateOrderStatus(order.id, e.target.value)}
+                        disabled={isRefunded}
+                        className={`text-xs px-2.5 py-1.5 rounded-tight border focus:outline-none cursor-pointer font-medium ${
+                          isRefunded
+                            ? 'bg-danger-light text-danger border-danger/30'
+                            : order.status === 'delivered'
+                            ? 'bg-emerald-50 text-emerald-800 border-emerald-300'
+                            : order.status === 'out_for_delivery'
+                            ? 'bg-amber-50 text-amber-800 border-amber-300'
+                            : 'bg-canvas text-primary border-border'
+                        }`}
+                      >
+                        <option value="pending">Pending</option>
+                        <option value="processing">Atelier Packed</option>
+                        <option value="shipped">In Transit</option>
+                        <option value="out_for_delivery">Out for Delivery</option>
+                        <option value="delivered">Delivered</option>
+                        <option value="refunded">Refunded</option>
+                      </select>
+
+                      <div className="flex items-center gap-2">
+                        {!isRefunded && nextAction && (
+                          <button
+                            type="button"
+                            onClick={() => updateOrderStatus(order.id, nextAction.next)}
+                            className="px-2.5 py-1.5 bg-primary text-canvas rounded-tight text-xs font-semibold cursor-pointer"
+                          >
+                            {nextAction.label}
+                          </button>
+                        )}
+                        {!isRefunded && (
+                          <button
+                            type="button"
+                            onClick={() => refundOrder(order.id)}
+                            className="px-2.5 py-1.5 bg-danger-light text-danger border border-danger/30 rounded-tight text-xs font-semibold cursor-pointer"
+                          >
+                            Refund
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Desktop Registry Table (>= md) */}
+            <div className="hidden md:block overflow-x-auto">
+              <table className="w-full text-left text-xs text-primary border-collapse min-w-[900px]">
+              <thead>
+                <tr className="bg-canvas border-b border-border uppercase text-muted tracking-wider text-xs font-bold">
+                  <th className="py-3 px-5 font-bold">Consignment ID</th>
+                  <th className="py-3 px-4 font-bold">Date</th>
+                  <th className="py-3 px-4 font-bold">Recipient</th>
+                  <th className="py-3 px-4 font-bold">Payment</th>
+                  <th className="py-3 px-4 font-bold">Total</th>
+                  <th className="py-3 px-5 font-bold">Logistics Pipeline</th>
+                  <th className="py-3 px-5 font-bold text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border tabular-nums">
@@ -200,62 +283,69 @@ export default function AdminOrdersTab({
                   const nextAction = nextMap[order.status];
 
                   return (
-                    <tr key={order.id} className="hover:bg-surface/50 transition-colors">
+                    <tr
+                      key={order.id}
+                      onClick={() => onOpenTrackingModal(order)}
+                      className="hover:bg-canvas/60 transition-colors cursor-pointer"
+                      title="Click row to inspect tracking"
+                    >
                       {/* Order ID */}
-                      <td className="py-3 px-4 font-mono font-medium text-primary">
-                        <button
-                          type="button"
-                          onClick={() => onOpenTrackingModal(order)}
-                          className="hover:underline hover:text-[#C43C30] flex items-center gap-1.5 text-left group"
-                          title="Click to view live Shopee/SHEIN tracking"
-                        >
-                          <span className="font-bold">{order.id}</span>
-                          <Eye size={13} className="text-muted group-hover:text-[#C43C30]" />
-                        </button>
-                        <div className="text-[10px] text-muted font-sans mt-0.5">
-                          {order.items?.length || 0} item(s) · {order.items?.[0]?.product_name?.slice(0, 20)}...
+                      <td className="py-3.5 px-5 text-primary">
+                        <span className="font-bold text-primary">
+                          {order.id}
+                        </span>
+                        <div className="text-xs text-muted font-sans mt-0.5 truncate max-w-[200px]">
+                          {order.items?.length || 0} item(s) · {order.items?.[0]?.product_name}
                         </div>
                       </td>
 
                       {/* Date */}
-                      <td className="py-3 px-4 text-muted whitespace-nowrap">{formattedDate}</td>
+                      <td className="py-3.5 px-4 text-muted whitespace-nowrap text-xs font-medium">
+                        {formattedDate}
+                      </td>
 
-                      {/* Customer */}
-                      <td className="py-3 px-4">
-                        <div className="font-medium text-primary">{order.customer_name}</div>
-                        <div className="text-[10px] text-muted">{order.customer_email}</div>
+                      {/* Recipient */}
+                      <td className="py-3.5 px-4">
+                        <div className="font-semibold text-primary">{order.customer_name}</div>
+                        <div className="text-xs text-muted truncate max-w-[180px] font-medium">{order.customer_email}</div>
                       </td>
 
                       {/* Payment */}
-                      <td className="py-3 px-4">
-                        <span className="uppercase text-[10px] font-mono font-bold px-2 py-0.5 bg-surface border border-border rounded-input text-primary">
-                          {order.payment_method}
-                        </span>
-                        <div className="text-[10px] text-muted mt-0.5 capitalize">
-                          {order.payment_status}
+                      <td className="py-3.5 px-4">
+                        <div className="inline-flex flex-col items-center gap-1 w-16">
+                          <span className="w-full text-center uppercase text-[11px] font-bold px-2 py-0.5 bg-canvas border border-border rounded-tight text-primary">
+                            {order.payment_method}
+                          </span>
+                          <span
+                            className={`text-xs capitalize font-semibold ${
+                              order.payment_status === 'refunded' ? 'text-danger' : 'text-muted'
+                            }`}
+                          >
+                            {order.payment_status}
+                          </span>
                         </div>
                       </td>
 
                       {/* Total */}
-                      <td className="py-3 px-4 font-bold text-primary">
+                      <td className="py-3.5 px-4 font-bold text-primary text-xs tabular-nums">
                         {formatCurrency(order.total_amount)}
                       </td>
 
                       {/* Fulfillment Stage Controls */}
-                      <td className="py-3 px-4">
+                      <td className="py-3.5 px-5" onClick={(e) => e.stopPropagation()}>
                         <div className="flex items-center gap-2">
                           <select
                             value={order.status}
                             onChange={(e) => updateOrderStatus(order.id, e.target.value)}
                             disabled={isRefunded}
-                            className={`text-xs px-2.5 py-1 rounded-input border focus:outline-none cursor-pointer font-medium ${
+                            className={`text-xs px-2.5 py-1 rounded-tight border focus:outline-none cursor-pointer font-medium transition-colors ${
                               isRefunded
                                 ? 'bg-danger-light text-danger border-danger/30'
                                 : order.status === 'delivered'
-                                ? 'bg-success-light text-success border-success/30'
+                                ? 'bg-emerald-50 text-emerald-800 border-emerald-300'
                                 : order.status === 'out_for_delivery'
-                                ? 'bg-amber-50 text-amber-700 border-amber-300'
-                                : 'bg-surface text-primary border-border'
+                                ? 'bg-amber-50 text-amber-800 border-amber-300'
+                                : 'bg-canvas text-primary border-border'
                             }`}
                           >
                             <option value="pending">Pending</option>
@@ -271,41 +361,36 @@ export default function AdminOrdersTab({
                             <button
                               type="button"
                               onClick={() => updateOrderStatus(order.id, nextAction.next)}
-                              className="px-2.5 py-1 bg-primary text-canvas rounded text-[10px] font-mono font-bold uppercase tracking-wider hover:opacity-90 transition-opacity shrink-0 flex items-center gap-1 shadow-xs"
-                              title={`Advance to ${nextAction.next}`}
+                              className="px-2.5 py-1 bg-primary text-canvas text-xs font-bold uppercase tracking-wider rounded-tight hover:opacity-90 active:scale-95 transition-all shadow-2xs whitespace-nowrap cursor-pointer"
+                              title={`Advance status to ${nextAction.next}`}
                             >
-                              <span>{nextAction.label}</span>
+                              {nextAction.label}
                             </button>
                           )}
                         </div>
                       </td>
 
                       {/* Actions */}
-                      <td className="py-3 px-4 text-right">
+                      <td className="py-3.5 px-5 text-right" onClick={(e) => e.stopPropagation()}>
                         <div className="flex items-center justify-end gap-2">
-                          <button
-                            type="button"
-                            onClick={() => onOpenTrackingModal(order)}
-                            className="px-2.5 py-1 bg-surface hover:bg-canvas border border-border rounded text-[11px] font-medium text-primary transition-colors flex items-center gap-1"
-                            title="Inspect live Shopee/SHEIN tracking"
-                          >
-                            <Truck size={13} />
-                            <span>Track</span>
-                          </button>
-
-                          {isRefunded ? (
-                            <span className="text-[11px] text-muted italic px-2 py-0.5">
-                              Restored ✓
-                            </span>
-                          ) : (
+                          {/* Instant Refund with Stock Auto-Restoration */}
+                          {!isRefunded ? (
                             <button
                               type="button"
-                              onClick={() => refundOrder(order.id)}
-                              className="px-2.5 py-1 bg-surface hover:bg-danger-light hover:text-danger hover:border-danger/40 border border-border rounded text-[11px] font-medium text-muted transition-colors"
-                              title="Restores garment quantities back to stock"
+                              onClick={() => {
+                                if (window.confirm(`Issue full refund for ${order.id} (${formatCurrency(order.total_amount)})? This will automatically restore purchased variants to inventory stock.`)) {
+                                  refundOrder(order.id);
+                                }
+                              }}
+                              className="px-2 py-1 text-xs text-danger hover:bg-danger-light border border-transparent hover:border-danger/30 rounded-tight transition-colors font-semibold cursor-pointer"
+                              title="Cancel consignment and restore inventory counts"
                             >
                               Refund
                             </button>
+                          ) : (
+                            <span className="text-xs font-semibold text-danger bg-danger-light px-2 py-0.5 rounded-tight border border-danger/30">
+                              Restored
+                            </span>
                           )}
                         </div>
                       </td>
@@ -315,6 +400,7 @@ export default function AdminOrdersTab({
               </tbody>
             </table>
           </div>
+          </>
         )}
       </div>
     </div>

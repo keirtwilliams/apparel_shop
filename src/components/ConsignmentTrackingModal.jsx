@@ -31,58 +31,47 @@ export default function ConsignmentTrackingModal({ order, isOpen, onClose }) {
       />
 
       {/* Modal Dialog */}
-      <div className="relative w-full max-w-2xl bg-canvas border border-border rounded-card shadow-2xl overflow-hidden z-10 animate-in fade-in zoom-in-95 duration-200">
+      <div className="relative w-full max-w-2xl bg-canvas border border-border rounded-card shadow-2xl overflow-hidden z-10 animate-in fade-in zoom-in-95 duration-200 font-sans">
         {/* Header */}
-        <div className="px-6 py-4 border-b border-border bg-surface flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Package size={18} className="text-primary" />
-            <div>
-              <span className="text-[10px] font-mono text-muted uppercase tracking-wider block">
-                Live Consignment Tracking
-              </span>
-              <span className="text-sm font-bold font-mono text-primary">
-                {order.id}
-              </span>
-            </div>
+        <div className="px-5 sm:px-6 py-4 border-b border-border bg-surface flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <Package size={18} weight="bold" className="text-primary" />
+            <span className="text-sm font-bold text-primary tracking-tight">
+              {order.id}
+            </span>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-input text-muted hover:text-primary hover:bg-canvas transition-colors"
+            className="p-1.5 rounded-input text-muted hover:text-primary hover:bg-canvas transition-colors cursor-pointer"
             aria-label="Close tracking"
           >
-            <X size={18} />
+            <X size={18} weight="bold" />
           </button>
         </div>
 
-        {/* Shopee/SHEIN Active Connection Card */}
-        <div className="p-6 bg-canvas border-b border-border">
+        {/* Active Connection Card */}
+        <div className="p-4 sm:p-6 bg-canvas border-b border-border">
           <div className="p-4 bg-surface border border-border rounded-card flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <div className="flex items-center gap-2">
-                <span className="relative flex h-2.5 w-2.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
-                </span>
-                <span className="text-xs font-bold uppercase tracking-wider text-primary">
-                  {tracking.currentHeadline}
-                </span>
-              </div>
-              <div className="mt-1 flex items-start gap-1.5 text-xs text-muted">
-                <MapPin size={14} className="text-[#C43C30] shrink-0 mt-0.5" />
-                <span className="font-medium text-primary/90">
+              <span className="text-xs font-bold uppercase tracking-wider text-primary block">
+                {tracking.currentHeadline}
+              </span>
+              <div className="mt-1.5 flex items-start gap-1.5 text-xs text-muted">
+                <MapPin size={14} weight="bold" className="text-[#C43C30] shrink-0 mt-0.5" />
+                <span className="font-semibold text-primary">
                   {tracking.currentLocation}
                 </span>
               </div>
-              <p className="text-[11px] text-muted mt-1 leading-relaxed">
+              <p className="text-xs text-muted font-medium mt-1 leading-relaxed">
                 {tracking.currentDetail}
               </p>
             </div>
 
             <div className="shrink-0 pt-2 sm:pt-0 sm:border-l sm:border-border sm:pl-4 sm:text-right">
-              <span className="text-[10px] font-mono uppercase text-muted tracking-wider block">
+              <span className="text-[11px] font-bold uppercase text-muted tracking-wider block">
                 Estimated Delivery
               </span>
-              <span className="text-xs font-bold text-primary font-mono block mt-0.5">
+              <span className="text-xs font-bold text-primary block mt-0.5">
                 {tracking.estimatedDelivery}
               </span>
             </div>
@@ -91,56 +80,56 @@ export default function ConsignmentTrackingModal({ order, isOpen, onClose }) {
           {/* Courier & Tracking Code Pill */}
           <div className="mt-4 flex flex-wrap items-center justify-between gap-3 text-xs bg-surface/50 border border-border/80 px-4 py-2.5 rounded-input">
             <div className="flex items-center gap-2">
-              <Truck size={16} className="text-primary" />
-              <span className="font-semibold text-primary">{tracking.courier}</span>
+              <Truck size={16} weight="bold" className="text-primary" />
+              <span className="font-bold text-primary">{tracking.courier}</span>
             </div>
 
-            <div className="flex items-center gap-2 font-mono text-[11px]">
-              <span className="text-muted">Tracking No:</span>
-              <span className="font-bold text-primary">{tracking.trackingNumber}</span>
+            <div className="flex items-center gap-2 text-xs">
+              <span className="text-muted font-medium">Tracking No:</span>
+              <span className="font-bold text-primary tabular-nums">{tracking.trackingNumber}</span>
               <button
                 type="button"
                 onClick={handleCopy}
-                className="p-1 hover:text-[#C43C30] transition-colors"
+                className="p-1 hover:text-[#C43C30] transition-colors cursor-pointer"
                 title="Copy tracking number"
               >
-                {copied ? <Check size={13} className="text-emerald-500" /> : <Copy size={13} />}
+                {copied ? <Check size={13} weight="bold" className="text-emerald-600" /> : <Copy size={13} weight="bold" />}
               </button>
             </div>
           </div>
 
-          {/* Shopee/SHEIN 5-Stage Stepper Progress Bar */}
+          {/* 5-Stage Stepper Progress Bar */}
           <div className="mt-6 pt-2">
             <div className="relative">
-              {/* Connected Background Track */}
-              <div className="absolute top-4 left-0 right-0 h-0.5 bg-border -translate-y-1/2 z-0" />
-              {/* Active Filled Progress Line */}
-              <div
-                className="absolute top-4 left-0 h-0.5 bg-primary -translate-y-1/2 transition-all duration-500 z-0"
-                style={{
-                  width: `${Math.max(0, Math.min(100, (currentStepIndex / (statusHierarchy.length - 1)) * 100))}%`
-                }}
-              />
+              {/* Track spanning strictly from center of Step 1 (10%) to center of Step 5 (90%) */}
+              <div className="absolute top-4 left-[10%] right-[10%] h-0.5 bg-border -translate-y-1/2 z-0">
+                <div
+                  className="h-full bg-primary transition-all duration-500"
+                  style={{
+                    width: `${Math.max(0, Math.min(100, (currentStepIndex / (statusHierarchy.length - 1)) * 100))}%`
+                  }}
+                />
+              </div>
 
-              <div className="relative flex justify-between z-10">
+              <div className="relative grid grid-cols-5 z-10">
                 {TRACKING_STEPS.map((step, idx) => {
                   const isDone = idx <= currentStepIndex;
                   const isCurrent = idx === currentStepIndex;
 
                   return (
-                    <div key={step.key} className="flex flex-col items-center text-center max-w-[80px]">
+                    <div key={step.key} className="flex flex-col items-center text-center px-1">
                       <div
-                        className={`w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all ${
+                        className={`w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all text-xs font-bold ${
                           isDone
                             ? 'bg-primary border-primary text-canvas'
                             : 'bg-canvas border-border text-muted/60'
-                        } ${isCurrent ? 'ring-4 ring-primary/20 scale-110 font-bold' : ''}`}
+                        } ${isCurrent ? 'ring-4 ring-primary/20 scale-110' : ''}`}
                       >
                         {isDone ? <CheckCircle size={15} weight="bold" /> : idx + 1}
                       </div>
                       <span
-                        className={`text-[10px] font-mono mt-2 leading-tight uppercase tracking-wider ${
-                          isDone ? 'font-bold text-primary' : 'text-muted/60'
+                        className={`text-[10px] sm:text-[11px] mt-2 leading-tight uppercase tracking-wider ${
+                          isDone ? 'font-bold text-primary' : 'font-semibold text-muted/60'
                         }`}
                       >
                         {step.label}
@@ -153,9 +142,9 @@ export default function ConsignmentTrackingModal({ order, isOpen, onClose }) {
           </div>
         </div>
 
-        {/* Detailed Vertical Milestone Timeline (Shopee / SHEIN Style) */}
-        <div className="p-6 max-h-[300px] overflow-y-auto">
-          <span className="text-[11px] font-mono uppercase tracking-widest text-muted block mb-4">
+        {/* Detailed Vertical Milestone Timeline */}
+        <div className="p-4 sm:p-6 max-h-[300px] overflow-y-auto">
+          <span className="text-xs font-bold uppercase tracking-wider text-muted block mb-4">
             Consignment Journey Logs
           </span>
 
@@ -175,14 +164,14 @@ export default function ConsignmentTrackingModal({ order, isOpen, onClose }) {
                   <div
                     className={`w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0 ${
                       entry.isCurrent
-                        ? 'bg-emerald-500 border-emerald-500 text-white shadow-[0_0_12px_rgba(16,185,129,0.5)]'
+                        ? 'bg-emerald-600 border-emerald-600 text-white'
                         : 'bg-canvas border-border text-muted/60'
                     }`}
                   >
                     {entry.isCurrent ? (
                       <span className="w-2 h-2 rounded-full bg-white" />
                     ) : (
-                      <Clock size={12} />
+                      <Clock size={12} weight="bold" />
                     )}
                   </div>
 
@@ -195,14 +184,14 @@ export default function ConsignmentTrackingModal({ order, isOpen, onClose }) {
                       >
                         {entry.title}
                       </h4>
-                      <span className="text-[10px] font-mono text-muted/80">
+                      <span className="text-[11px] font-semibold text-muted tabular-nums">
                         {formattedDate} · {formattedTime}
                       </span>
                     </div>
-                    <p className="text-[11px] font-mono text-primary/80 mt-0.5">
-                      📍 {entry.location}
+                    <p className="text-xs font-semibold text-primary/90 mt-0.5">
+                      {entry.location}
                     </p>
-                    <p className="text-xs text-muted mt-1 leading-relaxed">
+                    <p className="text-xs text-muted font-medium mt-1 leading-relaxed">
                       {entry.description}
                     </p>
                   </div>
@@ -213,13 +202,13 @@ export default function ConsignmentTrackingModal({ order, isOpen, onClose }) {
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-4 bg-surface border-t border-border flex items-center justify-between text-xs">
-          <div className="text-muted">
-            Destination: <span className="text-primary font-medium">{order.shipping_address}</span>
+        <div className="px-5 sm:px-6 py-4 bg-surface border-t border-border flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+          <div className="text-muted font-medium">
+            Destination: <span className="text-primary font-semibold">{order.shipping_address}</span>
           </div>
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-primary text-canvas text-xs font-semibold uppercase tracking-wider rounded-tight hover:opacity-90 transition-opacity"
+            className="px-4 py-2 bg-primary text-canvas text-xs font-semibold uppercase tracking-wider rounded-tight hover:opacity-90 transition-opacity cursor-pointer self-end sm:self-auto"
           >
             Close
           </button>

@@ -19,6 +19,7 @@ export default function CartDrawer() {
     appliedCoupon,
     applyCouponCode,
     removeCouponCode,
+    coupons,
     cartTotalCount,
     products,
     currentUser
@@ -263,6 +264,34 @@ export default function CartDrawer() {
                     </div>
                     {couponError && <p className="text-[10px] text-danger">{couponError}</p>}
                     {couponSuccess && <p className="text-[10px] text-success">{couponSuccess}</p>}
+                    {coupons?.length > 0 && (
+                      <div className="pt-1.5">
+                        <span className="text-[10px] uppercase tracking-wider text-muted font-semibold block mb-1.5">
+                          Available Vouchers
+                        </span>
+                        <div className="flex flex-wrap gap-1.5">
+                          {coupons.map(c => (
+                            <button
+                              key={c.code}
+                              type="button"
+                              onClick={() => {
+                                setCouponError('');
+                                setCouponSuccess('');
+                                const res = applyCouponCode(c.code);
+                                if (res.success) setCouponSuccess(res.message);
+                                else setCouponError(res.message);
+                              }}
+                              className="inline-flex items-center gap-1.5 px-2 py-1 bg-canvas border border-border hover:border-primary rounded-tight text-[10px] font-semibold text-primary transition-colors cursor-pointer"
+                              title={c.label}
+                            >
+                              <Tag size={10} weight="bold" className="text-[#C43C30]" />
+                              <span>{c.code}</span>
+                              <span className="text-muted">({c.discountPercent}%)</span>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </form>
                 )}
               </div>
@@ -318,12 +347,6 @@ export default function CartDrawer() {
                   <span>Proceed to Checkout</span>
                   <ArrowRight size={14} />
                 </Link>
-              )}
-
-              {!currentUser && (
-                <p className="text-[10px] text-center text-muted font-mono uppercase tracking-wider pt-1">
-                  Client sign in required to place consignment
-                </p>
               )}
 
               <p className="text-[11px] text-center text-muted">

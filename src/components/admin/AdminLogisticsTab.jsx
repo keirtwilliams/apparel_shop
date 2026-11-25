@@ -1,9 +1,9 @@
 import React, { useState, useMemo } from 'react';
 import {
   Truck, MapPin, Package, Clock, CheckCircle, ArrowRight,
-  Eye, Broadcast, ArrowsClockwise
+  Eye, ArrowsClockwise
 } from '@phosphor-icons/react';
-import { getOrderTrackingMeta, TRACKING_STEPS, COURIERS } from '../../lib/tracking';
+import { getOrderTrackingMeta, TRACKING_STEPS } from '../../lib/tracking';
 import { formatCurrency } from '../../lib/pricing';
 
 export default function AdminLogisticsTab({
@@ -52,36 +52,27 @@ export default function AdminLogisticsTab({
   };
 
   return (
-    <div className="space-y-6">
-      {/* Header Info */}
-      <div className="p-5 bg-canvas border border-border rounded-card">
+    <div className="space-y-6 font-sans">
+      {/* 1. DISPATCH CONTROL HEADER & COURIER SELECTOR */}
+      <div className="p-6 bg-surface border border-border rounded-card shadow-2xs">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <div className="flex items-center gap-2">
-              <span className="relative flex h-2.5 w-2.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
-              </span>
-              <span className="text-xs uppercase font-mono tracking-widest text-primary font-bold">
-                Shopee / SHEIN Live Logistics Engine
-              </span>
-            </div>
-            <h2 className="text-xl font-bold text-primary mt-1">
+            <h2 className="text-xl font-bold text-primary tracking-tight uppercase">
               Consignment Dispatch & Hub Network
             </h2>
             <p className="text-xs text-muted mt-0.5">
-              Admin-driven 5-stage fulfillment pipeline with deterministic courier routing across Metro Manila hubs.
+              Deterministic courier routing across Metro Manila sorting hubs with real-time consignment milestone progression.
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
-            <span className="text-xs font-mono text-muted">Courier Fleet:</span>
+          <div className="flex items-center gap-2.5">
+            <span className="text-xs font-semibold text-muted uppercase tracking-wider shrink-0">Fleet:</span>
             <select
               value={courierFilter}
               onChange={(e) => setCourierFilter(e.target.value)}
-              className="bg-surface border border-border rounded-input px-3 py-1.5 text-xs text-primary font-medium focus:outline-none focus:border-primary cursor-pointer"
+              className="h-10 bg-canvas border border-border rounded-tight px-3.5 text-xs text-primary font-medium focus:outline-none focus:border-primary cursor-pointer shadow-2xs"
             >
-              <option value="All">All Couriers (J&T, Flash, NinjaVan)</option>
+              <option value="All">All Fleets (J&T, Flash, NinjaVan)</option>
               <option value="J&T">J&T Express PH</option>
               <option value="Flash">Flash Express</option>
               <option value="NinjaVan">NinjaVan PH</option>
@@ -90,40 +81,38 @@ export default function AdminLogisticsTab({
         </div>
       </div>
 
-      {/* 5-STAGE PIPELINE CARDS */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
-        {TRACKING_STEPS.map((step, idx) => {
+      {/* 2. 5-STAGE PIPELINE CARDS */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
+        {TRACKING_STEPS.map((step) => {
           const count = stageCounts[step.key] || 0;
           const isFinal = step.key === 'delivered';
           return (
             <div
               key={step.key}
-              className={`p-4 rounded-card border flex flex-col justify-between gap-3 ${
-                isFinal ? 'bg-success-light/20 border-success/30' : 'bg-canvas border-border'
-              }`}
+              className="p-4 rounded-card border bg-surface border-border transition-all flex flex-col justify-between gap-3 shadow-2xs"
             >
               <div>
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-mono text-muted uppercase font-bold">
+                  <span className="text-xs text-muted uppercase font-bold tracking-wider">
                     Stage 0{step.stepNumber}
                   </span>
                   {isFinal ? (
-                    <CheckCircle size={15} className="text-success" weight="bold" />
+                    <CheckCircle size={15} className="text-emerald-600" weight="bold" />
                   ) : (
                     <Clock size={15} className="text-muted" />
                   )}
                 </div>
-                <h4 className="text-xs font-bold text-primary mt-1">
+                <h4 className="text-xs font-bold text-primary mt-1 tracking-tight">
                   {step.label}
                 </h4>
               </div>
 
               <div>
-                <span className="text-2xl font-bold font-mono text-primary tabular-nums">
+                <span className="text-2xl font-bold text-primary tabular-nums">
                   {count}
                 </span>
-                <span className="text-[10px] text-muted block mt-0.5">
-                  {isFinal ? 'Completed consignments' : 'Parcels currently queued'}
+                <span className="text-xs text-muted block mt-0.5 font-medium">
+                  {isFinal ? 'Completed deliveries' : 'Parcels currently queued'}
                 </span>
               </div>
             </div>
@@ -131,28 +120,22 @@ export default function AdminLogisticsTab({
         })}
       </div>
 
-      {/* ACTIVE DISPATCH QUEUE */}
-      <div className="bg-canvas border border-border rounded-card p-5">
-        <div className="flex items-center justify-between pb-4 border-b border-border">
+      {/* 3. ACTIVE DISPATCH QUEUE */}
+      <div className="bg-surface border border-border rounded-card p-6 shadow-2xs">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-border gap-2">
           <div>
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-primary">
+            <h3 className="text-sm font-bold uppercase tracking-wider text-primary">
               Active Dispatch Queue ({filteredActiveOrders.length} Parcels In Pipeline)
             </h3>
-            <p className="text-xs text-muted mt-0.5">
-              Advance consignments from one hub to the next with 1-click execution.
-            </p>
           </div>
-          <span className="text-[11px] font-mono text-muted bg-surface px-2.5 py-1 rounded border border-border">
-            Real-Time Courier Sync Active
-          </span>
         </div>
 
         {filteredActiveOrders.length === 0 ? (
-          <div className="py-12 text-center text-muted text-xs">
-            All current orders have reached final delivery or no active shipments in this courier filter.
+          <div className="py-16 text-center text-muted text-xs">
+            All current consignments have reached final delivery or no active shipments match the selected fleet filter.
           </div>
         ) : (
-          <div className="divide-y divide-border mt-2">
+          <div className="divide-y divide-border mt-1">
             {filteredActiveOrders.map(order => {
               const meta = getOrderTrackingMeta(order);
               const action = nextStepMap[order.status];
@@ -160,37 +143,37 @@ export default function AdminLogisticsTab({
               return (
                 <div
                   key={order.id}
-                  className="py-4 flex flex-col lg:flex-row lg:items-center justify-between gap-4 hover:bg-surface/40 px-2 rounded-input transition-colors"
+                  className="py-4.5 flex flex-col lg:flex-row lg:items-center justify-between gap-4 hover:bg-canvas/50 px-2 rounded-tight transition-colors"
                 >
                   {/* Order & Recipient Info */}
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2">
+                  <div className="space-y-1.5 min-w-0">
+                    <div className="flex flex-wrap items-center gap-2">
                       <button
                         type="button"
                         onClick={() => onOpenTrackingModal(order)}
-                        className="font-mono font-bold text-xs text-primary hover:text-[#C43C30] hover:underline flex items-center gap-1"
+                        className="font-bold text-xs text-primary hover:text-[#C43C30] hover:underline flex items-center gap-1 cursor-pointer"
                         title="Open live tracking preview"
                       >
                         <span>{order.id}</span>
-                        <Eye size={12} className="text-muted" />
+                        <Eye size={13} className="text-muted" />
                       </button>
                       <span className="text-muted text-xs">·</span>
                       <span className="text-xs text-primary font-medium">{order.customer_name}</span>
                       <span className="text-muted text-xs">·</span>
-                      <span className="text-xs font-mono font-bold text-primary">
+                      <span className="text-xs font-bold text-primary tabular-nums">
                         {formatCurrency(order.total_amount)}
                       </span>
                     </div>
 
-                    <div className="flex items-center gap-2 text-[11px] text-muted">
-                      <MapPin size={12} className="text-[#C43C30] shrink-0" />
-                      <span className="truncate max-w-md">
+                    <div className="flex items-center gap-2 text-xs text-muted font-medium">
+                      <MapPin size={13} className="text-[#C43C30] shrink-0" />
+                      <span className="truncate max-w-lg">
                         {order.shipping_address}
                       </span>
                     </div>
 
-                    <div className="flex items-center gap-2 text-[11px] font-mono text-muted pt-0.5">
-                      <Truck size={12} className="text-primary" />
+                    <div className="flex items-center gap-2 text-xs text-muted pt-0.5 font-medium">
+                      <Truck size={13} className="text-primary shrink-0" />
                       <span className="font-semibold text-primary">{meta.courier}</span>
                       <span>·</span>
                       <span className="text-primary/80">{meta.trackingNumber}</span>
@@ -199,14 +182,14 @@ export default function AdminLogisticsTab({
 
                   {/* Current Hub Beacon & Stage Advancer */}
                   <div className="flex flex-col sm:flex-row sm:items-center gap-3 shrink-0">
-                    <div className="bg-surface border border-border px-3 py-2 rounded-input text-left sm:text-right">
-                      <span className="text-[10px] font-mono uppercase text-muted block">
+                    <div className="bg-canvas border border-border px-3.5 py-2 rounded-tight text-left sm:text-right">
+                      <span className="text-xs uppercase text-muted block font-semibold">
                         Current Hub Connection
                       </span>
-                      <span className="text-xs font-bold text-primary block truncate max-w-[240px]">
+                      <span className="text-xs font-bold text-primary block truncate max-w-[220px]">
                         {meta.currentLocation}
                       </span>
-                      <span className="text-[10px] text-muted block capitalize">
+                      <span className="text-xs text-muted block capitalize mt-0.5 font-medium">
                         Status: {order.status.replace(/_/g, ' ')}
                       </span>
                     </div>
@@ -216,7 +199,7 @@ export default function AdminLogisticsTab({
                         <button
                           type="button"
                           onClick={() => updateOrderStatus(order.id, action.next)}
-                          className="px-3.5 py-2 bg-primary text-canvas rounded text-xs font-mono font-bold uppercase tracking-wider hover:opacity-90 transition-opacity shadow-xs"
+                          className="h-9 px-4 bg-primary text-canvas rounded-tight text-xs font-bold uppercase tracking-wider hover:opacity-90 active:scale-95 transition-all shadow-2xs cursor-pointer"
                           title={`Advance parcel to ${action.nextLocation}`}
                         >
                           {action.label}
@@ -226,10 +209,10 @@ export default function AdminLogisticsTab({
                       <button
                         type="button"
                         onClick={() => onOpenTrackingModal(order)}
-                        className="px-3 py-2 bg-surface hover:bg-canvas border border-border rounded text-xs font-medium text-primary transition-colors flex items-center gap-1.5"
+                        className="h-9 px-3 bg-canvas hover:bg-surface border border-border rounded-tight text-xs font-medium text-primary transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs"
                       >
-                        <Eye size={13} />
-                        <span>Live Modal</span>
+                        <Eye size={14} />
+                        <span>Tracking</span>
                       </button>
                     </div>
                   </div>
