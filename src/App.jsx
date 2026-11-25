@@ -12,6 +12,8 @@ import ProductDetailPage from './pages/ProductDetailPage';
 import CheckoutPage from './pages/CheckoutPage';
 import ReceiptPage from './pages/ReceiptPage';
 import AccountOrdersPage from './pages/AccountOrdersPage';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
 import NotFoundPage from './pages/NotFoundPage';
 
 // Security & Protected Admin Components
@@ -111,6 +113,10 @@ function App() {
               <Route path="/checkout" element={<CheckoutPage />} />
               <Route path="/receipt/:orderId" element={<ReceiptPage />} />
               <Route path="/orders" element={<AccountOrdersPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/signin" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/signup" element={<RegisterPage />} />
               {/* Honeypot / Disguised route: standard /admin leads to 404 */}
               <Route path="/admin" element={<NotFoundPage />} />
               <Route path="*" element={<NotFoundPage />} />

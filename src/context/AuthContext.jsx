@@ -17,28 +17,31 @@ export const AuthProvider = ({ children }) => {
         .from('profiles')
         .select('*')
         .eq('id', userId)
-        .single();
-
-      if (error && error.code === 'PGRST116') {
-        // Profile doesn't exist yet: create default customer profile
-        const newProfile = {
-          id: userId,
-          email: userEmail,
-          full_name: userEmail.split('@')[0],
-          role: 'customer',
-          created_at: new Date().toISOString()
-        };
-        const { data: inserted } = await supabase
-          .from('profiles')
-          .insert(newProfile)
-          .select()
-          .single();
-        return inserted || newProfile;
-      }
+        .maybeSingle();
 
       if (!error && data) {
         return data;
       }
+
+      // Check localStorage for account profile created during registration
+      const savedUser = localStorage.getItem('purgatory_current_user');
+      if (savedUser) {
+        try {
+          const parsed = JSON.parse(savedUser);
+          if (parsed && (parsed.id === userId || parsed.email?.toLowerCase() === userEmail?.toLowerCase())) {
+            return parsed;
+          }
+        } catch (e) { /* ignore */ }
+      }
+
+      // Graceful fallback profile in state/memory
+      return {
+        id: userId,
+        email: userEmail,
+        full_name: userEmail ? userEmail.split('@')[0] : 'Client',
+        role: 'customer',
+        created_at: new Date().toISOString()
+      };
     } catch (err) {
       console.warn('Error fetching Supabase profile:', err);
     }

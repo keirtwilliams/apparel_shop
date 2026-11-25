@@ -109,11 +109,10 @@ export default function ProductDetailPage() {
                   key={idx}
                   type="button"
                   onClick={() => setActiveImage(img)}
-                  className={`relative w-16 sm:w-20 aspect-square sm:aspect-[4/5] rounded-input overflow-hidden border p-1 bg-surface transition-all ${
-                    (activeImage || product.images[0]) === img
+                  className={`relative w-16 sm:w-20 aspect-square sm:aspect-[4/5] rounded-input overflow-hidden border p-1 bg-surface transition-all ${(activeImage || product.images[0]) === img
                       ? 'border-primary ring-2 ring-primary/40 scale-[1.02]'
                       : 'border-border opacity-70 hover:opacity-100'
-                  }`}
+                    }`}
                   aria-label={`View photo ${idx + 1}`}
                 >
                   <img
@@ -156,233 +155,233 @@ export default function ProductDetailPage() {
               {product.name}
             </h1>
 
-              {/* Price & Savings Display */}
-              <div className="mt-3 flex flex-wrap items-baseline gap-3">
-                {(() => {
-                  const { currentPrice, originalPrice, isOnSale, discountPercent } = calculateEffectiveProductPrice(product, saleConfig);
-                  return (
-                    <>
-                      <span className={`text-xl sm:text-2xl font-semibold tabular-nums ${isOnSale ? 'text-[#C43C30]' : 'text-primary'}`}>
-                        {formatCurrency(currentPrice)}
-                      </span>
-                      {isOnSale && (
-                        <>
-                          <span className="text-sm text-muted/60 line-through tabular-nums">
-                            {formatCurrency(originalPrice)}
-                          </span>
-                          <span className="bg-[#0C0C0B] text-[#FAF9F7] text-[10px] font-sans font-bold tracking-wider px-2 py-0.5 rounded-tight">
-                            SAVE {discountPercent}%
-                          </span>
-                        </>
-                      )}
-                      <span className="text-xs text-muted">Taxes included</span>
-                    </>
-                  );
-                })()}
-              </div>
-
-              {/* Evocative Garment Description */}
-              <p className="mt-4 text-xs sm:text-sm text-muted leading-relaxed">
-                {product.description}
-              </p>
+            {/* Price & Savings Display */}
+            <div className="mt-3 flex flex-wrap items-baseline gap-3">
+              {(() => {
+                const { currentPrice, originalPrice, isOnSale, discountPercent } = calculateEffectiveProductPrice(product, saleConfig);
+                return (
+                  <>
+                    <span className={`text-xl sm:text-2xl font-semibold tabular-nums ${isOnSale ? 'text-[#C43C30]' : 'text-primary'}`}>
+                      {formatCurrency(currentPrice)}
+                    </span>
+                    {isOnSale && (
+                      <>
+                        <span className="text-sm text-muted/60 line-through tabular-nums">
+                          {formatCurrency(originalPrice)}
+                        </span>
+                        <span className="bg-[#0C0C0B] text-[#FAF9F7] text-[10px] font-sans font-bold tracking-wider px-2 py-0.5 rounded-tight">
+                          SAVE {discountPercent}%
+                        </span>
+                      </>
+                    )}
+                    <span className="text-xs text-muted">Taxes included</span>
+                  </>
+                );
+              })()}
             </div>
 
-            {/* Color Selection */}
-            <div className="py-5 border-b border-border">
-              <div className="flex items-center justify-between text-xs mb-3">
-                <span className="text-muted">Color Palette:</span>
-                <span className="font-medium text-primary">{selectedColor}</span>
-              </div>
-              <div className="flex items-center gap-2.5">
-                {colorList.map(color => {
-                  const isSelected = selectedColor === color.name;
-                  return (
-                    <button
-                      key={color.name}
-                      type="button"
-                      onClick={() => setSelectedColor(color.name)}
-                      className={`w-7 h-7 rounded-full border border-border flex items-center justify-center transition-all ${isSelected
-                        ? 'scale-110 ring-2 ring-primary ring-offset-2 ring-offset-canvas'
-                        : 'hover:scale-105 opacity-80'
-                        }`}
-                      style={{ backgroundColor: color.hex }}
-                      title={color.name}
-                      aria-label={`Select color ${color.name}`}
-                    >
-                      {isSelected && (
-                        <Check
-                          size={12}
-                          weight="bold"
-                          className={color.hex === '#DDD9D1' || color.hex === '#E8E4DA' || color.hex === '#CBC7BD' ? 'text-primary' : 'text-canvas'}
-                        />
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
+            {/* Evocative Garment Description */}
+            <p className="mt-4 text-xs sm:text-sm text-muted leading-relaxed">
+              {product.description}
+            </p>
+          </div>
+
+          {/* Color Selection */}
+          <div className="py-5 border-b border-border">
+            <div className="flex items-center justify-between text-xs mb-3">
+              <span className="text-muted">Color Palette:</span>
+              <span className="font-medium text-primary">{selectedColor}</span>
+            </div>
+            <div className="flex items-center gap-2.5">
+              {colorList.map(color => {
+                const isSelected = selectedColor === color.name;
+                return (
+                  <button
+                    key={color.name}
+                    type="button"
+                    onClick={() => setSelectedColor(color.name)}
+                    className={`w-7 h-7 rounded-full border border-border flex items-center justify-center transition-all ${isSelected
+                      ? 'scale-110 ring-2 ring-primary ring-offset-2 ring-offset-canvas'
+                      : 'hover:scale-105 opacity-80'
+                      }`}
+                    style={{ backgroundColor: color.hex }}
+                    title={color.name}
+                    aria-label={`Select color ${color.name}`}
+                  >
+                    {isSelected && (
+                      <Check
+                        size={12}
+                        weight="bold"
+                        className={color.hex === '#DDD9D1' || color.hex === '#E8E4DA' || color.hex === '#CBC7BD' ? 'text-primary' : 'text-canvas'}
+                      />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Fit-First Size Selector */}
+          <div className="py-5 border-b border-border">
+            {/* 1-Line Fit Tag */}
+            <div className="mb-3 p-2.5 bg-surface rounded-input border border-border text-xs text-primary leading-snug">
+              <span className="font-semibold">Fit Note: </span>
+              {product.fit_note}
             </div>
 
-            {/* Fit-First Size Selector */}
-            <div className="py-5 border-b border-border">
-              {/* 1-Line Fit Tag */}
-              <div className="mb-3 p-2.5 bg-surface rounded-input border border-border text-xs text-primary leading-snug">
-                <span className="font-semibold">Fit Note: </span>
-                {product.fit_note}
-              </div>
-
-              {/* Size Header with 1-Click Size Chart Modal Trigger */}
-              <div className="flex items-center justify-between text-xs mb-3">
-                <span className="text-muted">Select Garment Size:</span>
-                <button
-                  type="button"
-                  onClick={() => setIsSizeChartOpen(true)}
-                  className="text-xs font-medium text-primary hover:text-muted flex items-center gap-1 transition-colors min-h-[36px]"
-                >
-                  <Ruler size={14} />
-                  <span>Size & Fit Guide</span>
-                </button>
-              </div>
-
-              {/* Clickable S / M / L / XL size pills (auto-disabled when stock_count === 0) */}
-              <div className="grid grid-cols-4 gap-2">
-                {availableSizes.map(size => {
-                  const variantForSize = product.variants?.find(
-                    v => v.color_name === selectedColor && v.size === size
-                  );
-                  const stock = variantForSize ? variantForSize.stock_count : 0;
-                  const isSoldOut = stock === 0;
-                  const isSelected = selectedSize === size;
-
-                  return (
-                    <button
-                      key={size}
-                      type="button"
-                      disabled={isSoldOut}
-                      onClick={() => setSelectedSize(size)}
-                      className={`relative py-3 rounded-input text-xs font-semibold tracking-wider uppercase border transition-all min-h-[44px] flex flex-col items-center justify-center ${isSoldOut
-                        ? 'bg-surface text-muted/40 border-border cursor-not-allowed line-through opacity-60'
-                        : isSelected
-                          ? 'bg-primary text-canvas border-primary shadow-xs'
-                          : 'bg-canvas text-primary border-border hover:border-primary hover:bg-surface'
-                        }`}
-                      title={isSoldOut ? 'Sold out in this size' : `Size ${size} (${stock} available)`}
-                    >
-                      <span>{size}</span>
-                    </button>
-                  );
-                })}
-              </div>
-
-              {/* Real-time Inventory Alert */}
-              <div className="mt-3 min-h-[20px] text-xs">
-                {isOutOfStock ? (
-                  <span className="text-danger font-medium flex items-center gap-1">
-                    ● Currently sold out in {selectedColor} ({selectedSize})
-                  </span>
-                ) : isLowStock ? (
-                  <span className="text-danger font-medium flex items-center gap-1">
-                    ● Only {currentVariant.stock_count} remaining in stock — order soon
-                  </span>
-                ) : (
-                  <span className="text-success font-medium flex items-center gap-1">
-                    ● In stock and ready to dispatch
-                  </span>
-                )}
-              </div>
-            </div>
-
-            {/* Desktop Add to Cart CTA */}
-            <div className="py-6 border-b border-border hidden md:block">
+            {/* Size Header with 1-Click Size Chart Modal Trigger */}
+            <div className="flex items-center justify-between text-xs mb-3">
+              <span className="text-muted">Select Garment Size:</span>
               <button
                 type="button"
-                onClick={handleAddToCart}
-                disabled={isOutOfStock || isAdding}
-                className={`w-full py-3.5 px-6 rounded-tight text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2 transition-all min-h-[48px] ${isOutOfStock
-                  ? 'bg-surface text-muted cursor-not-allowed border border-border'
-                  : 'bg-primary text-canvas hover:opacity-90 active:scale-[0.99]'
-                  }`}
+                onClick={() => setIsSizeChartOpen(true)}
+                className="text-xs font-medium text-primary hover:text-muted flex items-center gap-1 transition-colors min-h-[36px]"
               >
-                <Bag size={18} />
-                <span>
-                  {isOutOfStock
-                    ? 'Sold Out'
-                    : isAdding
-                      ? 'Added to Shopping Bag ✓'
-                      : `Add to Bag — $${Number(product.price).toFixed(2)}`}
-                </span>
+                <Ruler size={14} />
+                <span>Size & Fit Guide</span>
               </button>
             </div>
 
-            {/* 3 Upfront Specs Accordions (Material, Fit, Care) */}
-            <div className="divide-y divide-border pt-2 text-xs">
-              {/* 1. Material */}
-              <div className="py-3.5">
-                <button
-                  type="button"
-                  onClick={() => toggleSpec('material')}
-                  className="w-full flex items-center justify-between text-left font-semibold text-primary min-h-[36px]"
-                >
-                  <span>Material & Construction</span>
-                  {openSpecs.material ? <CaretUp size={14} /> : <CaretDown size={14} />}
-                </button>
-                {openSpecs.material && (
-                  <p className="mt-2 text-muted leading-relaxed">
-                    {product.material}
-                  </p>
-                )}
-              </div>
+            {/* Clickable S / M / L / XL size pills (auto-disabled when stock_count === 0) */}
+            <div className="grid grid-cols-4 gap-2">
+              {availableSizes.map(size => {
+                const variantForSize = product.variants?.find(
+                  v => v.color_name === selectedColor && v.size === size
+                );
+                const stock = variantForSize ? variantForSize.stock_count : 0;
+                const isSoldOut = stock === 0;
+                const isSelected = selectedSize === size;
 
-              {/* 2. Fit Specs */}
-              <div className="py-3.5">
-                <button
-                  type="button"
-                  onClick={() => toggleSpec('fit')}
-                  className="w-full flex items-center justify-between text-left font-semibold text-primary min-h-[36px]"
-                >
-                  <span>Silhouette & Drape</span>
-                  {openSpecs.fit ? <CaretUp size={14} /> : <CaretDown size={14} />}
-                </button>
-                {openSpecs.fit && (
-                  <p className="mt-2 text-muted leading-relaxed">
-                    {product.fit_note}
-                  </p>
-                )}
-              </div>
+                return (
+                  <button
+                    key={size}
+                    type="button"
+                    disabled={isSoldOut}
+                    onClick={() => setSelectedSize(size)}
+                    className={`relative py-3 rounded-input text-xs font-semibold tracking-wider uppercase border transition-all min-h-[44px] flex flex-col items-center justify-center ${isSoldOut
+                      ? 'bg-surface text-muted/40 border-border cursor-not-allowed line-through opacity-60'
+                      : isSelected
+                        ? 'bg-primary text-canvas border-primary shadow-xs'
+                        : 'bg-canvas text-primary border-border hover:border-primary hover:bg-surface'
+                      }`}
+                    title={isSoldOut ? 'Sold out in this size' : `Size ${size} (${stock} available)`}
+                  >
+                    <span>{size}</span>
+                  </button>
+                );
+              })}
+            </div>
 
-              {/* 3. Care Specs */}
-              <div className="py-3.5">
-                <button
-                  type="button"
-                  onClick={() => toggleSpec('care')}
-                  className="w-full flex items-center justify-between text-left font-semibold text-primary min-h-[36px]"
-                >
-                  <span>Garment Care</span>
-                  {openSpecs.care ? <CaretUp size={14} /> : <CaretDown size={14} />}
-                </button>
-                {openSpecs.care && (
-                  <p className="mt-2 text-muted leading-relaxed">
-                    {product.care}
-                  </p>
-                )}
-              </div>
+            {/* Real-time Inventory Alert */}
+            <div className="mt-3 min-h-[20px] text-xs">
+              {isOutOfStock ? (
+                <span className="text-danger font-medium flex items-center gap-1">
+                  ● Currently sold out in {selectedColor} ({selectedSize})
+                </span>
+              ) : isLowStock ? (
+                <span className="text-danger font-medium flex items-center gap-1">
+                  ● Only {currentVariant.stock_count} remaining in stock — order soon
+                </span>
+              ) : (
+                <span className="text-success font-medium flex items-center gap-1">
+                  ● In stock and ready to dispatch
+                </span>
+              )}
+            </div>
+          </div>
+
+          {/* Desktop Add to Cart CTA */}
+          <div className="py-6 border-b border-border hidden md:block">
+            <button
+              type="button"
+              onClick={handleAddToCart}
+              disabled={isOutOfStock || isAdding}
+              className={`w-full py-3.5 px-6 rounded-tight text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2 transition-all min-h-[48px] ${isOutOfStock
+                ? 'bg-surface text-muted cursor-not-allowed border border-border'
+                : 'bg-primary text-canvas hover:opacity-90 active:scale-[0.99]'
+                }`}
+            >
+              <Bag size={18} />
+              <span>
+                {isOutOfStock
+                  ? 'Sold Out'
+                  : isAdding
+                    ? 'Added to Shopping Bag ✓'
+                    : `Add to Bag — ${formatCurrency(product.price)}`}
+              </span>
+            </button>
+          </div>
+
+          {/* 3 Upfront Specs Accordions (Material, Fit, Care) */}
+          <div className="divide-y divide-border pt-2 text-xs">
+            {/* 1. Material */}
+            <div className="py-3.5">
+              <button
+                type="button"
+                onClick={() => toggleSpec('material')}
+                className="w-full flex items-center justify-between text-left font-semibold text-primary min-h-[36px]"
+              >
+                <span>Material & Construction</span>
+                {openSpecs.material ? <CaretUp size={14} /> : <CaretDown size={14} />}
+              </button>
+              {openSpecs.material && (
+                <p className="mt-2 text-muted leading-relaxed">
+                  {product.material}
+                </p>
+              )}
+            </div>
+
+            {/* 2. Fit Specs */}
+            <div className="py-3.5">
+              <button
+                type="button"
+                onClick={() => toggleSpec('fit')}
+                className="w-full flex items-center justify-between text-left font-semibold text-primary min-h-[36px]"
+              >
+                <span>Silhouette & Drape</span>
+                {openSpecs.fit ? <CaretUp size={14} /> : <CaretDown size={14} />}
+              </button>
+              {openSpecs.fit && (
+                <p className="mt-2 text-muted leading-relaxed">
+                  {product.fit_note}
+                </p>
+              )}
+            </div>
+
+            {/* 3. Care Specs */}
+            <div className="py-3.5">
+              <button
+                type="button"
+                onClick={() => toggleSpec('care')}
+                className="w-full flex items-center justify-between text-left font-semibold text-primary min-h-[36px]"
+              >
+                <span>Garment Care</span>
+                {openSpecs.care ? <CaretUp size={14} /> : <CaretDown size={14} />}
+              </button>
+              {openSpecs.care && (
+                <p className="mt-2 text-muted leading-relaxed">
+                  {product.care}
+                </p>
+              )}
             </div>
           </div>
         </div>
-
-        {/* 1-Click Size Chart Modal */}
-        <SizeChartModal
-          isOpen={isSizeChartOpen}
-          onClose={() => setIsSizeChartOpen(false)}
-          category={product.category}
-        />
-
-        {/* Sticky Mobile "Add to Cart" Bar */}
-        <StickyMobileBar
-          product={product}
-          selectedVariant={currentVariant}
-          onAddToCart={handleAddToCart}
-          isAdding={isAdding}
-        />
       </div>
-      );
+
+      {/* 1-Click Size Chart Modal */}
+      <SizeChartModal
+        isOpen={isSizeChartOpen}
+        onClose={() => setIsSizeChartOpen(false)}
+        category={product.category}
+      />
+
+      {/* Sticky Mobile "Add to Cart" Bar */}
+      <StickyMobileBar
+        product={product}
+        selectedVariant={currentVariant}
+        onAddToCart={handleAddToCart}
+        isAdding={isAdding}
+      />
+    </div>
+  );
 }

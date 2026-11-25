@@ -12,7 +12,7 @@ const products = [
     material: '240 GSM 100% Combed Compact Cotton',
     fit_note: 'Boxy architectural cut · True to size · Model is 5\'9" wearing size L',
     care: 'Cold machine wash inside-out · Hang dry in shade · Do not iron print',
-    images: ['/products/walk-with-god-front.png', '/products/walk-with-god-back.png'],
+    images: ['/products/img1-front.png', '/products/img1-back.png'],
     variants: [
       { id: 'b0000001-0001-0000-0000-000000000001', color: 'Chalk White', hex: '#FAF9F7', size: 'S', stock: 12 },
       { id: 'b0000001-0002-0000-0000-000000000002', color: 'Chalk White', hex: '#FAF9F7', size: 'M', stock: 18 },
@@ -30,7 +30,7 @@ const products = [
     material: '240 GSM Combed Ring-Spun Cotton',
     fit_note: 'Relaxed boxy silhouette · True to size · Model is 5\'11" wearing size L',
     care: 'Hand wash or gentle cycle cold · Do not tumble dry · Dry flat',
-    images: ['/products/godspeed-rosary-front.png', '/products/godspeed-rosary-back.png'],
+    images: ['/products/img2-front.png', '/products/img2-back.png'],
     variants: [
       { id: 'b0000002-0001-0000-0000-000000000001', color: 'Bone White', hex: '#F5F4F0', size: 'S', stock: 14 },
       { id: 'b0000002-0002-0000-0000-000000000002', color: 'Bone White', hex: '#F5F4F0', size: 'M', stock: 4 }, // Low stock
@@ -48,7 +48,7 @@ const products = [
     material: '240 GSM Heavyweight Organic Cotton',
     fit_note: 'Tailored boxy drape · Drop shoulders · Model is 5\'8" wearing size M',
     care: 'Machine wash 30°C · Do not bleach · Iron on reverse side',
-    images: ['/products/in-money-we-trust-front.png', '/products/in-money-we-trust-back.png'],
+    images: ['/products/img3-front.png', '/products/img3-back.png'],
     variants: [
       { id: 'b0000003-0001-0000-0000-000000000001', color: 'Vintage White', hex: '#F4F2EC', size: 'S', stock: 2 }, // Low stock
       { id: 'b0000003-0002-0000-0000-000000000002', color: 'Vintage White', hex: '#F4F2EC', size: 'M', stock: 20 },
@@ -66,7 +66,7 @@ const products = [
     material: '240 GSM Compact Combed Cotton',
     fit_note: 'Standard boxy fit · True to size · Model is 5\'10" wearing size L',
     care: 'Cold wash · Line dry · Do not dry clean',
-    images: ['/products/purgatory-og-green-front.png', '/products/purgatory-og-green-back.png'],
+    images: ['/products/img4-front.png', '/products/img4-back.png'],
     variants: [
       { id: 'b0000004-0001-0000-0000-000000000001', color: 'Museum White', hex: '#FAF9F7', size: 'S', stock: 16 },
       { id: 'b0000004-0002-0000-0000-000000000002', color: 'Museum White', hex: '#FAF9F7', size: 'M', stock: 25 },
@@ -84,7 +84,7 @@ const products = [
     material: '250 GSM High-Density Cotton Jersey',
     fit_note: 'Oversized drape · Model is 5\'7" wearing size S',
     care: 'Gentle cycle cold · Do not tumble dry · Dry in shade',
-    images: ['/products/icons-grid-front.png', '/products/icons-grid-back.png'],
+    images: ['/products/img5-front.png', '/products/img5-back.png'],
     variants: [
       { id: 'b0000005-0001-0000-0000-000000000001', color: 'Optic White', hex: '#FFFFFF', size: 'S', stock: 10 },
       { id: 'b0000005-0002-0000-0000-000000000002', color: 'Optic White', hex: '#FFFFFF', size: 'M', stock: 14 },
@@ -102,48 +102,12 @@ const products = [
     material: '240 GSM 100% Combed Cotton',
     fit_note: 'Boxy streetwear cut · True to size · Model is 6\'0" wearing size XL',
     care: 'Wash cold inside-out · Line dry · Avoid ironing direct on ink',
-    images: ['/products/skull-pile-front.png', '/products/skull-pile-back.png'],
+    images: ['/products/img6-front.png', '/products/img6-back.png'],
     variants: [
       { id: 'b0000006-0001-0000-0000-000000000001', color: 'Off-White', hex: '#F6F5F2', size: 'S', stock: 8 },
       { id: 'b0000006-0002-0000-0000-000000000002', color: 'Off-White', hex: '#F6F5F2', size: 'M', stock: 12 },
       { id: 'b0000006-0003-0000-0000-000000000003', color: 'Off-White', hex: '#F6F5F2', size: 'L', stock: 9 },
       { id: 'b0000006-0004-0000-0000-000000000004', color: 'Off-White', hex: '#F6F5F2', size: 'XL', stock: 1 } // Low stock
-    ]
-  },
-  {
-    id: 'a0000001-0000-0000-0000-000000000007',
-    name: 'Falling Flames Heavyweight Hoodie',
-    slug: 'falling-flames-heavyweight-hoodie',
-    category: 'Outerwear',
-    price: 2450.00,
-    description: 'Engineered 480 GSM thermal loopback French terry fleece with twin-panel hood, dropped shoulder seams, raw-edge hem finish, and embroidered tone-on-tone falling flames motif.',
-    material: '480 GSM 100% Organic French Terry Cotton',
-    fit_note: 'Substantial structural drape · Relaxed fit · Model is 5\'11" wearing size L',
-    care: 'Dry clean recommended or machine wash cold gentle · Lay flat to dry',
-    images: ['/brand/falling-flames-transparent-white.png', '/brand/falling-flames-transparent-dark.png'],
-    variants: [
-      { id: 'b0000007-0001-0000-0000-000000000001', color: 'Washed Charcoal', hex: '#1C1C1B', size: 'S', stock: 6 },
-      { id: 'b0000007-0002-0000-0000-000000000002', color: 'Washed Charcoal', hex: '#1C1C1B', size: 'M', stock: 14 },
-      { id: 'b0000007-0003-0000-0000-000000000003', color: 'Washed Charcoal', hex: '#1C1C1B', size: 'L', stock: 3 }, // Low stock
-      { id: 'b0000007-0004-0000-0000-000000000004', color: 'Washed Charcoal', hex: '#1C1C1B', size: 'XL', stock: 5 } // Low stock
-    ]
-  },
-  {
-    id: 'a0000001-0000-0000-0000-000000000008',
-    name: 'Archival Tactical Cargo Pant',
-    slug: 'archival-tactical-cargo-pant',
-    category: 'Bottoms',
-    price: 1850.00,
-    description: 'Modular high-density ripstop cotton trousers equipped with deep gusseted bellows pockets, articulated knee darts, and magnetic buckle hems for adjustable taper.',
-    material: '320 GSM Reinforced Military Cotton Ripstop',
-    fit_note: 'Wide architectural leg with toggle-adjustable hem · Model is 6\'0" wearing size M',
-    care: 'Machine wash cold with similar colors · Hang to dry · Low iron',
-    images: ['/brand/purgatory-logo-raw.png'],
-    variants: [
-      { id: 'b0000008-0001-0000-0000-000000000001', color: 'Ink Black', hex: '#141413', size: 'S', stock: 8 },
-      { id: 'b0000008-0002-0000-0000-000000000002', color: 'Ink Black', hex: '#141413', size: 'M', stock: 15 },
-      { id: 'b0000008-0003-0000-0000-000000000003', color: 'Ink Black', hex: '#141413', size: 'L', stock: 4 }, // Low stock
-      { id: 'b0000008-0004-0000-0000-000000000004', color: 'Ink Black', hex: '#141413', size: 'XL', stock: 7 }
     ]
   }
 ];
@@ -422,10 +386,21 @@ CREATE POLICY "Users can view own profile or admins view all"
 ON public.profiles FOR SELECT
 USING (id = (SELECT auth.uid()) OR (SELECT public.is_admin()));
 
+-- Security Hardening: Users can update own profile, but CANNOT elevate their own role to 'admin'
 DROP POLICY IF EXISTS "Users can update own profile" ON public.profiles;
 CREATE POLICY "Users can update own profile"
 ON public.profiles FOR UPDATE
-USING (id = (SELECT auth.uid()));
+USING (id = (SELECT auth.uid()))
+WITH CHECK (
+    id = (SELECT auth.uid()) 
+    AND (role = (SELECT role FROM public.profiles WHERE id = (SELECT auth.uid())) OR (SELECT public.is_admin()))
+);
+
+DROP POLICY IF EXISTS "Admins can update any profile" ON public.profiles;
+CREATE POLICY "Admins can update any profile"
+ON public.profiles FOR UPDATE
+USING ((SELECT public.is_admin()))
+WITH CHECK ((SELECT public.is_admin()));
 
 -- PRODUCTS POLICIES
 DROP POLICY IF EXISTS "Public can view products" ON public.products;
@@ -515,17 +490,28 @@ USING (
 -- ============================================================
 INSERT INTO storage.buckets (id, name, public) 
 VALUES ('product-images', 'product-images', true)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (id) DO UPDATE SET public = true;
 
 DROP POLICY IF EXISTS "Public Access for Product Images" ON storage.objects;
 CREATE POLICY "Public Access for Product Images" 
 ON storage.objects FOR SELECT 
 USING (bucket_id = 'product-images');
 
-DROP POLICY IF EXISTS "Authenticated Users Can Upload Images" ON storage.objects;
-CREATE POLICY "Authenticated Users Can Upload Images" 
+DROP POLICY IF EXISTS "Admins Can Upload Images" ON storage.objects;
+CREATE POLICY "Admins Can Upload Images" 
 ON storage.objects FOR INSERT 
-WITH CHECK (bucket_id = 'product-images' AND (auth.role() = 'authenticated'));
+WITH CHECK (bucket_id = 'product-images' AND (SELECT public.is_admin()));
+
+DROP POLICY IF EXISTS "Admins Can Update Images" ON storage.objects;
+CREATE POLICY "Admins Can Update Images" 
+ON storage.objects FOR UPDATE 
+USING (bucket_id = 'product-images' AND (SELECT public.is_admin()))
+WITH CHECK (bucket_id = 'product-images' AND (SELECT public.is_admin()));
+
+DROP POLICY IF EXISTS "Admins Can Delete Images" ON storage.objects;
+CREATE POLICY "Admins Can Delete Images" 
+ON storage.objects FOR DELETE 
+USING (bucket_id = 'product-images' AND (SELECT public.is_admin()));
 
 -- ============================================================
 -- 6. SYNTHETIC SEED DATA: PURGATØRY CATALOGUE (8 PRODUCTS)

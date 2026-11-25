@@ -58,36 +58,43 @@ export default function Header() {
               <Link
                 key={link.name}
                 to={link.path}
-                className={`group relative py-1 text-xs uppercase tracking-widest font-medium transition-colors ${
-                  isActive ? 'text-primary font-bold' : 'text-muted hover:text-primary'
-                }`}
+                className={`group relative py-1 text-xs uppercase tracking-widest font-medium transition-colors ${isActive ? 'text-primary font-bold' : 'text-muted hover:text-primary'
+                  }`}
               >
                 <span>{link.name}</span>
                 {/* Smooth Animated Hover & Active Line */}
                 <span
-                  className={`absolute left-0 bottom-0 h-[1.5px] bg-primary transition-transform duration-300 ease-out origin-left ${
-                    isActive ? 'w-full scale-x-100' : 'w-full scale-x-0 group-hover:scale-x-100'
-                  }`}
+                  className={`absolute left-0 bottom-0 h-[1.5px] bg-primary transition-transform duration-300 ease-out origin-left ${isActive ? 'w-full scale-x-100' : 'w-full scale-x-0 group-hover:scale-x-100'
+                    }`}
                 />
               </Link>
             );
           })}
         </nav>
 
-        {/* 3. Right: Client Account Drawer & Shopping Bag Triggers */}
+        {/* 3. Right: Client Account & Shopping Bag Triggers */}
         <div className="flex items-center justify-end gap-2.5 sm:gap-3 shrink-0">
-          {/* Customer Account Drawer Trigger */}
-          <button
-            onClick={() => setIsAccountDrawerOpen(true)}
-            aria-label="Client Account"
-            className="relative p-2.5 text-primary hover:text-muted transition-colors rounded-tight hover:bg-surface focus:outline-none min-w-[44px] min-h-[44px] flex items-center justify-center border border-border"
-            title={currentUser ? `Client: ${currentUser.full_name}` : 'Sign In / Client Access'}
-          >
-            <User size={19} weight={currentUser ? 'bold' : 'regular'} />
-            {currentUser && (
+          {/* Customer Account Trigger: If logged in, opens account drawer; if guest, direct login button */}
+          {currentUser ? (
+            <button
+              onClick={() => setIsAccountDrawerOpen(true)}
+              aria-label="Client Account"
+              className="relative p-2.5 text-primary hover:text-muted transition-colors rounded-tight hover:bg-surface focus:outline-none min-w-[44px] min-h-[44px] flex items-center justify-center border border-border cursor-pointer"
+              title={`Client: ${currentUser.full_name}`}
+            >
+              <User size={19} weight="bold" />
               <span className="absolute top-2 right-2 w-2 h-2 bg-[#2E5A44] rounded-full ring-2 ring-canvas" />
-            )}
-          </button>
+            </button>
+          ) : (
+            <Link
+              to="/login"
+              aria-label="Client Log In"
+              className="relative p-2.5 text-canvas bg-primary hover:bg-primary/90 active:scale-[0.98] transition-all rounded-tight focus:outline-none min-w-[44px] min-h-[44px] flex items-center justify-center border border-primary shadow-xs cursor-pointer"
+              title="Click to Log In"
+            >
+              <User size={19} weight="bold" />
+            </Link>
+          )}
 
           {/* Shopping Bag Trigger */}
           <button
@@ -113,15 +120,13 @@ export default function Header() {
             <Link
               key={link.name}
               to={link.path}
-              className={`group relative py-1 px-3 transition-colors ${
-                isActive ? 'text-primary font-bold' : 'text-muted hover:text-primary'
-              }`}
+              className={`group relative py-1 px-3 transition-colors ${isActive ? 'text-primary font-bold' : 'text-muted hover:text-primary'
+                }`}
             >
               <span>{link.name}</span>
               <span
-                className={`absolute left-0 bottom-0 h-[1.5px] bg-primary transition-transform duration-300 ease-out origin-left ${
-                  isActive ? 'w-full scale-x-100' : 'w-full scale-x-0 group-hover:scale-x-100'
-                }`}
+                className={`absolute left-0 bottom-0 h-[1.5px] bg-primary transition-transform duration-300 ease-out origin-left ${isActive ? 'w-full scale-x-100' : 'w-full scale-x-0 group-hover:scale-x-100'
+                  }`}
               />
             </Link>
           );

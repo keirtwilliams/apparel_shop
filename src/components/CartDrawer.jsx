@@ -20,7 +20,8 @@ export default function CartDrawer() {
     applyCouponCode,
     removeCouponCode,
     cartTotalCount,
-    products
+    products,
+    currentUser
   } = useStore();
 
   const [couponInput, setCouponInput] = useState('');
@@ -299,14 +300,31 @@ export default function CartDrawer() {
                 </span>
               </div>
 
-              <Link
-                to="/checkout"
-                onClick={() => setIsCartOpen(false)}
-                className="w-full mt-2 py-3 bg-primary text-canvas text-xs font-semibold uppercase tracking-wider rounded-tight flex items-center justify-center gap-2 hover:opacity-90 active:scale-[0.99] transition-all min-h-[44px]"
-              >
-                <span>Proceed to Checkout</span>
-                <ArrowRight size={14} />
-              </Link>
+              {currentUser ? (
+                <Link
+                  to="/checkout"
+                  onClick={() => setIsCartOpen(false)}
+                  className="w-full mt-2 py-3.5 bg-primary text-canvas text-xs font-semibold uppercase tracking-wider rounded-tight flex items-center justify-center gap-2 hover:bg-primary/90 active:scale-[0.99] transition-all min-h-[44px]"
+                >
+                  <span>Proceed to Checkout</span>
+                  <ArrowRight size={14} />
+                </Link>
+              ) : (
+                <Link
+                  to="/login?redirect=/checkout"
+                  onClick={() => setIsCartOpen(false)}
+                  className="w-full mt-2 py-3.5 bg-primary text-canvas text-xs font-semibold uppercase tracking-wider rounded-tight flex items-center justify-center gap-2 hover:bg-primary/90 active:scale-[0.99] transition-all min-h-[44px]"
+                >
+                  <span>Proceed to Checkout</span>
+                  <ArrowRight size={14} />
+                </Link>
+              )}
+
+              {!currentUser && (
+                <p className="text-[10px] text-center text-muted font-mono uppercase tracking-wider pt-1">
+                  Client sign in required to place consignment
+                </p>
+              )}
 
               <p className="text-[11px] text-center text-muted">
                 Tax included. Instant dispatch in 24 hours.

@@ -68,18 +68,9 @@ export default function AccountOrdersPage() {
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 font-sans">
       {/* Top Header */}
       <div className="pb-6 border-b border-border">
-        <div>
-          <span className="text-xs uppercase tracking-widest text-muted font-medium font-mono">
-            Client Consignments
-          </span>
-          <h1 className="text-2xl font-semibold text-primary mt-1">
-            Order Tracking & History
-          </h1>
-          <p className="text-xs text-muted mt-1">
-            Displaying verified consignments for{' '}
-            <span className="text-primary font-medium">{currentUser.full_name}</span> ({currentUser.email}).
-          </p>
-        </div>
+        <h1 className="text-2xl font-semibold text-primary">
+          Order Tracking & History
+        </h1>
       </div>
 
       {/* ORDERS LIST */}

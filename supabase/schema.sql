@@ -183,10 +183,21 @@ CREATE POLICY "Users can view own profile or admins view all"
 ON public.profiles FOR SELECT
 USING (id = (SELECT auth.uid()) OR (SELECT public.is_admin()));
 
+-- Security Hardening: Users can update own profile, but CANNOT elevate their own role to 'admin'
 DROP POLICY IF EXISTS "Users can update own profile" ON public.profiles;
 CREATE POLICY "Users can update own profile"
 ON public.profiles FOR UPDATE
-USING (id = (SELECT auth.uid()));
+USING (id = (SELECT auth.uid()))
+WITH CHECK (
+    id = (SELECT auth.uid()) 
+    AND (role = (SELECT role FROM public.profiles WHERE id = (SELECT auth.uid())) OR (SELECT public.is_admin()))
+);
+
+DROP POLICY IF EXISTS "Admins can update any profile" ON public.profiles;
+CREATE POLICY "Admins can update any profile"
+ON public.profiles FOR UPDATE
+USING ((SELECT public.is_admin()))
+WITH CHECK ((SELECT public.is_admin()));
 
 -- PRODUCTS POLICIES
 DROP POLICY IF EXISTS "Public can view products" ON public.products;
@@ -276,17 +287,28 @@ USING (
 -- ============================================================
 INSERT INTO storage.buckets (id, name, public) 
 VALUES ('product-images', 'product-images', true)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (id) DO UPDATE SET public = true;
 
 DROP POLICY IF EXISTS "Public Access for Product Images" ON storage.objects;
 CREATE POLICY "Public Access for Product Images" 
 ON storage.objects FOR SELECT 
 USING (bucket_id = 'product-images');
 
-DROP POLICY IF EXISTS "Authenticated Users Can Upload Images" ON storage.objects;
-CREATE POLICY "Authenticated Users Can Upload Images" 
+DROP POLICY IF EXISTS "Admins Can Upload Images" ON storage.objects;
+CREATE POLICY "Admins Can Upload Images" 
 ON storage.objects FOR INSERT 
-WITH CHECK (bucket_id = 'product-images' AND (auth.role() = 'authenticated'));
+WITH CHECK (bucket_id = 'product-images' AND (SELECT public.is_admin()));
+
+DROP POLICY IF EXISTS "Admins Can Update Images" ON storage.objects;
+CREATE POLICY "Admins Can Update Images" 
+ON storage.objects FOR UPDATE 
+USING (bucket_id = 'product-images' AND (SELECT public.is_admin()))
+WITH CHECK (bucket_id = 'product-images' AND (SELECT public.is_admin()));
+
+DROP POLICY IF EXISTS "Admins Can Delete Images" ON storage.objects;
+CREATE POLICY "Admins Can Delete Images" 
+ON storage.objects FOR DELETE 
+USING (bucket_id = 'product-images' AND (SELECT public.is_admin()));
 
 -- ============================================================
 -- 6. SYNTHETIC SEED DATA: PURGATØRY CATALOGUE (8 PRODUCTS)
@@ -304,7 +326,7 @@ VALUES (
     '240 GSM 100% Combed Compact Cotton',
     'Boxy architectural cut · True to size · Model is 5''9" wearing size L',
     'Cold machine wash inside-out · Hang dry in shade · Do not iron print',
-    ARRAY['/products/walk-with-god-front.png', '/products/walk-with-god-back.png']
+    ARRAY['/products/img1-front.png', '/products/img1-back.png']
 ) ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
     price = EXCLUDED.price,
@@ -335,7 +357,7 @@ VALUES (
     '240 GSM Combed Ring-Spun Cotton',
     'Relaxed boxy silhouette · True to size · Model is 5''11" wearing size L',
     'Hand wash or gentle cycle cold · Do not tumble dry · Dry flat',
-    ARRAY['/products/godspeed-rosary-front.png', '/products/godspeed-rosary-back.png']
+    ARRAY['/products/img2-front.png', '/products/img2-back.png']
 ) ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
     price = EXCLUDED.price,
@@ -366,7 +388,7 @@ VALUES (
     '240 GSM Heavyweight Organic Cotton',
     'Tailored boxy drape · Drop shoulders · Model is 5''8" wearing size M',
     'Machine wash 30°C · Do not bleach · Iron on reverse side',
-    ARRAY['/products/in-money-we-trust-front.png', '/products/in-money-we-trust-back.png']
+    ARRAY['/products/img3-front.png', '/products/img3-back.png']
 ) ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
     price = EXCLUDED.price,
@@ -397,7 +419,7 @@ VALUES (
     '240 GSM Compact Combed Cotton',
     'Standard boxy fit · True to size · Model is 5''10" wearing size L',
     'Cold wash · Line dry · Do not dry clean',
-    ARRAY['/products/purgatory-og-green-front.png', '/products/purgatory-og-green-back.png']
+    ARRAY['/products/img4-front.png', '/products/img4-back.png']
 ) ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
     price = EXCLUDED.price,
@@ -428,7 +450,7 @@ VALUES (
     '250 GSM High-Density Cotton Jersey',
     'Oversized drape · Model is 5''7" wearing size S',
     'Gentle cycle cold · Do not tumble dry · Dry in shade',
-    ARRAY['/products/icons-grid-front.png', '/products/icons-grid-back.png']
+    ARRAY['/products/img5-front.png', '/products/img5-back.png']
 ) ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
     price = EXCLUDED.price,
@@ -459,7 +481,7 @@ VALUES (
     '240 GSM 100% Combed Cotton',
     'Boxy streetwear cut · True to size · Model is 6''0" wearing size XL',
     'Wash cold inside-out · Line dry · Avoid ironing direct on ink',
-    ARRAY['/products/skull-pile-front.png', '/products/skull-pile-back.png']
+    ARRAY['/products/img6-front.png', '/products/img6-back.png']
 ) ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
     price = EXCLUDED.price,
@@ -476,68 +498,6 @@ VALUES ('b0000006-0003-0000-0000-000000000003', 'a0000001-0000-0000-0000-0000000
 ON CONFLICT (id) DO UPDATE SET stock_count = EXCLUDED.stock_count;
 INSERT INTO public.product_variants (id, product_id, color_name, color_hex, size, stock_count)
 VALUES ('b0000006-0004-0000-0000-000000000004', 'a0000001-0000-0000-0000-000000000006', 'Off-White', '#F6F5F2', 'XL', 1)
-ON CONFLICT (id) DO UPDATE SET stock_count = EXCLUDED.stock_count;
-
-INSERT INTO public.products (id, name, slug, category, price, compare_at_price, description, material, fit_note, care, images)
-VALUES (
-    'a0000001-0000-0000-0000-000000000007',
-    'Falling Flames Heavyweight Hoodie',
-    'falling-flames-heavyweight-hoodie',
-    'Outerwear',
-    2450.00,
-    NULL,
-    'Engineered 480 GSM thermal loopback French terry fleece with twin-panel hood, dropped shoulder seams, raw-edge hem finish, and embroidered tone-on-tone falling flames motif.',
-    '480 GSM 100% Organic French Terry Cotton',
-    'Substantial structural drape · Relaxed fit · Model is 5''11" wearing size L',
-    'Dry clean recommended or machine wash cold gentle · Lay flat to dry',
-    ARRAY['/brand/falling-flames-transparent-white.png', '/brand/falling-flames-transparent-dark.png']
-) ON CONFLICT (id) DO UPDATE SET
-    name = EXCLUDED.name,
-    price = EXCLUDED.price,
-    compare_at_price = EXCLUDED.compare_at_price,
-    images = EXCLUDED.images;
-INSERT INTO public.product_variants (id, product_id, color_name, color_hex, size, stock_count)
-VALUES ('b0000007-0001-0000-0000-000000000001', 'a0000001-0000-0000-0000-000000000007', 'Washed Charcoal', '#1C1C1B', 'S', 6)
-ON CONFLICT (id) DO UPDATE SET stock_count = EXCLUDED.stock_count;
-INSERT INTO public.product_variants (id, product_id, color_name, color_hex, size, stock_count)
-VALUES ('b0000007-0002-0000-0000-000000000002', 'a0000001-0000-0000-0000-000000000007', 'Washed Charcoal', '#1C1C1B', 'M', 14)
-ON CONFLICT (id) DO UPDATE SET stock_count = EXCLUDED.stock_count;
-INSERT INTO public.product_variants (id, product_id, color_name, color_hex, size, stock_count)
-VALUES ('b0000007-0003-0000-0000-000000000003', 'a0000001-0000-0000-0000-000000000007', 'Washed Charcoal', '#1C1C1B', 'L', 3)
-ON CONFLICT (id) DO UPDATE SET stock_count = EXCLUDED.stock_count;
-INSERT INTO public.product_variants (id, product_id, color_name, color_hex, size, stock_count)
-VALUES ('b0000007-0004-0000-0000-000000000004', 'a0000001-0000-0000-0000-000000000007', 'Washed Charcoal', '#1C1C1B', 'XL', 5)
-ON CONFLICT (id) DO UPDATE SET stock_count = EXCLUDED.stock_count;
-
-INSERT INTO public.products (id, name, slug, category, price, compare_at_price, description, material, fit_note, care, images)
-VALUES (
-    'a0000001-0000-0000-0000-000000000008',
-    'Archival Tactical Cargo Pant',
-    'archival-tactical-cargo-pant',
-    'Bottoms',
-    1850.00,
-    NULL,
-    'Modular high-density ripstop cotton trousers equipped with deep gusseted bellows pockets, articulated knee darts, and magnetic buckle hems for adjustable taper.',
-    '320 GSM Reinforced Military Cotton Ripstop',
-    'Wide architectural leg with toggle-adjustable hem · Model is 6''0" wearing size M',
-    'Machine wash cold with similar colors · Hang to dry · Low iron',
-    ARRAY['/brand/purgatory-logo-raw.png']
-) ON CONFLICT (id) DO UPDATE SET
-    name = EXCLUDED.name,
-    price = EXCLUDED.price,
-    compare_at_price = EXCLUDED.compare_at_price,
-    images = EXCLUDED.images;
-INSERT INTO public.product_variants (id, product_id, color_name, color_hex, size, stock_count)
-VALUES ('b0000008-0001-0000-0000-000000000001', 'a0000001-0000-0000-0000-000000000008', 'Ink Black', '#141413', 'S', 8)
-ON CONFLICT (id) DO UPDATE SET stock_count = EXCLUDED.stock_count;
-INSERT INTO public.product_variants (id, product_id, color_name, color_hex, size, stock_count)
-VALUES ('b0000008-0002-0000-0000-000000000002', 'a0000001-0000-0000-0000-000000000008', 'Ink Black', '#141413', 'M', 15)
-ON CONFLICT (id) DO UPDATE SET stock_count = EXCLUDED.stock_count;
-INSERT INTO public.product_variants (id, product_id, color_name, color_hex, size, stock_count)
-VALUES ('b0000008-0003-0000-0000-000000000003', 'a0000001-0000-0000-0000-000000000008', 'Ink Black', '#141413', 'L', 4)
-ON CONFLICT (id) DO UPDATE SET stock_count = EXCLUDED.stock_count;
-INSERT INTO public.product_variants (id, product_id, color_name, color_hex, size, stock_count)
-VALUES ('b0000008-0004-0000-0000-000000000004', 'a0000001-0000-0000-0000-000000000008', 'Ink Black', '#141413', 'XL', 7)
 ON CONFLICT (id) DO UPDATE SET stock_count = EXCLUDED.stock_count;
 
 -- ============================================================
@@ -636,7 +596,7 @@ VALUES (
     'COD',
     'paid',
     'shipped',
-    9800.00,
+    3560.00,
     '2026-11-01T10:00:00.000Z'
 ) ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.orders (id, customer_name, customer_email, shipping_address, payment_method, payment_status, status, total_amount, created_at)
@@ -648,7 +608,7 @@ VALUES (
     'Test Card',
     'paid',
     'shipped',
-    2450.00,
+    890.00,
     '2026-11-02T03:00:00.000Z'
 ) ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.orders (id, customer_name, customer_email, shipping_address, payment_method, payment_status, status, total_amount, created_at)
@@ -660,7 +620,7 @@ VALUES (
     'GCash',
     'paid',
     'pending',
-    3700.00,
+    1780.00,
     '2026-11-01T20:00:00.000Z'
 ) ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.orders (id, customer_name, customer_email, shipping_address, payment_method, payment_status, status, total_amount, created_at)
@@ -684,7 +644,7 @@ VALUES (
     'Test Card',
     'paid',
     'delivered',
-    1780.00,
+    1700.00,
     '2026-11-04T06:00:00.000Z'
 ) ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.orders (id, customer_name, customer_email, shipping_address, payment_method, payment_status, status, total_amount, created_at)
@@ -696,7 +656,7 @@ VALUES (
     'GCash',
     'paid',
     'delivered',
-    1780.00,
+    1770.00,
     '2026-11-04T23:00:00.000Z'
 ) ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.orders (id, customer_name, customer_email, shipping_address, payment_method, payment_status, status, total_amount, created_at)
@@ -708,7 +668,7 @@ VALUES (
     'COD',
     'paid',
     'shipped',
-    2630.00,
+    2760.00,
     '2026-11-05T16:00:00.000Z'
 ) ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.orders (id, customer_name, customer_email, shipping_address, payment_method, payment_status, status, total_amount, created_at)
@@ -720,7 +680,7 @@ VALUES (
     'Test Card',
     'paid',
     'shipped',
-    850.00,
+    920.00,
     '2026-11-06T09:00:00.000Z'
 ) ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.orders (id, customer_name, customer_email, shipping_address, payment_method, payment_status, status, total_amount, created_at)
@@ -732,7 +692,7 @@ VALUES (
     'GCash',
     'paid',
     'pending',
-    2760.00,
+    2670.00,
     '2026-11-07T02:00:00.000Z'
 ) ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.orders (id, customer_name, customer_email, shipping_address, payment_method, payment_status, status, total_amount, created_at)
@@ -744,7 +704,7 @@ VALUES (
     'COD',
     'refunded',
     'refunded',
-    2760.00,
+    2670.00,
     '2026-11-06T19:00:00.000Z'
 ) ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.orders (id, customer_name, customer_email, shipping_address, payment_method, payment_status, status, total_amount, created_at)
@@ -756,7 +716,7 @@ VALUES (
     'Test Card',
     'paid',
     'delivered',
-    920.00,
+    890.00,
     '2026-11-08T12:00:00.000Z'
 ) ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.orders (id, customer_name, customer_email, shipping_address, payment_method, payment_status, status, total_amount, created_at)
@@ -768,7 +728,7 @@ VALUES (
     'GCash',
     'paid',
     'delivered',
-    4900.00,
+    1780.00,
     '2026-11-09T05:00:00.000Z'
 ) ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.orders (id, customer_name, customer_email, shipping_address, payment_method, payment_status, status, total_amount, created_at)
@@ -780,7 +740,7 @@ VALUES (
     'COD',
     'paid',
     'shipped',
-    7400.00,
+    3400.00,
     '2026-11-08T22:00:00.000Z'
 ) ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.orders (id, customer_name, customer_email, shipping_address, payment_method, payment_status, status, total_amount, created_at)
@@ -792,7 +752,7 @@ VALUES (
     'Test Card',
     'paid',
     'shipped',
-    1850.00,
+    850.00,
     '2026-11-10T15:00:00.000Z'
 ) ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.orders (id, customer_name, customer_email, shipping_address, payment_method, payment_status, status, total_amount, created_at)
@@ -804,7 +764,7 @@ VALUES (
     'GCash',
     'paid',
     'pending',
-    1780.00,
+    1840.00,
     '2026-11-11T08:00:00.000Z'
 ) ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.orders (id, customer_name, customer_email, shipping_address, payment_method, payment_status, status, total_amount, created_at)
@@ -816,7 +776,7 @@ VALUES (
     'COD',
     'refunded',
     'refunded',
-    2670.00,
+    2760.00,
     '2026-11-12T01:00:00.000Z'
 ) ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.orders (id, customer_name, customer_email, shipping_address, payment_method, payment_status, status, total_amount, created_at)
@@ -840,7 +800,7 @@ VALUES (
     'GCash',
     'paid',
     'delivered',
-    1740.00,
+    1780.00,
     '2026-11-13T11:00:00.000Z'
 ) ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.orders (id, customer_name, customer_email, shipping_address, payment_method, payment_status, status, total_amount, created_at)
@@ -852,7 +812,7 @@ VALUES (
     'COD',
     'paid',
     'shipped',
-    2620.00,
+    2670.00,
     '2026-11-14T04:00:00.000Z'
 ) ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.orders (id, customer_name, customer_email, shipping_address, payment_method, payment_status, status, total_amount, created_at)
@@ -864,7 +824,7 @@ VALUES (
     'Test Card',
     'paid',
     'shipped',
-    920.00,
+    890.00,
     '2026-11-13T21:00:00.000Z'
 ) ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.orders (id, customer_name, customer_email, shipping_address, payment_method, payment_status, status, total_amount, created_at)
@@ -876,7 +836,7 @@ VALUES (
     'GCash',
     'paid',
     'pending',
-    2760.00,
+    2550.00,
     '2026-11-15T14:00:00.000Z'
 ) ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.orders (id, customer_name, customer_email, shipping_address, payment_method, payment_status, status, total_amount, created_at)
@@ -888,7 +848,7 @@ VALUES (
     'COD',
     'refunded',
     'refunded',
-    5820.00,
+    2690.00,
     '2026-11-16T07:00:00.000Z'
 ) ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.orders (id, customer_name, customer_email, shipping_address, payment_method, payment_status, status, total_amount, created_at)
@@ -900,7 +860,7 @@ VALUES (
     'Test Card',
     'paid',
     'delivered',
-    2450.00,
+    920.00,
     '2026-11-16T00:00:00.000Z'
 ) ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.orders (id, customer_name, customer_email, shipping_address, payment_method, payment_status, status, total_amount, created_at)
@@ -912,7 +872,7 @@ VALUES (
     'GCash',
     'paid',
     'delivered',
-    3700.00,
+    1840.00,
     '2026-11-17T17:00:00.000Z'
 ) ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.orders (id, customer_name, customer_email, shipping_address, payment_method, payment_status, status, total_amount, created_at)
@@ -1020,7 +980,7 @@ VALUES (
     'GCash',
     'paid',
     'pending',
-    7350.00,
+    2670.00,
     '2026-11-23T02:00:00.000Z'
 ) ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
@@ -1066,148 +1026,148 @@ INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
 VALUES ('d0000001-0007-0000-0000-000000000002', 'c0000001-0000-0000-0000-000000000007', 'b0000006-0003-0000-0000-000000000003', 1, 920.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0008-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000008', 'b0000007-0001-0000-0000-000000000001', 2, 2450.00)
+VALUES ('d0000001-0008-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000008', 'b0000001-0001-0000-0000-000000000001', 2, 890.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0008-0000-0000-000000000002', 'c0000001-0000-0000-0000-000000000008', 'b0000007-0002-0000-0000-000000000002', 1, 2450.00)
+VALUES ('d0000001-0008-0000-0000-000000000002', 'c0000001-0000-0000-0000-000000000008', 'b0000001-0002-0000-0000-000000000002', 1, 890.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0008-0000-0000-000000000003', 'c0000001-0000-0000-0000-000000000008', 'b0000007-0003-0000-0000-000000000003', 1, 2450.00)
+VALUES ('d0000001-0008-0000-0000-000000000003', 'c0000001-0000-0000-0000-000000000008', 'b0000001-0003-0000-0000-000000000003', 1, 890.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0009-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000009', 'b0000007-0004-0000-0000-000000000004', 1, 2450.00)
+VALUES ('d0000001-0009-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000009', 'b0000001-0004-0000-0000-000000000004', 1, 890.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0010-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000010', 'b0000008-0003-0000-0000-000000000003', 1, 1850.00)
+VALUES ('d0000001-0010-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000010', 'b0000002-0003-0000-0000-000000000003', 1, 890.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0010-0000-0000-000000000002', 'c0000001-0000-0000-0000-000000000010', 'b0000008-0004-0000-0000-000000000004', 1, 1850.00)
+VALUES ('d0000001-0010-0000-0000-000000000002', 'c0000001-0000-0000-0000-000000000010', 'b0000002-0004-0000-0000-000000000004', 1, 890.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0011-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000011', 'b0000001-0002-0000-0000-000000000002', 1, 890.00)
+VALUES ('d0000001-0011-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000011', 'b0000003-0002-0000-0000-000000000002', 1, 890.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0011-0000-0000-000000000002', 'c0000001-0000-0000-0000-000000000011', 'b0000001-0003-0000-0000-000000000003', 1, 890.00)
+VALUES ('d0000001-0011-0000-0000-000000000002', 'c0000001-0000-0000-0000-000000000011', 'b0000003-0003-0000-0000-000000000003', 1, 890.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0011-0000-0000-000000000003', 'c0000001-0000-0000-0000-000000000011', 'b0000001-0004-0000-0000-000000000004', 1, 890.00)
+VALUES ('d0000001-0011-0000-0000-000000000003', 'c0000001-0000-0000-0000-000000000011', 'b0000003-0004-0000-0000-000000000004', 1, 890.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0012-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000012', 'b0000002-0001-0000-0000-000000000001', 2, 890.00)
+VALUES ('d0000001-0012-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000012', 'b0000004-0001-0000-0000-000000000001', 2, 850.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0013-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000013', 'b0000002-0004-0000-0000-000000000004', 1, 890.00)
+VALUES ('d0000001-0013-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000013', 'b0000004-0004-0000-0000-000000000004', 1, 850.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0013-0000-0000-000000000002', 'c0000001-0000-0000-0000-000000000013', 'b0000003-0001-0000-0000-000000000001', 1, 890.00)
+VALUES ('d0000001-0013-0000-0000-000000000002', 'c0000001-0000-0000-0000-000000000013', 'b0000005-0001-0000-0000-000000000001', 1, 920.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0014-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000014', 'b0000003-0003-0000-0000-000000000003', 1, 890.00)
+VALUES ('d0000001-0014-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000014', 'b0000005-0003-0000-0000-000000000003', 1, 920.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0014-0000-0000-000000000002', 'c0000001-0000-0000-0000-000000000014', 'b0000003-0004-0000-0000-000000000004', 1, 890.00)
+VALUES ('d0000001-0014-0000-0000-000000000002', 'c0000001-0000-0000-0000-000000000014', 'b0000005-0004-0000-0000-000000000004', 1, 920.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0014-0000-0000-000000000003', 'c0000001-0000-0000-0000-000000000014', 'b0000004-0001-0000-0000-000000000001', 1, 850.00)
+VALUES ('d0000001-0014-0000-0000-000000000003', 'c0000001-0000-0000-0000-000000000014', 'b0000006-0001-0000-0000-000000000001', 1, 920.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0015-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000015', 'b0000004-0002-0000-0000-000000000002', 1, 850.00)
+VALUES ('d0000001-0015-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000015', 'b0000006-0002-0000-0000-000000000002', 1, 920.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0016-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000016', 'b0000005-0001-0000-0000-000000000001', 2, 920.00)
+VALUES ('d0000001-0016-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000016', 'b0000001-0001-0000-0000-000000000001', 2, 890.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0016-0000-0000-000000000002', 'c0000001-0000-0000-0000-000000000016', 'b0000005-0002-0000-0000-000000000002', 1, 920.00)
+VALUES ('d0000001-0016-0000-0000-000000000002', 'c0000001-0000-0000-0000-000000000016', 'b0000001-0002-0000-0000-000000000002', 1, 890.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0017-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000017', 'b0000005-0004-0000-0000-000000000004', 1, 920.00)
+VALUES ('d0000001-0017-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000017', 'b0000001-0004-0000-0000-000000000004', 1, 890.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0017-0000-0000-000000000002', 'c0000001-0000-0000-0000-000000000017', 'b0000006-0001-0000-0000-000000000001', 1, 920.00)
+VALUES ('d0000001-0017-0000-0000-000000000002', 'c0000001-0000-0000-0000-000000000017', 'b0000002-0001-0000-0000-000000000001', 1, 890.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0017-0000-0000-000000000003', 'c0000001-0000-0000-0000-000000000017', 'b0000006-0002-0000-0000-000000000002', 1, 920.00)
+VALUES ('d0000001-0017-0000-0000-000000000003', 'c0000001-0000-0000-0000-000000000017', 'b0000002-0002-0000-0000-000000000002', 1, 890.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0018-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000018', 'b0000006-0003-0000-0000-000000000003', 1, 920.00)
+VALUES ('d0000001-0018-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000018', 'b0000002-0003-0000-0000-000000000003', 1, 890.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0019-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000019', 'b0000007-0002-0000-0000-000000000002', 1, 2450.00)
+VALUES ('d0000001-0019-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000019', 'b0000003-0002-0000-0000-000000000002', 1, 890.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0019-0000-0000-000000000002', 'c0000001-0000-0000-0000-000000000019', 'b0000007-0003-0000-0000-000000000003', 1, 2450.00)
+VALUES ('d0000001-0019-0000-0000-000000000002', 'c0000001-0000-0000-0000-000000000019', 'b0000003-0003-0000-0000-000000000003', 1, 890.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0020-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000020', 'b0000008-0001-0000-0000-000000000001', 2, 1850.00)
+VALUES ('d0000001-0020-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000020', 'b0000004-0001-0000-0000-000000000001', 2, 850.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0020-0000-0000-000000000002', 'c0000001-0000-0000-0000-000000000020', 'b0000008-0002-0000-0000-000000000002', 1, 1850.00)
+VALUES ('d0000001-0020-0000-0000-000000000002', 'c0000001-0000-0000-0000-000000000020', 'b0000004-0002-0000-0000-000000000002', 1, 850.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0020-0000-0000-000000000003', 'c0000001-0000-0000-0000-000000000020', 'b0000008-0003-0000-0000-000000000003', 1, 1850.00)
+VALUES ('d0000001-0020-0000-0000-000000000003', 'c0000001-0000-0000-0000-000000000020', 'b0000004-0003-0000-0000-000000000003', 1, 850.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0021-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000021', 'b0000008-0004-0000-0000-000000000004', 1, 1850.00)
+VALUES ('d0000001-0021-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000021', 'b0000004-0004-0000-0000-000000000004', 1, 850.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0022-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000022', 'b0000001-0003-0000-0000-000000000003', 1, 890.00)
+VALUES ('d0000001-0022-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000022', 'b0000005-0003-0000-0000-000000000003', 1, 920.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0022-0000-0000-000000000002', 'c0000001-0000-0000-0000-000000000022', 'b0000001-0004-0000-0000-000000000004', 1, 890.00)
+VALUES ('d0000001-0022-0000-0000-000000000002', 'c0000001-0000-0000-0000-000000000022', 'b0000005-0004-0000-0000-000000000004', 1, 920.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0023-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000023', 'b0000002-0002-0000-0000-000000000002', 1, 890.00)
+VALUES ('d0000001-0023-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000023', 'b0000006-0002-0000-0000-000000000002', 1, 920.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0023-0000-0000-000000000002', 'c0000001-0000-0000-0000-000000000023', 'b0000002-0003-0000-0000-000000000003', 1, 890.00)
+VALUES ('d0000001-0023-0000-0000-000000000002', 'c0000001-0000-0000-0000-000000000023', 'b0000006-0003-0000-0000-000000000003', 1, 920.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0023-0000-0000-000000000003', 'c0000001-0000-0000-0000-000000000023', 'b0000002-0004-0000-0000-000000000004', 1, 890.00)
+VALUES ('d0000001-0023-0000-0000-000000000003', 'c0000001-0000-0000-0000-000000000023', 'b0000006-0004-0000-0000-000000000004', 1, 920.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0024-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000024', 'b0000003-0001-0000-0000-000000000001', 2, 890.00)
+VALUES ('d0000001-0024-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000024', 'b0000001-0001-0000-0000-000000000001', 2, 890.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0025-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000025', 'b0000003-0004-0000-0000-000000000004', 1, 890.00)
+VALUES ('d0000001-0025-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000025', 'b0000001-0004-0000-0000-000000000004', 1, 890.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0025-0000-0000-000000000002', 'c0000001-0000-0000-0000-000000000025', 'b0000004-0001-0000-0000-000000000001', 1, 850.00)
+VALUES ('d0000001-0025-0000-0000-000000000002', 'c0000001-0000-0000-0000-000000000025', 'b0000002-0001-0000-0000-000000000001', 1, 890.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0026-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000026', 'b0000004-0003-0000-0000-000000000003', 1, 850.00)
+VALUES ('d0000001-0026-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000026', 'b0000002-0003-0000-0000-000000000003', 1, 890.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0026-0000-0000-000000000002', 'c0000001-0000-0000-0000-000000000026', 'b0000004-0004-0000-0000-000000000004', 1, 850.00)
+VALUES ('d0000001-0026-0000-0000-000000000002', 'c0000001-0000-0000-0000-000000000026', 'b0000002-0004-0000-0000-000000000004', 1, 890.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0026-0000-0000-000000000003', 'c0000001-0000-0000-0000-000000000026', 'b0000005-0001-0000-0000-000000000001', 1, 920.00)
+VALUES ('d0000001-0026-0000-0000-000000000003', 'c0000001-0000-0000-0000-000000000026', 'b0000003-0001-0000-0000-000000000001', 1, 890.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0027-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000027', 'b0000005-0002-0000-0000-000000000002', 1, 920.00)
+VALUES ('d0000001-0027-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000027', 'b0000003-0002-0000-0000-000000000002', 1, 890.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0028-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000028', 'b0000006-0001-0000-0000-000000000001', 2, 920.00)
+VALUES ('d0000001-0028-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000028', 'b0000004-0001-0000-0000-000000000001', 2, 850.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0028-0000-0000-000000000002', 'c0000001-0000-0000-0000-000000000028', 'b0000006-0002-0000-0000-000000000002', 1, 920.00)
+VALUES ('d0000001-0028-0000-0000-000000000002', 'c0000001-0000-0000-0000-000000000028', 'b0000004-0002-0000-0000-000000000002', 1, 850.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0029-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000029', 'b0000006-0004-0000-0000-000000000004', 1, 920.00)
+VALUES ('d0000001-0029-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000029', 'b0000004-0004-0000-0000-000000000004', 1, 850.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0029-0000-0000-000000000002', 'c0000001-0000-0000-0000-000000000029', 'b0000007-0001-0000-0000-000000000001', 1, 2450.00)
+VALUES ('d0000001-0029-0000-0000-000000000002', 'c0000001-0000-0000-0000-000000000029', 'b0000005-0001-0000-0000-000000000001', 1, 920.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0029-0000-0000-000000000003', 'c0000001-0000-0000-0000-000000000029', 'b0000007-0002-0000-0000-000000000002', 1, 2450.00)
+VALUES ('d0000001-0029-0000-0000-000000000003', 'c0000001-0000-0000-0000-000000000029', 'b0000005-0002-0000-0000-000000000002', 1, 920.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0030-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000030', 'b0000007-0003-0000-0000-000000000003', 1, 2450.00)
+VALUES ('d0000001-0030-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000030', 'b0000005-0003-0000-0000-000000000003', 1, 920.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0031-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000031', 'b0000008-0002-0000-0000-000000000002', 1, 1850.00)
+VALUES ('d0000001-0031-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000031', 'b0000006-0002-0000-0000-000000000002', 1, 920.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0031-0000-0000-000000000002', 'c0000001-0000-0000-0000-000000000031', 'b0000008-0003-0000-0000-000000000003', 1, 1850.00)
+VALUES ('d0000001-0031-0000-0000-000000000002', 'c0000001-0000-0000-0000-000000000031', 'b0000006-0003-0000-0000-000000000003', 1, 920.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
 VALUES ('d0000001-0032-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000032', 'b0000001-0001-0000-0000-000000000001', 2, 890.00)
@@ -1258,8 +1218,8 @@ INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
 VALUES ('d0000001-0039-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000039', 'b0000006-0002-0000-0000-000000000002', 1, 920.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0040-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000040', 'b0000007-0001-0000-0000-000000000001', 2, 2450.00)
+VALUES ('d0000001-0040-0000-0000-000000000001', 'c0000001-0000-0000-0000-000000000040', 'b0000001-0001-0000-0000-000000000001', 2, 890.00)
 ON CONFLICT (id) DO NOTHING;
 INSERT INTO public.order_items (id, order_id, variant_id, quantity, unit_price)
-VALUES ('d0000001-0040-0000-0000-000000000002', 'c0000001-0000-0000-0000-000000000040', 'b0000007-0002-0000-0000-000000000002', 1, 2450.00)
+VALUES ('d0000001-0040-0000-0000-000000000002', 'c0000001-0000-0000-0000-000000000040', 'b0000001-0002-0000-0000-000000000002', 1, 890.00)
 ON CONFLICT (id) DO NOTHING;

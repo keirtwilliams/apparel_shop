@@ -8,6 +8,7 @@ import {
   calculateEffectiveProductPrice,
   validateCoupon
 } from '../lib/pricing';
+import { sendConfirmationEmail, generateVerificationCode } from '../lib/emailService';
 
 const StoreContext = createContext(null);
 
@@ -25,6 +26,17 @@ export const calculateAge = (dobString) => {
   return Math.max(0, age);
 };
 
+// Helper to validate password complexity
+export const isPasswordComplex = (password = '') => {
+  if (typeof password !== 'string') return false;
+  if (password.length < 8) return false;
+  if (!/[A-Z]/.test(password)) return false;
+  if (!/[a-z]/.test(password)) return false;
+  if (!/[0-9]/.test(password)) return false;
+  if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)) return false;
+  return true;
+};
+
 // Helper to format full name with Middle Initial
 export const formatFullName = (first = '', mi = '', last = '') => {
   const parts = [];
@@ -35,26 +47,6 @@ export const formatFullName = (first = '', mi = '', last = '') => {
   }
   if (last?.trim()) parts.push(last.trim());
   return parts.join(' ');
-};
-
-// Default Seed Customer Account (using synthetic fake Gmail and demographic specs)
-export const DEFAULT_CUSTOMER = {
-  id: 'cust-demo-001',
-  email: 'marcus.thorne@gmail.com', // Synthetic test Gmail
-  password: 'password123',
-  first_name: 'Marcus',
-  middle_initial: 'V',
-  last_name: 'Thorne',
-  full_name: 'Marcus V. Thorne',
-  dob: '1998-05-14',
-  age: 28,
-  phone: '+63 917 555 0192',
-  address: 'Unit 18B, One Serendra, 32nd St',
-  city: 'BGC, Taguig City',
-  postal_code: '1634',
-  country: 'Philippines',
-  role: 'customer',
-  created_at: '2026-01-15T08:00:00Z'
 };
 
 export const StoreProvider = ({ children }) => {
@@ -119,22 +111,35 @@ export const StoreProvider = ({ children }) => {
     imageCache.preloadMany(urls);
   }, [products]);
 
-  // Registered Customer Accounts Database (localStorage for now, Supabase tomorrow)
+  // Registered Customer Accounts Database
   const [accounts, setAccounts] = useState(() => {
     const saved = localStorage.getItem('purgatory_customer_accounts');
     if (saved) {
-      try { return JSON.parse(saved); } catch (e) { /* ignore */ }
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) {
+          return parsed.filter(a => a.id !== 'cust-demo-001' && !a.email?.includes('marcus.thorne'));
+        }
+      } catch (e) { /* ignore */ }
     }
-    return [DEFAULT_CUSTOMER];
+    return [];
   });
 
-  // Active Logged-in Customer Profile (null if browsing as Guest)
+  // Active Logged-in Customer Profile (null = guest browsing)
   const [currentUser, setCurrentUser] = useState(() => {
     const saved = localStorage.getItem('purgatory_current_user');
     if (saved) {
-      try { return JSON.parse(saved); } catch (e) { /* ignore */ }
+      try {
+        const parsed = JSON.parse(saved);
+        // Purge legacy demo customer
+        if (parsed?.id === 'cust-demo-001' || parsed?.email?.includes('marcus.thorne') || parsed?.first_name === 'Marcus') {
+          localStorage.removeItem('purgatory_current_user');
+          return null;
+        }
+        return parsed;
+      } catch (e) { /* ignore */ }
     }
-    return DEFAULT_CUSTOMER;
+    return null;
   });
 
   // Active user / RBAC Role ('customer' | 'admin')
@@ -220,7 +225,7 @@ export const StoreProvider = ({ children }) => {
     localStorage.setItem('purgatory_role', role);
   }, [role]);
 
-  // If Supabase is connected, fetch from Supabase
+  // If Supabase is connected, fetch from Supabase and subscribe to live changes in real time
   useEffect(() => {
     if (!isSupabaseConfigured || !supabase) return;
 
@@ -228,7 +233,8 @@ export const StoreProvider = ({ children }) => {
       try {
         const { data: prods, error: pErr } = await supabase
           .from('products')
-          .select('*, variants:product_variants(*)');
+          .select('*, variants:product_variants(*)')
+          .order('created_at', { ascending: true });
         if (!pErr && prods && prods.length > 0) {
           setProducts(prods);
         }
@@ -246,28 +252,102 @@ export const StoreProvider = ({ children }) => {
     }
 
     loadSupabaseData();
+
+    // REAL-TIME POSTGRES SUBSCRIPTION (Listens to live garment drops, variant updates, and orders)
+    const channel = supabase
+      .channel('realtime_storefront_sync')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'products' },
+        () => {
+          // Whenever an admin adds, edits, or deletes a shirt, reload fresh products immediately
+          loadSupabaseData();
+        }
+      )
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'product_variants' },
+        () => {
+          // Whenever an admin adjusts stock or sizes, refresh live
+          loadSupabaseData();
+        }
+      )
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'orders' },
+        () => {
+          // Whenever an order status changes or a customer places an order
+          loadSupabaseData();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
-  // --- CUSTOMER AUTHENTICATION METHODS (Fake Gmail + Demographic Profiles) ---
-  const signIn = ({ email, password }) => {
-    const found = accounts.find(
-      acc => acc.email.toLowerCase() === email.trim().toLowerCase()
-    );
+  // --- CUSTOMER AUTHENTICATION METHODS (Supabase Auth + Resend SMTP Confirmation) ---
+  const signIn = async ({ email, password }) => {
+    const cleanEmail = email.trim().toLowerCase();
 
+    // 1. If Supabase is connected, authenticate against Supabase auth.users
+    if (isSupabaseConfigured && supabase) {
+      try {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email: cleanEmail,
+          password
+        });
+
+        if (error) {
+          // If email is not confirmed yet
+          if (error.message.includes('Email not confirmed')) {
+            return {
+              success: false,
+              error: 'Please verify your email address. Check your inbox for the confirmation link sent via Resend.'
+            };
+          }
+          return { success: false, error: error.message };
+        }
+
+        if (data?.user) {
+          // Fetch user profile from public.profiles
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('id', data.user.id)
+            .maybeSingle();
+
+          const activeUser = profile || {
+            id: data.user.id,
+            email: data.user.email,
+            full_name: data.user.user_metadata?.full_name || cleanEmail.split('@')[0],
+            role: 'customer'
+          };
+
+          setCurrentUser(activeUser);
+          if (activeUser.role) setRole(activeUser.role);
+          return { success: true, user: activeUser };
+        }
+      } catch (err) {
+        return { success: false, error: err.message || 'Authentication failed.' };
+      }
+    }
+
+    // Fallback: Local account database
+    const found = accounts.find(acc => acc.email.toLowerCase() === cleanEmail);
     if (!found) {
       return { success: false, error: 'No client profile registered with this email.' };
     }
-
     if (found.password && found.password !== password) {
       return { success: false, error: 'Incorrect password.' };
     }
-
     const { password: _, ...safeUser } = found;
     setCurrentUser(safeUser);
     return { success: true, user: safeUser };
   };
 
-  const signUp = ({
+  const signUp = async ({
     first_name,
     middle_initial = '',
     last_name,
@@ -282,14 +362,92 @@ export const StoreProvider = ({ children }) => {
     country = 'Philippines'
   }) => {
     const cleanEmail = email.trim().toLowerCase();
-    const existing = accounts.find(acc => acc.email.toLowerCase() === cleanEmail);
+    const fullName = formatFullName(first_name, middle_initial, last_name);
+    const computedAge = age ? parseInt(age, 10) : (dob ? calculateAge(dob) : null);
 
+    // Password complexity validation (8+ chars, upper, lower, number, special char)
+    if (!isPasswordComplex(password)) {
+      return {
+        success: false,
+        error: 'Password must be at least 8 characters and include uppercase, lowercase, a number, and a special character (!@#$%^&*).'
+      };
+    }
+
+    // 1. If Supabase is configured, use Supabase Auth with your newly configured SMTP!
+    if (isSupabaseConfigured && supabase) {
+      try {
+        const { data, error } = await supabase.auth.signUp({
+          email: cleanEmail,
+          password,
+          options: {
+            data: {
+              first_name: first_name.trim(),
+              middle_initial: middle_initial.trim().toUpperCase(),
+              last_name: last_name.trim(),
+              full_name: fullName,
+              dob: dob.trim(),
+              age: computedAge,
+              phone: phone.trim(),
+              address: address.trim(),
+              city: city.trim(),
+              postal_code: postal_code.trim(),
+              country
+            }
+          }
+        });
+
+        if (error) {
+          return { success: false, error: error.message };
+        }
+
+        // Check if confirmation code / email was dispatched
+        const requiresConfirmation = !data.session;
+
+        const newAccount = {
+          id: data.user?.id || `cust-${Date.now()}`,
+          email: cleanEmail,
+          password,
+          first_name: first_name.trim(),
+          middle_initial: middle_initial.trim().toUpperCase(),
+          last_name: last_name.trim(),
+          full_name: fullName,
+          dob: dob.trim(),
+          age: computedAge,
+          phone: phone.trim(),
+          address: address.trim(),
+          city: city.trim(),
+          postal_code: postal_code.trim(),
+          country,
+          role: 'customer',
+          created_at: new Date().toISOString()
+        };
+
+        if (requiresConfirmation) {
+          return {
+            success: true,
+            verificationRequired: true,
+            isSupabaseAuth: true,
+            pendingAccount: newAccount,
+            emailSent: true
+          };
+        } else {
+          // Direct login if session returned
+          setAccounts(prev => [...prev, newAccount]);
+          const { password: _, ...safeUser } = newAccount;
+          setCurrentUser(safeUser);
+          return { success: true, user: safeUser };
+        }
+      } catch (err) {
+        console.error('[Supabase Signup Error]', err);
+        return { success: false, error: err.message || 'Registration failed.' };
+      }
+    }
+
+    // Fallback: Local accounts with authentic Resend email verification
+    const existing = accounts.find(acc => acc.email.toLowerCase() === cleanEmail);
     if (existing) {
       return { success: false, error: 'An account with this email is already registered.' };
     }
-
-    const computedAge = age ? parseInt(age, 10) : (dob ? calculateAge(dob) : null);
-    const fullName = formatFullName(first_name, middle_initial, last_name);
 
     const newAccount = {
       id: `cust-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`,
@@ -310,13 +468,117 @@ export const StoreProvider = ({ children }) => {
       created_at: new Date().toISOString()
     };
 
-    setAccounts(prev => [...prev, newAccount]);
-    const { password: _, ...safeUser } = newAccount;
+    // Dispatch authentic Resend confirmation email with 6-digit code
+    const verificationCode = generateVerificationCode();
+    let emailSent = false;
+    let emailError = null;
+    let relayedToOwner = false;
+    let ownerEmail = null;
+
+    try {
+      const emailRes = await sendConfirmationEmail({
+        to: cleanEmail,
+        code: verificationCode,
+        fullName
+      });
+      emailSent = emailRes.success;
+      relayedToOwner = Boolean(emailRes.relayedToOwner);
+      ownerEmail = emailRes.ownerEmail;
+      if (!emailRes.success) {
+        emailError = emailRes.error;
+      }
+    } catch (e) {
+      console.error('[Verification Dispatch Failed]', e);
+      emailError = e.message;
+    }
+
+    // Return pending verification state for OTP verification step
+    return {
+      success: true,
+      verificationRequired: true,
+      verificationCode,
+      pendingAccount: newAccount,
+      emailSent,
+      emailError,
+      relayedToOwner,
+      ownerEmail
+    };
+  };
+
+  // Confirm pending account with OTP code or Supabase verifyOtp
+  const confirmRegistration = async (pendingAccount, enteredCode, expectedCode, isSupabaseAuth = false) => {
+    if (!pendingAccount) {
+      return { success: false, error: 'No pending registration found.' };
+    }
+
+    // If using Supabase Auth with custom SMTP
+    if (isSupabaseAuth && isSupabaseConfigured && supabase) {
+      try {
+        const { data, error } = await supabase.auth.verifyOtp({
+          email: pendingAccount.email,
+          token: enteredCode.trim(),
+          type: 'signup'
+        });
+
+        if (error) {
+          // If token format not 6-digit OTP or link was clicked
+          return { success: false, error: error.message };
+        }
+
+        setAccounts(prev => [...prev, pendingAccount]);
+        const { password: _, ...safeUser } = pendingAccount;
+        setCurrentUser(safeUser);
+        return { success: true, user: safeUser };
+      } catch (e) {
+        return { success: false, error: e.message || 'Verification failed.' };
+      }
+    }
+
+    // Local / Resend code verification
+    if (expectedCode && enteredCode.trim() !== expectedCode.trim()) {
+      return { success: false, error: 'Invalid verification code. Please check your email and try again.' };
+    }
+
+    setAccounts(prev => [...prev, pendingAccount]);
+    const { password: _, ...safeUser } = pendingAccount;
     setCurrentUser(safeUser);
     return { success: true, user: safeUser };
   };
 
-  const signOut = () => {
+  // Resend a new verification code to the recipient
+  const resendVerificationCode = async (email, fullName, isSupabaseAuth = false) => {
+    if (isSupabaseAuth && isSupabaseConfigured && supabase) {
+      try {
+        const { error } = await supabase.auth.resend({
+          type: 'signup',
+          email
+        });
+        if (error) throw error;
+        return { success: true, isSupabaseAuth: true };
+      } catch (err) {
+        return { success: false, error: err.message };
+      }
+    }
+
+    const newCode = generateVerificationCode();
+    try {
+      const res = await sendConfirmationEmail({
+        to: email,
+        code: newCode,
+        fullName
+      });
+      return { success: res.success, newCode, error: res.error };
+    } catch (err) {
+      return { success: false, error: err.message };
+    }
+  };
+
+  const signOut = async () => {
+    if (isSupabaseConfigured && supabase) {
+      try {
+        await supabase.auth.signOut();
+      } catch (e) { /* ignore */ }
+    }
     setCurrentUser(null);
   };
 
@@ -578,7 +840,7 @@ export const StoreProvider = ({ children }) => {
           payment_method: paymentMethod,
           payment_status: 'paid',
           status: 'pending',
-          total_amount: cartSubtotal,
+          total_amount: cartFinalTotal,
           created_at: createdAt
         });
 
@@ -701,9 +963,11 @@ export const StoreProvider = ({ children }) => {
     return list;
   }, [products]);
 
-  // Admin Per-Garment Variant Stock Adjustment
-  const updateVariantStock = (productId, variantId, newStock) => {
+  // Admin Per-Garment Variant Stock Adjustment (Syncs to LocalState + Supabase Database)
+  const updateVariantStock = async (productId, variantId, newStock) => {
     appCache.invalidateTag('products');
+    const safeStock = Math.max(0, parseInt(newStock, 10) || 0);
+
     setProducts(prevProducts => {
       const updated = prevProducts.map(prod => {
         if (prod.id === productId) {
@@ -711,7 +975,7 @@ export const StoreProvider = ({ children }) => {
             ...prod,
             variants: prod.variants.map(v => {
               if (v.id === variantId) {
-                return { ...v, stock_count: Math.max(0, parseInt(newStock, 10) || 0) };
+                return { ...v, stock_count: safeStock };
               }
               return v;
             })
@@ -722,6 +986,18 @@ export const StoreProvider = ({ children }) => {
       localStorage.setItem('purgatory_products', JSON.stringify(updated));
       return updated;
     });
+
+    // Sync directly to Supabase product_variants table
+    if (isSupabaseConfigured && supabase) {
+      try {
+        await supabase
+          .from('product_variants')
+          .update({ stock_count: safeStock })
+          .eq('id', variantId);
+      } catch (err) {
+        console.error('Failed to sync variant stock to Supabase:', err);
+      }
+    }
   };
 
   // Admin Per-Garment Sale & Markdown Controller
@@ -770,8 +1046,8 @@ export const StoreProvider = ({ children }) => {
     setProducts(initialData.products);
     setOrders(initialData.orders);
     setCart([]);
-    setAccounts([DEFAULT_CUSTOMER]);
-    setCurrentUser(DEFAULT_CUSTOMER);
+    setAccounts([]);
+    setCurrentUser(null);
   };
 
   return (
@@ -792,6 +1068,8 @@ export const StoreProvider = ({ children }) => {
         currentUser,
         signIn,
         signUp,
+        confirmRegistration,
+        resendVerificationCode,
         signOut,
         updateProfile,
         addToCart,

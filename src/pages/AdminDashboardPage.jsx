@@ -22,6 +22,7 @@ export default function AdminDashboardPage() {
     refundOrder,
     updateOrderStatus,
     updateVariantStock,
+    addNewProduct,
     lowStockVariants,
     resetToSeedData,
     saleConfig,
@@ -367,6 +368,7 @@ export default function AdminDashboardPage() {
             products={products}
             updateVariantStock={updateVariantStock}
             lowStockVariants={lowStockVariants}
+            addNewProduct={addNewProduct}
           />
         )}
 

@@ -75,6 +75,42 @@ export default function CheckoutPage() {
     );
   }
 
+  // Option 1 Guard: Require login at checkout, keeping cart items safe in bag
+  if (!currentUser) {
+    return (
+      <div className="max-w-md mx-auto px-4 py-20 text-center">
+        <div className="w-12 h-12 rounded-full bg-surface border border-border flex items-center justify-center text-primary mx-auto mb-4">
+          <User size={22} weight="bold" />
+        </div>
+        <h2 className="text-base font-bold uppercase tracking-wider text-primary font-mono">
+          Client Authentication Required
+        </h2>
+        <p className="text-xs text-muted mt-2 leading-relaxed max-w-sm mx-auto">
+          Please sign in to your client profile to complete this consignment. Your bag items and discounts remain saved.
+        </p>
+        <div className="mt-6 space-y-3">
+          <Link
+            to="/login?redirect=/checkout"
+            className="w-full py-3.5 bg-primary text-canvas text-xs font-bold uppercase tracking-wider rounded-tight flex items-center justify-center gap-2 hover:bg-primary/90 transition-all cursor-pointer shadow-sm"
+          >
+            <span>Sign In to Complete Order</span>
+          </Link>
+          <Link
+            to="/register?redirect=/checkout"
+            className="w-full py-3 bg-surface hover:bg-surface-subtle border border-border text-primary text-xs font-semibold uppercase tracking-wider rounded-tight flex items-center justify-center transition-all cursor-pointer"
+          >
+            Create Client Profile
+          </Link>
+        </div>
+        <div className="mt-6">
+          <Link to="/catalogue" className="text-xs text-muted hover:text-primary underline underline-offset-4 font-mono">
+            ← Continue Browsing Collection
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
   const shippingCost = cartFinalTotal >= 150 ? 0 : 15;
   const grandTotal = cartFinalTotal + shippingCost;
 
